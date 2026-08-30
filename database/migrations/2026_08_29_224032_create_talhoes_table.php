@@ -13,9 +13,9 @@ return new class extends Migration
             $table->foreignId('propriedade_id')->constrained('propriedades')->cascadeOnDelete();
             $table->foreignId('cultura_id')->nullable()->constrained('culturas')->nullOnDelete();
             $table->string('nome');
-            $table->string('area', 10, 2)->nullable();
-            $table->string('latitude', 10, 7)->nullable();
-            $table->string('longitude', 10, 7)->nullable();
+            $table->decimal('area', 10, 2)->nullable();
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
             $table->timestamps();
             $table->unique(['propriedade_id', 'nome']);
         });

@@ -11,10 +11,9 @@ return new class extends Migration
         Schema::create('propriedades', function (Blueprint $table) {
             $table->id();
             $table->string('nome');
-            $table->string('responsavel')->nullable();
             $table->string('localizacao')->nullable();
-            $table->string('latitude', 10, 7)->nullable();
-            $table->string('longitude', 10, 7)->nullable();
+            $table->decimal('latitude', 10, 7)->nullable();
+            $table->decimal('longitude', 10, 7)->nullable();
             $table->timestamps();
         });
     }
