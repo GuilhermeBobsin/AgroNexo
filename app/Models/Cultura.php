@@ -2,13 +2,20 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Cultura extends Model
 {
-    protected $table = 'culturas';
+    use HasFactory;
 
     protected $fillable = [
         'nome',
     ];
+
+    public function talhoes(): HasMany
+    {
+        return $this->hasMany(Talhao::class);
+    }
 }

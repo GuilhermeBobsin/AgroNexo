@@ -2,11 +2,12 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class RegraClimatica extends Model
 {
-    protected $table = 'regras_climaticas';
+    use HasFactory;
 
     protected $fillable = [
         'nome',
@@ -16,5 +17,10 @@ class RegraClimatica extends Model
         'gravidade',
         'mensagem',
         'ativa',
+    ];
+
+    protected $casts = [
+        'ativa' => 'boolean',
+        'valor' => 'decimal:2',
     ];
 }

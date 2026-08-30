@@ -2,11 +2,13 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Produto extends Model
 {
-    protected $table = 'produtos';
+    use HasFactory;
 
     protected $fillable = [
         'nome',
@@ -16,6 +18,15 @@ class Produto extends Model
         'preco',
         'estoque_atual',
         'estoque_minimo',
-        'data_validaede',
+        'data_validade',
     ];
+
+    protected $casts = [
+        'data_validade' => 'date',
+    ];
+
+    public function aplicacoes(): HasMany
+    {
+        return $this->hasMany(Aplicacao::class);
+    }
 }

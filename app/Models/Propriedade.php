@@ -2,18 +2,36 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Propriedade extends Model
 {
-
-    protected $table = 'propriedades';
+    use HasFactory;
 
     protected $fillable = [
         'nome',
-        'responsavel',
         'localizacao',
         'latitude',
         'longitude',
     ];
+
+    public function usuarios(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class, 'propriedade_usuario', 'propriedade_id', 'usuario_id')
+            ->withPivot('papel')
+            ->withTimestamps();
+    }
+
+    public function talhoes(): HasMany
+    {
+        return $this->hasMany(Talhao::class);
+    }
+
+    public function alertas(): HasMany
+    {
+        return $this->hasMany(Alerta::class);
+    }
 }
