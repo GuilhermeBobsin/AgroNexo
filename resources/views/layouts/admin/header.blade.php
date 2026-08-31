@@ -380,14 +380,13 @@
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                            <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
-                                            <path d="M12 12l8 -4.5"></path>
-                                            <path d="M12 12l0 9"></path>
-                                            <path d="M12 12l-8 -4.5"></path>
-                                            <path d="M16 5.25l-8 4.5"></path>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-map-2">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 18.5l-3 -1.5l-6 3v-13l6 -3l6 3l6 -3v7.5" />
+                                            <path d="M9 4v13" />
+                                            <path d="M15 7v5.5" />
+                                            <path d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879" />
+                                            <path d="M19 18v.01" />
                                         </svg>
                                     </span>
                                     <span class="nav-link-title"> Propriedades </span>
@@ -427,12 +426,10 @@
                                 <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                            <path
-                                                d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
-                                            </path>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-sun">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                                            <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
                                         </svg>
                                     </span>
                                     <span class="nav-link-title"> Clima </span>
@@ -451,21 +448,14 @@
                                 <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                            <path
-                                                d="M4 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z">
-                                            </path>
-                                            <path
-                                                d="M4 13m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z">
-                                            </path>
-                                            <path
-                                                d="M14 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z">
-                                            </path>
-                                            <path
-                                                d="M14 15m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z">
-                                            </path>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brain">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M15.5 13a3.5 3.5 0 0 0 -3.5 3.5v1a3.5 3.5 0 0 0 7 0v-1.8" />
+                                            <path d="M8.5 13a3.5 3.5 0 0 1 3.5 3.5v1a3.5 3.5 0 0 1 -7 0v-1.8" />
+                                            <path d="M17.5 16a3.5 3.5 0 0 0 0 -7h-.5" />
+                                            <path d="M19 9.3v-2.8a3.5 3.5 0 0 0 -7 0" />
+                                            <path d="M6.5 16a3.5 3.5 0 0 1 0 -7h.5" />
+                                            <path d="M5 9.3v-2.8a3.5 3.5 0 0 1 7 0v10" />
                                         </svg>
                                     </span>
                                     <span class="nav-link-title"> Inteligência </span>
@@ -485,12 +475,14 @@
                                 <a class="nav-link dropdown-toggle" href="#navbar-plugins" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                            <path
-                                                d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1">
-                                            </path>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-list-check">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M3.5 5.5l1.5 1.5l2.5 -2.5" />
+                                            <path d="M3.5 11.5l1.5 1.5l2.5 -2.5" />
+                                            <path d="M3.5 17.5l1.5 1.5l2.5 -2.5" />
+                                            <path d="M11 6l9 0" />
+                                            <path d="M11 12l9 0" />
+                                            <path d="M11 18l9 0" />
                                         </svg>
                                     </span>
                                     <span class="nav-link-title"> Agenda </span>
@@ -505,17 +497,12 @@
                                 <a class="nav-link dropdown-toggle" href="#navbar-addons" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                            <path
-                                                d="M3 8m0 1a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z">
-                                            </path>
-                                            <path d="M12 8l0 13"></path>
-                                            <path d="M19 12v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-7"></path>
-                                            <path
-                                                d="M7.5 8a2.5 2.5 0 0 1 0 -5a4.8 8 0 0 1 4.5 5a4.8 8 0 0 1 4.5 -5a2.5 2.5 0 0 1 0 5">
-                                            </path>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-cash-banknote-edit">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M11 18h-6a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v3" />
+                                            <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                                            <path d="M6 12h.01" />
+                                            <path d="M18.42 15.61a2.1 2.1 0 1 1 2.97 2.97l-3.39 3.42h-3v-3l3.42 -3.39" />
                                         </svg>
                                     </span>
                                     <span class="nav-link-title"> Custos </span>
@@ -531,15 +518,11 @@
                                 <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                            <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
-                                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-                                            <path d="M15 15l3.35 3.35"></path>
-                                            <path d="M9 15l-3.35 3.35"></path>
-                                            <path d="M5.65 5.65l3.35 3.35"></path>
-                                            <path d="M18.35 5.65l-3.35 3.35"></path>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-stack-2">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 4l-8 4l8 4l8 -4l-8 -4" />
+                                            <path d="M4 12l8 4l8 -4" />
+                                            <path d="M4 16l8 4l8 -4" />
                                         </svg>
                                     </span>
                                     <span class="nav-link-title"> Estoque </span>
