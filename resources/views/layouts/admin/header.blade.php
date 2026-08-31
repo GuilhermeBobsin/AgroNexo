@@ -333,7 +333,7 @@
     </div>
 </header>
 <header class="navbar-expand-md">
-    <div class="collapse navbar-collapse" id="navbar-menu">
+    <div class="collapse navbar-collapse" id="navbar-menu" style="visibility: visible !important;" >
         <div class="navbar">
             <div class="container-xl">
                 <div class="row flex-column flex-md-row flex-fill align-items-center">
