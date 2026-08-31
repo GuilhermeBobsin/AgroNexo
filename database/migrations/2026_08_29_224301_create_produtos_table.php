@@ -15,9 +15,6 @@ return new class extends Migration
             $table->string('grupo_modo_acao')->nullable();
             $table->string('unidade')->default('L');
             $table->decimal('preco', 12, 2)->nullable();
-            $table->decimal('estoque_atual', 12, 3)->default(0);
-            $table->decimal('estoque_minimo', 12, 3)->default(0);
-            $table->date('data_validade')->nullable();
             $table->timestamps();
         });
     }
