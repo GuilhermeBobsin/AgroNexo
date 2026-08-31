@@ -9,6 +9,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('agronomo.dashboard');
+        $cargo = auth()->user()->perfil;
+        return view('agronomo.dashboard', compact('cargo'));
     }
 }

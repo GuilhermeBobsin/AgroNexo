@@ -9,6 +9,7 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        return view('operador.dashboard');
+        $cargo = auth()->user()->perfil;
+        return view('operador.dashboard', compact('cargo'));
     }
 }
