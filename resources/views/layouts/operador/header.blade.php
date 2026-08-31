@@ -5,35 +5,15 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-            <a href="{{ url('/admin/dashboard') }}"
-                class="d-flex align-items-center text-decoration-none"
-                aria-label="AgroNexo">
-
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    style="height: 45px; width: 45px;"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    class="icon icon-tabler icons-tabler-outline icon-tabler-tractor text-primary me-2">
-
-                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                    <path d="M3 15a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-                    <path d="M7 15l0 .01" />
-                    <path d="M17 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-                    <path d="M10.5 17l6.5 0" />
-                    <path d="M20 15.2v-4.2a1 1 0 0 0 -1 -1h-6l-2 -5h-6v6.5" />
-                    <path d="M18 5h-1a1 1 0 0 0 -1 1v4" />
-
-                </svg>
-
-                <span class="fw-bold fs-2">
-                    AgroNexo
-                </span>
-
-            </a>
+            <a href="." aria-label="Tabler"><svg xmlns="http://www.w3.org/2000/svg" width="110" height="32"
+                    viewBox="0 0 232 68" class="navbar-brand-image">
+                    <path
+                        d="M64.6 16.2C63 9.9 58.1 5 51.8 3.4 40 1.5 28 1.5 16.2 3.4 9.9 5 5 9.9 3.4 16.2 1.5 28 1.5 40 3.4 51.8 5 58.1 9.9 63 16.2 64.6c11.8 1.9 23.8 1.9 35.6 0C58.1 63 63 58.1 64.6 51.8c1.9-11.8 1.9-23.8 0-35.6zM33.3 36.3c-2.8 4.4-6.6 8.2-11.1 11-1.5.9-3.3.9-4.8.1s-2.4-2.3-2.5-4c0-1.7.9-3.3 2.4-4.1 2.3-1.4 4.4-3.2 6.1-5.3-1.8-2.1-3.8-3.8-6.1-5.3-2.3-1.3-3-4.2-1.7-6.4s4.3-2.9 6.5-1.6c4.5 2.8 8.2 6.5 11.1 10.9 1 1.4 1 3.3.1 4.7zM49.2 46H37.8c-2.1 0-3.8-1-3.8-3s1.7-3 3.8-3h11.4c2.1 0 3.8 1 3.8 3s-1.7 3-3.8 3z"
+                        fill="#066fd1" style="fill: var(--tblr-primary, #066fd1)"></path>
+                    <path
+                        d="M105.8 46.1c.4 0 .9.2 1.2.6s.6 1 .6 1.7c0 .9-.5 1.6-1.4 2.2s-2 .9-3.2.9c-2 0-3.7-.4-5-1.3s-2-2.6-2-5.4V31.6h-2.2c-.8 0-1.4-.3-1.9-.8s-.9-1.1-.9-1.9c0-.7.3-1.4.8-1.8s1.2-.7 1.9-.7h2.2v-3.1c0-.8.3-1.5.8-2.1s1.3-.8 2.1-.8 1.5.3 2 .8.8 1.3.8 2.1v3.1h3.4c.8 0 1.4.3 1.9.8s.8 1.2.8 1.9-.3 1.4-.8 1.8-1.2.7-1.9.7h-3.4v13c0 .7.2 1.2.5 1.5s.8.5 1.4.5c.3 0 .6-.1 1.1-.2.5-.2.8-.3 1.2-.3zm28-20.7c.8 0 1.5.3 2.1.8.5.5.8 1.2.8 2.1v20.3c0 .8-.3 1.5-.8 2.1-.5.6-1.2.8-2.1.8s-1.5-.3-2-.8-.8-1.2-.8-2.1c-.8.9-1.9 1.7-3.2 2.4-1.3.7-2.8 1-4.3 1-2.2 0-4.2-.6-6-1.7-1.8-1.1-3.2-2.7-4.2-4.7s-1.6-4.3-1.6-6.9c0-2.6.5-4.9 1.5-6.9s2.4-3.6 4.2-4.8c1.8-1.1 3.7-1.7 5.9-1.7 1.5 0 3 .3 4.3.8 1.3.6 2.5 1.3 3.4 2.1 0-.8.3-1.5.8-2.1.5-.5 1.2-.7 2-.7zm-9.7 21.3c2.1 0 3.8-.8 5.1-2.3s2-3.4 2-5.7-.7-4.2-2-5.8c-1.3-1.5-3-2.3-5.1-2.3-2 0-3.7.8-5 2.3-1.3 1.5-2 3.5-2 5.8s.6 4.2 1.9 5.7 3 2.3 5.1 2.3zm32.1-21.3c2.2 0 4.2.6 6 1.7 1.8 1.1 3.2 2.7 4.2 4.7s1.6 4.3 1.6 6.9-.5 4.9-1.5 6.9-2.4 3.6-4.2 4.8c-1.8 1.1-3.7 1.7-5.9 1.7-1.5 0-3-.3-4.3-.9s-2.5-1.4-3.4-2.3v.3c0 .8-.3 1.5-.8 2.1-.5.6-1.2.8-2.1.8s-1.5-.3-2.1-.8c-.5-.5-.8-1.2-.8-2.1V18.9c0-.8.3-1.5.8-2.1.5-.6 1.2-.8 2.1-.8s1.5.3 2.1.8c.5.6.8 1.3.8 2.1v10c.8-1 1.8-1.8 3.2-2.5 1.3-.7 2.8-1 4.3-1zm-.7 21.3c2 0 3.7-.8 5-2.3s2-3.5 2-5.8-.6-4.2-1.9-5.7-3-2.3-5.1-2.3-3.8.8-5.1 2.3-2 3.4-2 5.7.7 4.2 2 5.8c1.3 1.6 3 2.3 5.1 2.3zm23.6 1.9c0 .8-.3 1.5-.8 2.1s-1.3.8-2.1.8-1.5-.3-2-.8-.8-1.3-.8-2.1V18.9c0-.8.3-1.5.8-2.1s1.3-.8 2.1-.8 1.5.3 2 .8.8 1.3.8 2.1v29.7zm29.3-10.5c0 .8-.3 1.4-.9 1.9-.6.5-1.2.7-2 .7h-15.8c.4 1.9 1.3 3.4 2.6 4.4 1.4 1.1 2.9 1.6 4.7 1.6 1.3 0 2.3-.1 3.1-.4.7-.2 1.3-.5 1.8-.8.4-.3.7-.5.9-.6.6-.3 1.1-.4 1.6-.4.7 0 1.2.2 1.7.7s.7 1 .7 1.7c0 .9-.4 1.6-1.3 2.4-.9.7-2.1 1.4-3.6 1.9s-3 .8-4.6.8c-2.7 0-5-.6-7-1.7s-3.5-2.7-4.6-4.6-1.6-4.2-1.6-6.6c0-2.8.6-5.2 1.7-7.2s2.7-3.7 4.6-4.8 3.9-1.7 6-1.7 4.1.6 6 1.7 3.4 2.7 4.5 4.7c.9 1.9 1.5 4.1 1.5 6.3zm-12.2-7.5c-3.7 0-5.9 1.7-6.6 5.2h12.6v-.3c-.1-1.3-.8-2.5-2-3.5s-2.5-1.4-4-1.4zm30.3-5.2c1 0 1.8.3 2.4.8.7.5 1 1.2 1 1.9 0 1-.3 1.7-.8 2.2-.5.5-1.1.8-1.8.7-.5 0-1-.1-1.6-.3-.2-.1-.4-.1-.6-.2-.4-.1-.7-.1-1.1-.1-.8 0-1.6.3-2.4.8s-1.4 1.3-1.9 2.3-.7 2.3-.7 3.7v11.4c0 .8-.3 1.5-.8 2.1-.5.6-1.2.8-2.1.8s-1.5-.3-2.1-.8c-.5-.6-.8-1.3-.8-2.1V28.8c0-.8.3-1.5.8-2.1.5-.6 1.2-.8 2.1-.8s1.5.3 2.1.8c.5.6.8 1.3.8 2.1v.6c.7-1.3 1.8-2.3 3.2-3 1.3-.7 2.8-1 4.3-1z"
+                        fill-rule="evenodd" clip-rule="evenodd" fill="#4a4a4a"></path>
+                </svg></a>
         </div>
         <div class="navbar-nav flex-row order-md-last">
             <div class="nav-item d-none d-md-flex me-3">
@@ -333,8 +313,8 @@
                 <a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Open user menu">
                     <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"> </span>
                     <div class="d-none d-xl-block ps-2">
-                        <div>{{ Auth::user()->name }}</div>
-                        <div class="mt-1 small text-secondary">{{ Auth::user()->perfil }}</div>
+                        <div>Paweł Kuna</div>
+                        <div class="mt-1 small text-secondary">UI Designer</div>
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -353,7 +333,7 @@
     </div>
 </header>
 <header class="navbar-expand-md">
-    <div class="collapse navbar-collapse" id="navbar-menu" style="visibility: visible !important;">
+    <div class="collapse navbar-collapse" id="navbar-menu" style="visibility: visible !important;" >
         <div class="navbar">
             <div class="container-xl">
                 <div class="row flex-column flex-md-row flex-fill align-items-center">
@@ -374,52 +354,128 @@
                                 </a>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
+                                <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
                                             viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                                             stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                            <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
-                                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-                                            <path d="M15 15l3.35 3.35"></path>
-                                            <path d="M9 15l-3.35 3.35"></path>
-                                            <path d="M5.65 5.65l3.35 3.35"></path>
-                                            <path d="M18.35 5.65l-3.35 3.35"></path>
+                                            <path d="M12 3l8 4.5l0 9l-8 4.5l-8 -4.5l0 -9l8 -4.5"></path>
+                                            <path d="M12 12l8 -4.5"></path>
+                                            <path d="M12 12l0 9"></path>
+                                            <path d="M12 12l-8 -4.5"></path>
+                                            <path d="M16 5.25l-8 4.5"></path>
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> Usuários </span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#"> Todos os usuários </a>
-                                    <a class="dropdown-item" href="#"> Novo usuário </a>
-                                    <a class="dropdown-item" href="#"> Perfis e acessos </a>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
-                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-map-2">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M12 18.5l-3 -1.5l-6 3v-13l6 -3l6 3l6 -3v7.5" />
-                                            <path d="M9 4v13" />
-                                            <path d="M15 7v5.5" />
-                                            <path d="M21.121 20.121a3 3 0 1 0 -4.242 0c.418 .419 1.125 1.045 2.121 1.879c1.051 -.89 1.759 -1.516 2.121 -1.879" />
-                                            <path d="M19 18v.01" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title"> Propriedades </span>
+                                    <span class="nav-link-title"> Aplicações </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
-                                            <a class="dropdown-item" href="#"> Todas as propriedades </a>
-                                            <a class="dropdown-item" href="#"> Nova propriedade </a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#"> Talhões </a>
-                                            <a class="dropdown-item" href="#"> Culturas </a>
+                                            <a class="dropdown-item" href="./accordion.html">
+                                                Accordion
+                                                <span
+                                                    class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                                            </a>
+                                            <a class="dropdown-item" href="./alerts.html"> Alerts </a>
+                                            <div class="dropend">
+                                                <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication"
+                                                    data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
+                                                    aria-expanded="false">
+                                                    Authentication
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <a href="./sign-in.html" class="dropdown-item"> Sign in </a>
+                                                    <a href="./sign-in-link.html" class="dropdown-item"> Sign in link
+                                                    </a>
+                                                    <a href="./sign-in-illustration.html" class="dropdown-item"> Sign in
+                                                        with illustration </a>
+                                                    <a href="./sign-in-cover.html" class="dropdown-item"> Sign in with
+                                                        cover </a>
+                                                    <a href="./sign-up.html" class="dropdown-item"> Sign up </a>
+                                                    <a href="./forgot-password.html" class="dropdown-item"> Forgot
+                                                        password </a>
+                                                    <a href="./terms-of-service.html" class="dropdown-item"> Terms of
+                                                        service </a>
+                                                    <a href="./auth-lock.html" class="dropdown-item"> Lock screen </a>
+                                                    <a href="./2-step-verification.html" class="dropdown-item"> 2 step
+                                                        verification </a>
+                                                    <a href="./2-step-verification-code.html" class="dropdown-item"> 2
+                                                        step verification code </a>
+                                                </div>
+                                            </div>
+                                            <a class="dropdown-item" href="./avatars.html">
+                                                Avatars
+                                                <span
+                                                    class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                                            </a>
+                                            <a class="dropdown-item" href="./badges.html"> Badges </a>
+                                            <a class="dropdown-item" href="./blank.html"> Blank page </a>
+                                            <a class="dropdown-item" href="./buttons.html"> Buttons </a>
+                                            <div class="dropend">
+                                                <a class="dropdown-item dropdown-toggle" href="#sidebar-cards"
+                                                    data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
+                                                    aria-expanded="false">
+                                                    Cards
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <a href="./cards.html" class="dropdown-item"> Sample cards </a>
+                                                    <a href="./card-actions.html" class="dropdown-item">
+                                                        Card actions
+                                                        <span
+                                                            class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                                                    </a>
+                                                    <a href="./cards-masonry.html" class="dropdown-item"> Cards Masonry
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <a class="dropdown-item" href="./carousel.html"> Carousel </a>
+                                            <a class="dropdown-item" href="./colors.html"> Colors </a>
+                                            <a class="dropdown-item" href="./datagrid.html"> Data grid </a>
+                                            <a class="dropdown-item" href="./dropdowns.html"> Dropdowns </a>
+                                            <div class="dropend">
+                                                <a class="dropdown-item dropdown-toggle" href="#sidebar-error"
+                                                    data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button"
+                                                    aria-expanded="false">
+                                                    Error pages
+                                                </a>
+                                                <div class="dropdown-menu">
+                                                    <a href="./error-404.html" class="dropdown-item"> 404 page </a>
+                                                    <a href="./error-500.html" class="dropdown-item"> 500 page </a>
+                                                    <a href="./error-maintenance.html" class="dropdown-item">
+                                                        Maintenance page </a>
+                                                </div>
+                                            </div>
+                                            <a class="dropdown-item" href="./lists.html"> Lists </a>
+                                            <a class="dropdown-item" href="./modals.html"> Modals </a>
                                         </div>
+                                        <div class="dropdown-menu-column">
+                                            <a class="dropdown-item" href="./markdown.html"> Markdown </a>
+                                            <a class="dropdown-item" href="./navigation.html"> Navigation </a>
+                                            <a class="dropdown-item" href="./offcanvas.html"> Offcanvas </a>
+                                            <a class="dropdown-item" href="./pagination.html"> Pagination </a>
+                                            <a class="dropdown-item" href="./placeholder.html"> Placeholder </a>
+                                            <a class="dropdown-item" href="./segmented-control.html">
+                                                Segmented control
+                                                <span
+                                                    class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                                            </a>
+                                            <a class="dropdown-item" href="./scroll-spy.html">
+                                                Scroll spy
+                                                <span
+                                                    class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                                            </a>
+                                            <a class="dropdown-item" href="./social-icons.html"> Social icons </a>
+                                            <a class="dropdown-item" href="./stars-rating.html"> Stars rating </a>
+                                            <a class="dropdown-item" href="./steps.html"> Steps </a>
+                                            <a class="dropdown-item" href="./tables.html"> Tables </a>
+                                            <a class="dropdown-item" href="./tabs.html"> Tabs </a>
+                                            <a class="dropdown-item" href="./tags.html"> Tags </a>
+                                            <a class="dropdown-item" href="./toasts.html"> Toasts </a>
+                                            <a class="dropdown-item" href="./typography.html"> Typography </a>
+                                        </div>
+                                    </div>
+                                </div>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#navbar-form" data-bs-toggle="dropdown"
@@ -433,33 +489,69 @@
                                             </path>
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> Aplicações </span>
+                                    <span class="nav-link-title"> Clima </span>
                                 </a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#"> Todas as aplicações </a>
-                                    <a class="dropdown-item" href="#"> Nova aplicação </a>
-                                    <a class="dropdown-item" href="#"> Aplicações planejadas </a>
-                                    <a class="dropdown-item" href="#"> Histórico </a>
+                                    <a class="dropdown-item" href="./form-elements.html"> Form elements </a>
+                                    <a class="dropdown-item" href="./form-layout.html">
+                                        Form layouts
+                                        <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                                    </a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-sun">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-                                            <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                            <path
+                                                d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
+                                            </path>
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> Clima </span>
+                                    <span class="nav-link-title"> Agenda </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
-                                            <a class="dropdown-item" href="#"> Clima atual </a>
-                                            <a class="dropdown-item" href="#"> Previsão </a>
-                                            <a class="dropdown-item" href="#"> Condições para aplicação </a>
+                                            <a class="dropdown-item" href="./activity.html"> Activity </a>
+                                            <a class="dropdown-item" href="./chat.html"> Chat </a>
+                                            <a class="dropdown-item" href="./cookie-banner.html"> Cookie banner </a>
+                                            <a class="dropdown-item" href="./empty.html"> Empty page </a>
+                                            <a class="dropdown-item" href="./faq.html"> FAQ </a>
+                                            <a class="dropdown-item" href="./gallery.html"> Gallery </a>
+                                            <a class="dropdown-item" href="./invoice.html"> Invoice </a>
+                                            <a class="dropdown-item" href="./job-listing.html"> Job listing </a>
+                                            <a class="dropdown-item" href="./license.html"> License </a>
+                                            <a class="dropdown-item" href="./logs.html"> Logs </a>
+                                            <a class="dropdown-item" href="./marketing/index.html"> Marketing </a>
+                                            <a class="dropdown-item" href="./music.html"> Music </a>
+                                            <a class="dropdown-item" href="./page-loader.html"> Page loader </a>
+                                        </div>
+                                        <div class="dropdown-menu-column">
+                                            <a class="dropdown-item" href="./photogrid.html"> Photogrid </a>
+                                            <a class="dropdown-item" href="./pricing.html"> Pricing cards </a>
+                                            <a class="dropdown-item" href="./pricing-table.html"> Pricing table </a>
+                                            <a class="dropdown-item" href="./search-results.html"> Search results </a>
+                                            <a class="dropdown-item" href="./settings.html"> Settings </a>
+                                            <a class="dropdown-item" href="./signatures.html">
+                                                Signatures
+                                                <span
+                                                    class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                                            </a>
+                                            <a class="dropdown-item" href="./tasks.html"> Tasks </a>
+                                            <a class="dropdown-item" href="./text-features.html">
+                                                Text features
+                                                <span
+                                                    class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
+                                            </a>
+                                            <a class="dropdown-item" href="./trial-ended.html"> Trial ended </a>
+                                            <a class="dropdown-item" href="./uptime.html"> Uptime monitor </a>
+                                            <a class="dropdown-item" href="./users.html"> Users </a>
+                                            <a class="dropdown-item" href="./widgets.html"> Widgets </a>
+                                            <a class="dropdown-item" href="./wizard.html"> Wizard </a>
                                         </div>
                                     </div>
                                 </div>
@@ -468,93 +560,52 @@
                                 <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-brain">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M15.5 13a3.5 3.5 0 0 0 -3.5 3.5v1a3.5 3.5 0 0 0 7 0v-1.8" />
-                                            <path d="M8.5 13a3.5 3.5 0 0 1 3.5 3.5v1a3.5 3.5 0 0 1 -7 0v-1.8" />
-                                            <path d="M17.5 16a3.5 3.5 0 0 0 0 -7h-.5" />
-                                            <path d="M19 9.3v-2.8a3.5 3.5 0 0 0 -7 0" />
-                                            <path d="M6.5 16a3.5 3.5 0 0 1 0 -7h.5" />
-                                            <path d="M5 9.3v-2.8a3.5 3.5 0 0 1 7 0v10" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+                                            <path
+                                                d="M4 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z">
+                                            </path>
+                                            <path
+                                                d="M4 13m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z">
+                                            </path>
+                                            <path
+                                                d="M14 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z">
+                                            </path>
+                                            <path
+                                                d="M14 15m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z">
+                                            </path>
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> Inteligência </span>
+                                    <span class="nav-link-title"> Histórico </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
-                                            <a class="dropdown-item" href="#"> Alertas climáticos </a>
-                                            <a class="dropdown-item" href="#"> Regras </a>
-                                            <a class="dropdown-item" href="#"> Histórico de recomendações </a>
-                                            <a class="dropdown-item" href="#"> Análise de aplicações </a>
+                                            <a class="dropdown-item" href="./layout-boxed.html"> Boxed </a>
+                                            <a class="dropdown-item" href="./layout-combo.html"> Combined </a>
+                                            <a class="dropdown-item" href="./layout-condensed.html"> Condensed </a>
+                                            <a class="dropdown-item" href="./layout-fluid.html"> Fluid </a>
+                                            <a class="dropdown-item" href="./layout-fluid-vertical.html"> Fluid vertical
+                                            </a>
+                                            <a class="dropdown-item" href="./layout-horizontal.html"> Horizontal </a>
+                                            <a class="dropdown-item" href="./layout-navbar-dark.html"> Navbar dark </a>
+                                        </div>
+                                        <div class="dropdown-menu-column">
+                                            <a class="dropdown-item" href="./layout-navbar-overlap.html"> Navbar overlap
+                                            </a>
+                                            <a class="dropdown-item" href="./layout-navbar-sticky.html"> Navbar sticky
+                                            </a>
+                                            <a class="dropdown-item" href="./layout-vertical-right.html"> Right vertical
+                                            </a>
+                                            <a class="dropdown-item" href="./layout-rtl.html"> RTL mode </a>
+                                            <a class="dropdown-item" href="./layout-vertical.html"> Vertical </a>
+                                            <a class="dropdown-item" href="./layout-vertical-transparent.html"> Vertical
+                                                transparent </a>
                                         </div>
                                     </div>
                                 </div>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-plugins" data-bs-toggle="dropdown"
-                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-list-check">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M3.5 5.5l1.5 1.5l2.5 -2.5" />
-                                            <path d="M3.5 11.5l1.5 1.5l2.5 -2.5" />
-                                            <path d="M3.5 17.5l1.5 1.5l2.5 -2.5" />
-                                            <path d="M11 6l9 0" />
-                                            <path d="M11 12l9 0" />
-                                            <path d="M11 18l9 0" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title"> Agenda </span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#"> Calendário </a>
-                                    <a class="dropdown-item" href="#"> Tarefas </a>
-                                    <a class="dropdown-item" href="#"> Pendências </a>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-addons" data-bs-toggle="dropdown"
-                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-cash-banknote-edit">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M11 18h-6a2 2 0 0 1 -2 -2v-8a2 2 0 0 1 2 -2h14a2 2 0 0 1 2 2v3" />
-                                            <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
-                                            <path d="M6 12h.01" />
-                                            <path d="M18.42 15.61a2.1 2.1 0 1 1 2.97 2.97l-3.39 3.42h-3v-3l3.42 -3.39" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title"> Custos </span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#"> Visão geral </a>
-                                    <a class="dropdown-item" href="#"> Custos das aplicações </a>
-                                    <a class="dropdown-item" href="#"> Por talhão </a>
-                                    <a class="dropdown-item" href="#"> Por período </a>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
-                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-stack-2">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M12 4l-8 4l8 4l8 -4l-8 -4" />
-                                            <path d="M4 12l8 4l8 -4" />
-                                            <path d="M4 16l8 4l8 -4" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title"> Estoque </span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#"> Produtos </a>
-                                    <a class="dropdown-item" href="#"> Estoque atual </a>
-                                    <a class="dropdown-item" href="#"> Estoque baixo </a>
-                                    <a class="dropdown-item" href="#"> Vencimentos </a>
-                                </div>
-                            </li>
-
                         </ul>
                     </div>
                     <!-- <div class="col col-md-auto">

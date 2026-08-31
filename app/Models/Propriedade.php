@@ -34,4 +34,11 @@ class Propriedade extends Model
     {
         return $this->hasMany(Alerta::class);
     }
+
+    public function produtos(): BelongsToMany
+    {
+        return $this->belongsToMany(Produto::class, 'produto_propriedade')
+            ->withPivot('estoque_atual', 'estoque_minimo', 'data_validade')
+            ->withTimestamps();
+    }
 }
