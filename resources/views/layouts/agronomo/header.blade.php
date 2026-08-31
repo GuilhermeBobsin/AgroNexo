@@ -577,7 +577,7 @@
                                             </path>
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> Inteligência </span>
+                                    <span class="nav-link-title"> Aplicações </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
@@ -618,7 +618,7 @@
                                             </path>
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> Agenda </span>
+                                    <span class="nav-link-title"> Clima </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="./charts.html"> Charts </a>
@@ -652,7 +652,7 @@
                                             </path>
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> Custos </span>
+                                    <span class="nav-link-title"> Inteligência </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="./icons.html"> Icons </a>
@@ -677,7 +677,7 @@
                                             <path d="M18.35 5.65l-3.35 3.35"></path>
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> Estoque </span>
+                                    <span class="nav-link-title"> Histórico </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="https://tabler.io/docs" target="_blank"
@@ -714,7 +714,7 @@
                                             <path d="M18.35 5.65l-3.35 3.35"></path>
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> Usuários </span>
+                                    <span class="nav-link-title"> Agenda </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="https://tabler.io/docs" target="_blank"

@@ -367,7 +367,7 @@
                                             <path d="M16 5.25l-8 4.5"></path>
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> Propriedades </span>
+                                    <span class="nav-link-title"> Aplicações </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
@@ -489,7 +489,7 @@
                                             </path>
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> Aplicações </span>
+                                    <span class="nav-link-title"> Clima </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <a class="dropdown-item" href="./form-elements.html"> Form elements </a>
@@ -511,7 +511,7 @@
                                             </path>
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> Clima </span>
+                                    <span class="nav-link-title"> Agenda </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
@@ -577,7 +577,7 @@
                                             </path>
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> Inteligência </span>
+                                    <span class="nav-link-title"> Histórico </span>
                                 </a>
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
@@ -604,136 +604,6 @@
                                                 transparent </a>
                                         </div>
                                     </div>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-plugins" data-bs-toggle="dropdown"
-                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                            <path
-                                                d="M4 7h3a1 1 0 0 0 1 -1v-1a2 2 0 0 1 4 0v1a1 1 0 0 0 1 1h3a1 1 0 0 1 1 1v3a1 1 0 0 0 1 1h1a2 2 0 0 1 0 4h-1a1 1 0 0 0 -1 1v3a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-1a2 2 0 0 0 -4 0v1a1 1 0 0 1 -1 1h-3a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1h1a2 2 0 0 0 0 -4h-1a1 1 0 0 1 -1 -1v-3a1 1 0 0 1 1 -1">
-                                            </path>
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title"> Agenda </span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="./charts.html"> Charts </a>
-                                    <a class="dropdown-item" href="./colorpicker.html"> Color picker </a>
-                                    <a class="dropdown-item" href="./datatables.html"> Datatables </a>
-                                    <a class="dropdown-item" href="./dropzone.html"> Dropzone </a>
-                                    <a class="dropdown-item" href="./fullcalendar.html"> Fullcalendar </a>
-                                    <a class="dropdown-item" href="./inline-player.html"> Inline player </a>
-                                    <a class="dropdown-item" href="./lightbox.html"> Lightbox </a>
-                                    <a class="dropdown-item" href="./maps.html"> Map </a>
-                                    <a class="dropdown-item" href="./map-fullsize.html"> Map fullsize </a>
-                                    <a class="dropdown-item" href="./maps-vector.html"> Map vector </a>
-                                    <a class="dropdown-item" href="./turbo-loader.html"> Turbo loader </a>
-                                    <a class="dropdown-item" href="./wysiwyg.html"> WYSIWYG editor </a>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-addons" data-bs-toggle="dropdown"
-                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                            <path
-                                                d="M3 8m0 1a1 1 0 0 1 1 -1h16a1 1 0 0 1 1 1v2a1 1 0 0 1 -1 1h-16a1 1 0 0 1 -1 -1z">
-                                            </path>
-                                            <path d="M12 8l0 13"></path>
-                                            <path d="M19 12v7a2 2 0 0 1 -2 2h-10a2 2 0 0 1 -2 -2v-7"></path>
-                                            <path
-                                                d="M7.5 8a2.5 2.5 0 0 1 0 -5a4.8 8 0 0 1 4.5 5a4.8 8 0 0 1 4.5 -5a2.5 2.5 0 0 1 0 5">
-                                            </path>
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title"> Custos </span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="./icons.html"> Icons </a>
-                                    <a class="dropdown-item" href="./emails.html"> Emails </a>
-                                    <a class="dropdown-item" href="./flags.html"> Flags </a>
-                                    <a class="dropdown-item" href="./illustrations.html"> Illustrations </a>
-                                    <a class="dropdown-item" href="./payment-providers.html"> Payment providers </a>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
-                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                            <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
-                                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-                                            <path d="M15 15l3.35 3.35"></path>
-                                            <path d="M9 15l-3.35 3.35"></path>
-                                            <path d="M5.65 5.65l3.35 3.35"></path>
-                                            <path d="M18.35 5.65l-3.35 3.35"></path>
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title"> Estoque </span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="https://tabler.io/docs" target="_blank"
-                                        rel="noopener"> Documentation </a>
-                                    <a class="dropdown-item" href="./changelog.html"> Changelog </a>
-                                    <a class="dropdown-item" href="https://github.com/tabler/tabler" target="_blank"
-                                        rel="noopener"> Source code </a>
-                                    <a class="dropdown-item text-pink" href="https://github.com/sponsors/codecalm"
-                                        target="_blank" rel="noopener">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-inline me-1 icon-2">
-                                            <path
-                                                d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572">
-                                            </path>
-                                        </svg>
-                                        Sponsor project!
-                                    </a>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
-                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                            <path d="M12 12m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
-                                            <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
-                                            <path d="M15 15l3.35 3.35"></path>
-                                            <path d="M9 15l-3.35 3.35"></path>
-                                            <path d="M5.65 5.65l3.35 3.35"></path>
-                                            <path d="M18.35 5.65l-3.35 3.35"></path>
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title"> Usuários </span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="https://tabler.io/docs" target="_blank"
-                                        rel="noopener"> Documentation </a>
-                                    <a class="dropdown-item" href="./changelog.html"> Changelog </a>
-                                    <a class="dropdown-item" href="https://github.com/tabler/tabler" target="_blank"
-                                        rel="noopener"> Source code </a>
-                                    <a class="dropdown-item text-pink" href="https://github.com/sponsors/codecalm"
-                                        target="_blank" rel="noopener">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round"
-                                            class="icon icon-inline me-1 icon-2">
-                                            <path
-                                                d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572">
-                                            </path>
-                                        </svg>
-                                        Sponsor project!
-                                    </a>
                                 </div>
                             </li>
                         </ul>

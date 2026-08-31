@@ -13,7 +13,14 @@
 
 <body>
 
+    @if (Auth::user()->perfil === 'admin')
     @include('layouts.admin.header')
+    @elseif (Auth::user()->perfil === 'agronomo')
+    @include('layouts.agronomo.header')
+    @else
+    @include('layouts.operador.header')
+    @endif
+
     @yield('content')
     @include('layouts.admin.footer')
 
