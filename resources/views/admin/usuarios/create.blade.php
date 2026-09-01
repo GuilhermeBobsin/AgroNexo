@@ -10,9 +10,8 @@
                         <div class="card-body">
                             <h2 class="h2 text-center mb-4">Registre o usuário</h2>
 
-                            <form action="{{ route('register') }}" method="POST">
+                            <form action="{{ route('admin.usuarios.store') }}" method="POST">
                                 @csrf
-
                                 <div class="mb-3">
                                     <label class="form-label">Nome completo</label>
                                     <input type="text" name="name"
@@ -38,7 +37,7 @@
                                     <label class="form-label">Senha</label>
                                     <div class="input-group input-group-flat">
                                         <input type="password" name="password"
-                                            class="form-control @error('password') is-invalid @enderror"
+                                            class="form-control"
                                             placeholder="Crie uma senha" autocomplete="new-password" required>
                                         <span class="input-group-text">
                                             <a href="#" class="link-secondary toggle-password"

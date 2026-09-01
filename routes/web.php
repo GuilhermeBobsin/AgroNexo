@@ -29,6 +29,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index');
         Route::get('/usuarios/create', [UserController::class, 'create'])->name('usuarios.create');
+        Route::post('/usuarios', [UserController::class, 'store'])->name('usuarios.store');
     });
 
     Route::prefix('agronomo')->name('agronomo.')->middleware('perfil:agronomo')->group(function () {
