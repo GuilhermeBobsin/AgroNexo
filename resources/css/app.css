@@ -1,7 +1,6 @@
 :root {
     --tblr-primary: #2FB344;
     --tblr-primary-rgb: 43, 138, 62;
-
 }
 
 @tailwind base;

@@ -15,25 +15,20 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     Route::get('/dashboard', function () {
         return redirect()->route('dashboard.' . auth()->user()->perfil);
     })->name('dashboard');
 
-    Route::middleware('perfil:admin')
-        ->get('/dashboard/admin', [AdminDashboardController::class, 'index'])
-        ->name('dashboard.admin');
+    Route::middleware('perfil:admin')->get('/dashboard/admin', [AdminDashboardController::class, 'index'])->name('dashboard.admin');
+    Route::middleware('perfil:agronomo')->get('/dashboard/agronomo', [AgronomoDashboardController::class, 'index'])->name('dashboard.agronomo');
+    Route::middleware('perfil:operador')->get('/dashboard/operador', [OperadorDashboardController::class, 'index'])->name('dashboard.operador');
 
-    Route::middleware('perfil:agronomo')
-        ->get('/dashboard/agronomo', [AgronomoDashboardController::class, 'index'])
-        ->name('dashboard.agronomo');
-
-    Route::middleware('perfil:operador')
-        ->get('/dashboard/operador', [OperadorDashboardController::class, 'index'])
-        ->name('dashboard.operador');
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/admin/usuarios', [App\Http\Controllers\Admin\UserController::class, 'index'])->name('admin.usuarios.index');
+    
 });
 
 require __DIR__ . '/auth.php';

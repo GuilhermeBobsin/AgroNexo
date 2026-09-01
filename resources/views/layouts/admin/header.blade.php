@@ -391,7 +391,7 @@
                                     <span class="nav-link-title"> Usuários </span>
                                 </a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#"> Todos os usuários </a>
+                                    <a class="dropdown-item" href="{{ route('admin.usuarios.index') }}"> Todos os usuários </a>
                                     <a class="dropdown-item" href="#"> Novo usuário </a>
                                     <a class="dropdown-item" href="#"> Perfis e acessos </a>
                                 </div>
