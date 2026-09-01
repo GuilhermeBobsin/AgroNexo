@@ -7,6 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AgroNexo - Gestão Agrícola</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler.min.css" />
+    <script>
+        (() => {
+            const theme = localStorage.getItem('theme') || 'light';
+
+            document.documentElement.setAttribute('data-bs-theme', theme);
+        })();
+    </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
