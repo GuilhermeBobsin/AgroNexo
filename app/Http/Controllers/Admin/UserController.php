@@ -11,7 +11,12 @@ class UserController extends Controller
     public function index()
     {
         $usuarios = User::orderBy('name')->paginate(12);
-
         return view('admin.usuarios.index', compact('usuarios'));
     }
+
+    public function create()
+    {
+        return view('admin.usuarios.create');
+    }
+
 }
