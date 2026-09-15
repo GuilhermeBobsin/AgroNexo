@@ -6,7 +6,7 @@
             <div class="row g-2 align-items-center">
                 <div class="col">
                     <h2 class="page-title">Usuários</h2>
-                    <div class="text-secondary mt-1">1-18 of 413 people</div>
+                    <div class="text-secondary mt-1">{{ $contagem }} usuários cadastrados</div>
                 </div>
                 <div class="col-auto ms-auto d-print-none">
                     <div class="d-flex">
@@ -79,11 +79,11 @@
                     <li class="page-item {{ $usuarios->onFirstPage() ? 'disabled' : '' }}">
                         @if ($usuarios->onFirstPage())
                         <span class="page-link page-text" aria-disabled="true">
-                            Previous
+                            Anterior
                         </span>
                         @else
                         <a class="page-link page-text" href="{{ $usuarios->previousPageUrl() }}">
-                            Previous
+                            Anterior
                         </a>
                         @endif
                     </li>
@@ -99,11 +99,11 @@
                     <li class="page-item {{ !$usuarios->hasMorePages() ? 'disabled' : '' }}">
                         @if ($usuarios->hasMorePages())
                         <a class="page-link page-text" href="{{ $usuarios->nextPageUrl() }}">
-                            Next
+                            Próximo
                         </a>
                         @else
                         <span class="page-link page-text" aria-disabled="true">
-                            Next
+                            Próximo
                         </span>
                         @endif
                     </li>

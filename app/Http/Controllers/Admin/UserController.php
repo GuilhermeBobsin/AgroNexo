@@ -10,8 +10,9 @@ class UserController extends Controller
 {
     public function index()
     {
+        $contagem = User::count();
         $usuarios = User::orderBy('name')->paginate(12);
-        return view('admin.usuarios.index', compact('usuarios'));
+        return view('admin.usuarios.index', compact('usuarios', 'contagem'));
     }
 
     public function create()
