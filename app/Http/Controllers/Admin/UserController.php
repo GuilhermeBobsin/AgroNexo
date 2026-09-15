@@ -35,6 +35,12 @@ class UserController extends Controller
             'perfil' => $request->perfil,
         ]);
 
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => 'Usuário criado com sucesso.',
+            ], 201);
+        }
+
         return redirect()->route('admin.usuarios.index')->with('success', 'Usuario creado exitosamente.');
     }
 
