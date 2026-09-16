@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
+use App\Http\Controllers\Admin\PropriedadeController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Agronomo\DashboardController as AgronomoDashboardController;
 use App\Http\Controllers\Operador\DashboardController as OperadorDashboardController;
@@ -30,6 +31,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index');
         Route::get('/usuarios/create', [UserController::class, 'create'])->name('usuarios.create');
         Route::post('/usuarios', [UserController::class, 'store'])->name('usuarios.store');
+
+
+        Route::get('/propriedades', [PropriedadeController::class, 'index'])->name('propriedades.index');
     });
 
     Route::prefix('agronomo')->name('agronomo.')->middleware('perfil:agronomo')->group(function () {
