@@ -34,6 +34,8 @@ Route::middleware('auth')->group(function () {
 
 
         Route::get('/propriedades', [PropriedadeController::class, 'index'])->name('propriedades.index');
+        Route::get('/propriedades/create', [PropriedadeController::class, 'create'])->name('propriedades.create');
+
     });
 
     Route::prefix('agronomo')->name('agronomo.')->middleware('perfil:agronomo')->group(function () {

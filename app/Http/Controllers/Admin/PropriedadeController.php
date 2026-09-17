@@ -11,4 +11,9 @@ class PropriedadeController extends Controller
     {
         return view('admin.propriedades.index');
     }
+
+    public function create(){
+        return view('admin.propriedades.create');
+    }
+
 }
