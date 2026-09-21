@@ -144,7 +144,7 @@
                                     </svg>
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">Visualizar</a>
+                                    <a class="dropdown-item" href="{{ route('admin.propriedades.show', $propriedade->id) }}">Visualizar</a>
                                     <a class="dropdown-item" href="#">Editar</a>
                                     <a class="dropdown-item text-danger" href="#">Excluir</a>
                                 </div>

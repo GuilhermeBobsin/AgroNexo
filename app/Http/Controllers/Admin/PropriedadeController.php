@@ -43,4 +43,14 @@ class PropriedadeController extends Controller
 
         return redirect()->route('admin.propriedades.index')->with('success', 'Propriedade criada com sucesso.');
     }
+
+    public function show(Propriedade $propriedade)
+    {
+        $propriedade->load([
+            'talhoes.cultura',
+            'usuarios',
+        ]);
+
+        return view('admin.propriedades.show', compact('propriedade'));
+    }
 }

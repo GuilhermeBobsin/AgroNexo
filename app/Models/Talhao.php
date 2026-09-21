@@ -11,6 +11,7 @@ class Talhao extends Model
 {
     use HasFactory;
 
+    protected $table = 'talhoes';
     protected $fillable = [
         'propriedade_id',
         'cultura_id',
