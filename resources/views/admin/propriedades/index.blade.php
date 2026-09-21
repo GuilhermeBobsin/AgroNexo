@@ -40,7 +40,7 @@
                             </span>
                             <div>
                                 <div class="text-secondary">Propriedades</div>
-                                <div class="h2 mb-0">6</div>
+                                <div class="h2 mb-0">{{ $contagem }}</div>
                             </div>
                         </div>
                     </div>
@@ -116,6 +116,7 @@
         <div class="row row-cards">
 
             {{-- 1 --}}
+            @foreach ($propriedades as $propriedade)
             <div class="col-md-6 col-xl-4">
                 <div class="card h-100">
 
@@ -130,8 +131,8 @@
                         </span>
 
                         <div>
-                            <h3 class="card-title">Fazenda São João</h3>
-                            <div class="card-subtitle">Maquiné, RS</div>
+                            <h3 class="card-title">{{ $propriedade->nome }}</h3>
+                            <div class="card-subtitle">{{ $propriedade->localizacao }}</div>
                         </div>
 
                         <div class="card-actions">
@@ -174,12 +175,13 @@
                             </div>
                         </div>
                     </div>
-
+                    
                     <div class="card-footer">
                         <a href="#" class="btn btn-primary w-100">Ver propriedade</a>
                     </div>
                 </div>
             </div>
+            @endforeach
 
             {{-- 2 --}}
             <div class="col-md-6 col-xl-4">

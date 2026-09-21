@@ -10,7 +10,10 @@ class PropriedadeController extends Controller
 {
     public function index()
     {
-        return view('admin.propriedades.index');
+        $propriedades = Propriedade::all();
+        $contagem = $propriedades->count();
+        $areaTotal = $propriedades->sum('area');
+        return view('admin.propriedades.index', compact('propriedades', 'contagem', 'areaTotal'));
     }
 
     public function create()
