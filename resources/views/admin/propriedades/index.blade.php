@@ -115,7 +115,6 @@
         {{-- Propriedades --}}
         <div class="row row-cards">
 
-            {{-- 1 --}}
             @foreach ($propriedades as $propriedade)
             <div class="col-md-6 col-xl-4">
                 <div class="card h-100">
@@ -175,344 +174,52 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="card-footer">
                         <a href="#" class="btn btn-primary w-100">Ver propriedade</a>
                     </div>
                 </div>
             </div>
             @endforeach
+            <div class="d-flex mt-4">
+                @if ($propriedades->hasPages())
+                <ul class="pagination ms-auto">
 
-            {{-- 2 --}}
-            <div class="col-md-6 col-xl-4">
-                <div class="card h-100">
-
-                    <div class="card-header">
-                        <span class="avatar bg-amber-lt me-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                                <path d="M12 3v18"></path>
-                                <path d="M5 7h14"></path>
-                                <path d="M6 7l3 5l-3 5"></path>
-                                <path d="M18 7l-3 5l3 5"></path>
-                            </svg>
+                    <li class="page-item {{ $propriedades->onFirstPage() ? 'disabled' : '' }}">
+                        @if ($propriedades->onFirstPage())
+                        <span class="page-link page-text" aria-disabled="true">
+                            Anterior
                         </span>
+                        @else
+                        <a class="page-link page-text" href="{{ $propriedades->previousPageUrl() }}">
+                            Anterior
+                        </a>
+                        @endif
+                    </li>
 
-                        <div>
-                            <h3 class="card-title">Sítio Boa Esperança</h3>
-                            <div class="card-subtitle">Osório, RS</div>
-                        </div>
+                    @foreach ($propriedades->getUrlRange(1, $propriedades->lastPage()) as $page => $url)
+                    <li class="page-item {{ $page == $propriedades->currentPage() ? 'active' : '' }}">
+                        <a class="page-link" href="{{ $url }}">
+                            {{ $page }}
+                        </a>
+                    </li>
+                    @endforeach
 
-                        <div class="card-actions">
-                            <div class="dropdown">
-                                <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                                        <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                        <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                        <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                    </svg>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">Visualizar</a>
-                                    <a class="dropdown-item" href="#">Editar</a>
-                                    <a class="dropdown-item text-danger" href="#">Excluir</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="row align-items-center mb-3">
-                            <div class="col">
-                                <div class="text-secondary">Área total</div>
-                                <div class="h2 mb-0">184,5 ha</div>
-                            </div>
-                            <div class="col-auto">
-                                <span class="badge bg-green-lt">Ativa</span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="text-secondary">Talhões</div>
-                                <div class="fw-bold">8</div>
-                            </div>
-                            <div class="col-6">
-                                <div class="text-secondary">Principal cultura</div>
-                                <div class="fw-bold text-amber">Milho</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary w-100">Ver propriedade</a>
-                    </div>
-                </div>
-            </div>
-
-            {{-- 3 --}}
-            <div class="col-md-6 col-xl-4">
-                <div class="card h-100">
-
-                    <div class="card-header">
-                        <span class="avatar bg-blue-lt me-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                                <path d="M12 3v18"></path>
-                                <path d="M5 7h14"></path>
-                                <path d="M6 7l3 5l-3 5"></path>
-                                <path d="M18 7l-3 5l3 5"></path>
-                            </svg>
+                    <li class="page-item {{ !$propriedades->hasMorePages() ? 'disabled' : '' }}">
+                        @if ($propriedades->hasMorePages())
+                        <a class="page-link page-text" href="{{ $propriedades->nextPageUrl() }}">
+                            Próximo
+                        </a>
+                        @else
+                        <span class="page-link page-text" aria-disabled="true">
+                            Próximo
                         </span>
+                        @endif
+                    </li>
 
-                        <div>
-                            <h3 class="card-title">Estância Horizonte</h3>
-                            <div class="card-subtitle">Santo Antônio da Patrulha, RS</div>
-                        </div>
-
-                        <div class="card-actions">
-                            <div class="dropdown">
-                                <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                                        <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                        <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                        <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                    </svg>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">Visualizar</a>
-                                    <a class="dropdown-item" href="#">Editar</a>
-                                    <a class="dropdown-item text-danger" href="#">Excluir</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="row align-items-center mb-3">
-                            <div class="col">
-                                <div class="text-secondary">Área total</div>
-                                <div class="h2 mb-0">312,2 ha</div>
-                            </div>
-                            <div class="col-auto">
-                                <span class="badge bg-green-lt">Ativa</span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="text-secondary">Talhões</div>
-                                <div class="fw-bold">10</div>
-                            </div>
-                            <div class="col-6">
-                                <div class="text-secondary">Principal cultura</div>
-                                <div class="fw-bold text-blue">Arroz</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary w-100">Ver propriedade</a>
-                    </div>
-                </div>
+                </ul>
+                @endif
             </div>
-
-            {{-- 4 --}}
-            <div class="col-md-6 col-xl-4">
-                <div class="card h-100">
-
-                    <div class="card-header">
-                        <span class="avatar bg-green-lt me-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                                <path d="M12 3v18"></path>
-                                <path d="M5 7h14"></path>
-                                <path d="M6 7l3 5l-3 5"></path>
-                                <path d="M18 7l-3 5l3 5"></path>
-                            </svg>
-                        </span>
-
-                        <div>
-                            <h3 class="card-title">Fazenda Santa Clara</h3>
-                            <div class="card-subtitle">Tramandaí, RS</div>
-                        </div>
-
-                        <div class="card-actions">
-                            <div class="dropdown">
-                                <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                                        <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                        <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                        <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                    </svg>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">Visualizar</a>
-                                    <a class="dropdown-item" href="#">Editar</a>
-                                    <a class="dropdown-item text-danger" href="#">Excluir</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="row align-items-center mb-3">
-                            <div class="col">
-                                <div class="text-secondary">Área total</div>
-                                <div class="h2 mb-0">96,4 ha</div>
-                            </div>
-                            <div class="col-auto">
-                                <span class="badge bg-green-lt">Ativa</span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="text-secondary">Talhões</div>
-                                <div class="fw-bold">5</div>
-                            </div>
-                            <div class="col-6">
-                                <div class="text-secondary">Principal cultura</div>
-                                <div class="fw-bold text-green">Soja</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary w-100">Ver propriedade</a>
-                    </div>
-                </div>
-            </div>
-
-            {{-- 5 --}}
-            <div class="col-md-6 col-xl-4">
-                <div class="card h-100">
-
-                    <div class="card-header">
-                        <span class="avatar bg-amber-lt me-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                                <path d="M12 3v18"></path>
-                                <path d="M5 7h14"></path>
-                                <path d="M6 7l3 5l-3 5"></path>
-                                <path d="M18 7l-3 5l3 5"></path>
-                            </svg>
-                        </span>
-
-                        <div>
-                            <h3 class="card-title">Sítio Vale Verde</h3>
-                            <div class="card-subtitle">Capão da Canoa, RS</div>
-                        </div>
-
-                        <div class="card-actions">
-                            <div class="dropdown">
-                                <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                                        <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                        <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                        <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                    </svg>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">Visualizar</a>
-                                    <a class="dropdown-item" href="#">Editar</a>
-                                    <a class="dropdown-item text-danger" href="#">Excluir</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="row align-items-center mb-3">
-                            <div class="col">
-                                <div class="text-secondary">Área total</div>
-                                <div class="h2 mb-0">178,7 ha</div>
-                            </div>
-                            <div class="col-auto">
-                                <span class="badge bg-secondary-lt">Inativa</span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="text-secondary">Talhões</div>
-                                <div class="fw-bold">4</div>
-                            </div>
-                            <div class="col-6">
-                                <div class="text-secondary">Principal cultura</div>
-                                <div class="fw-bold text-amber">Milho</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-outline-primary w-100">Ver propriedade</a>
-                    </div>
-                </div>
-            </div>
-
-            {{-- 6 --}}
-            <div class="col-md-6 col-xl-4">
-                <div class="card h-100">
-
-                    <div class="card-header">
-                        <span class="avatar bg-blue-lt me-3">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                                <path d="M12 3v18"></path>
-                                <path d="M5 7h14"></path>
-                                <path d="M6 7l3 5l-3 5"></path>
-                                <path d="M18 7l-3 5l3 5"></path>
-                            </svg>
-                        </span>
-
-                        <div>
-                            <h3 class="card-title">Fazenda Boa Vista</h3>
-                            <div class="card-subtitle">Torres, RS</div>
-                        </div>
-
-                        <div class="card-actions">
-                            <div class="dropdown">
-                                <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                                        <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                        <path d="M12 5m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                        <path d="M12 19m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
-                                    </svg>
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end">
-                                    <a class="dropdown-item" href="#">Visualizar</a>
-                                    <a class="dropdown-item" href="#">Editar</a>
-                                    <a class="dropdown-item text-danger" href="#">Excluir</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-body">
-                        <div class="row align-items-center mb-3">
-                            <div class="col">
-                                <div class="text-secondary">Área total</div>
-                                <div class="h2 mb-0">230,4 ha</div>
-                            </div>
-                            <div class="col-auto">
-                                <span class="badge bg-green-lt">Ativa</span>
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="text-secondary">Talhões</div>
-                                <div class="fw-bold">3</div>
-                            </div>
-                            <div class="col-6">
-                                <div class="text-secondary">Principal cultura</div>
-                                <div class="fw-bold text-blue">Arroz</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-footer">
-                        <a href="#" class="btn btn-primary w-100">Ver propriedade</a>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 </main>

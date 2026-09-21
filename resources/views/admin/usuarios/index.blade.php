@@ -72,45 +72,7 @@
                 </div>
                 @endforeach
             </div>
-            <div class="d-flex mt-4">
-                @if ($usuarios->hasPages())
-                <ul class="pagination ms-auto">
-
-                    <li class="page-item {{ $usuarios->onFirstPage() ? 'disabled' : '' }}">
-                        @if ($usuarios->onFirstPage())
-                        <span class="page-link page-text" aria-disabled="true">
-                            Anterior
-                        </span>
-                        @else
-                        <a class="page-link page-text" href="{{ $usuarios->previousPageUrl() }}">
-                            Anterior
-                        </a>
-                        @endif
-                    </li>
-
-                    @foreach ($usuarios->getUrlRange(1, $usuarios->lastPage()) as $page => $url)
-                    <li class="page-item {{ $page == $usuarios->currentPage() ? 'active' : '' }}">
-                        <a class="page-link" href="{{ $url }}">
-                            {{ $page }}
-                        </a>
-                    </li>
-                    @endforeach
-
-                    <li class="page-item {{ !$usuarios->hasMorePages() ? 'disabled' : '' }}">
-                        @if ($usuarios->hasMorePages())
-                        <a class="page-link page-text" href="{{ $usuarios->nextPageUrl() }}">
-                            Próximo
-                        </a>
-                        @else
-                        <span class="page-link page-text" aria-disabled="true">
-                            Próximo
-                        </span>
-                        @endif
-                    </li>
-
-                </ul>
-                @endif
-            </div>
+           
         </div>
     </div>
 </div>
