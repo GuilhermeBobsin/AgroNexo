@@ -35,6 +35,7 @@ Route::middleware('auth')->group(function () {
 
         Route::get('/propriedades', [PropriedadeController::class, 'index'])->name('propriedades.index');
         Route::get('/propriedades/create', [PropriedadeController::class, 'create'])->name('propriedades.create');
+        Route::post('/propriedades', [PropriedadeController::class, 'store'])->name('propriedades.store');
 
     });
 
