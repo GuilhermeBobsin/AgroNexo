@@ -266,6 +266,9 @@
 <script>
 document.addEventListener('DOMContentLoaded', function () {
 
+    const propriedadeLat = @js($propriedade->latitude ? (float) $propriedade->latitude : null);
+    const propriedadeLng = @js($propriedade->longitude ? (float) $propriedade->longitude : null);
+
     const talhoes = @js($propriedade->talhoes->map(fn ($t) => [
         'nome' => $t->nome,
         'cultura' => $t->cultura?->nome,
@@ -273,11 +276,15 @@ document.addEventListener('DOMContentLoaded', function () {
         'limite' => $t->limite,
     ]));
 
-    const corPorCultura = {
-        'Soja': '#2fb344',
-        'Milho': '#f76707',
-        'Arroz': '#4299e1',
-    };
+    function corParaCultura(nome) {
+        if (!nome) return '#868e96';
+        let hash = 0;
+        for (let i = 0; i < nome.length; i++) {
+            hash = nome.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        const hue = Math.abs(hash) % 360;
+        return `hsl(${hue}, 65%, 45%)`;
+    }
 
     const mapa = L.map('map-propriedade');
 
@@ -296,29 +303,39 @@ document.addEventListener('DOMContentLoaded', function () {
     const grupoTalhoes = L.featureGroup().addTo(mapa);
 
     talhoes.forEach((talhao) => {
-        if (!talhao.limite || talhao.limite.length < 3) {
-            return; // talhão sem polígono desenhado ainda
-        }
+        if (!talhao.limite || talhao.limite.length < 3) return;
 
-        const cor = corPorCultura[talhao.cultura] || '#868e96';
+        const cor = corParaCultura(talhao.cultura);
 
-        const poligono = L.polygon(talhao.limite, {
+        L.polygon(talhao.limite, {
             color: cor,
             fillColor: cor,
             fillOpacity: 0.25,
             weight: 2,
-        }).addTo(grupoTalhoes);
-
-        poligono.bindPopup(`
-            <strong>${talhao.nome}</strong><br>
-            ${talhao.cultura ?? 'Sem cultura'} · ${Number(talhao.area).toLocaleString('pt-BR', { minimumFractionDigits: 1 })} ha
-        `);
+        })
+            .addTo(grupoTalhoes)
+            .bindPopup(`
+                <strong>${talhao.nome}</strong><br>
+                ${talhao.cultura ?? 'Sem cultura'} · ${Number(talhao.area).toLocaleString('pt-BR', { minimumFractionDigits: 1 })} ha
+            `);
     });
 
     if (grupoTalhoes.getLayers().length > 0) {
-        mapa.fitBounds(grupoTalhoes.getBounds(), { padding: [30, 30] });
+        // Tem talhão desenhado — enquadra neles (inclui a sede se ela também existir)
+        const bounds = grupoTalhoes.getBounds();
+        if (propriedadeLat && propriedadeLng) {
+            bounds.extend([propriedadeLat, propriedadeLng]);
+        }
+        mapa.fitBounds(bounds, { padding: [30, 30] });
+    } else if (propriedadeLat && propriedadeLng) {
+        // Nenhum talhão com polígono ainda, mas a propriedade tem localização — foca nela
+        mapa.setView([propriedadeLat, propriedadeLng], 14);
+        L.marker([propriedadeLat, propriedadeLng])
+            .addTo(mapa)
+            .bindPopup(`<strong>{{ addslashes($propriedade->nome) }}</strong><br>{{ addslashes($propriedade->localizacao) }}`)
+            .openPopup();
     } else {
-        // Nenhum talhão com polígono ainda — mostra o Brasil como visão inicial neutra
+        // Nem talhão nem localização da propriedade — visão neutra do Brasil
         mapa.setView([-14.235, -51.925], 4);
     }
 });

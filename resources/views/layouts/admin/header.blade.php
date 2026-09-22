@@ -396,7 +396,7 @@
                                     <a class="dropdown-item" href="#"> Perfis e acessos </a>
                                 </div>
                             </li>
-                            <li class="nav-item dropdown {{ request()->routeIs('admin.propriedades.*') ? 'active' : '' }}">
+                            <li class="nav-item dropdown {{ request()->routeIs(['admin.propriedades.*', 'admin.culturas.*']) ? 'active' : '' }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -415,9 +415,7 @@
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
                                             <a class="dropdown-item" href="{{ route('admin.propriedades.index') }}"> Todas as propriedades </a>
-                                            <a class="dropdown-item" href="#"> Nova propriedade </a>
                                             <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#"> Talhões </a>
                                             <a class="dropdown-item" href="{{ route('admin.culturas.index') }}"> Culturas </a>
                                         </div>
                             </li>
