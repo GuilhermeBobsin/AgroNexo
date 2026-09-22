@@ -1,5 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Preenche o modal de edição com os dados da linha clicada
     document.querySelectorAll('.btn-editar-cultura').forEach((btn) => {
         btn.addEventListener('click', () => {
             document.getElementById('form-editar-cultura').action = btn.dataset.url;
@@ -7,7 +6,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Recarrega a listagem depois de criar/editar com sucesso
     document.getElementById('form-nova-cultura')?.addEventListener('ajax-success', (e) => {
         e.detail.toastPromise.then(() => window.location.reload());
     });
@@ -16,7 +14,6 @@ document.addEventListener('DOMContentLoaded', () => {
         e.detail.toastPromise.then(() => window.location.reload());
     });
 
-    // Exclusão, com aviso de quantos talhões serão desvinculados
     document.querySelectorAll('.btn-excluir-cultura').forEach((btn) => {
         btn.addEventListener('click', async () => {
             const { nome, url, talhoes } = btn.dataset;

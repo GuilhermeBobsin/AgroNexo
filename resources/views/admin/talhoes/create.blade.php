@@ -25,21 +25,8 @@
 
                 <div class="col-auto">
 
-                    <a
-                        href="{{ route('admin.propriedades.show', $propriedade) }}"
-                        class="btn"
-                    >
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            class="icon icon-1 me-1"
+                    <a href="{{ route('admin.propriedades.show', $propriedade) }}" class="btn">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1 me-1"
                         >
                             <path d="M5 12l14 0"></path>
                             <path d="M5 12l6 6"></path>
@@ -56,25 +43,14 @@
         </div>
 
 
-        <form
-            id="form-criar-talhao"
-            method="POST"
-            action="{{ route('admin.propriedades.talhoes.store', $propriedade) }}"
-            data-redirect-url="{{ route('admin.propriedades.show', $propriedade) }}"
-        >
+        <form id="form-criar-talhao" method="POST" action="{{ route('admin.propriedades.talhoes.store', $propriedade) }}" data-redirect-url="{{ route('admin.propriedades.show', $propriedade) }}">
 
             @csrf
 
-            <input
-                type="hidden"
-                name="limite"
-                id="input-limite"
-            >
-
+            <input type="hidden" name="limite" id="input-limite">
 
             <div class="row g-4">
 
-                {{-- Coluna esquerda --}}
                 <div class="col-lg-7">
 
                     <div class="card">
@@ -83,17 +59,7 @@
 
                             <span class="avatar avatar-sm bg-purple-lt me-2">
 
-                                <svg
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    width="20"
-                                    height="20"
-                                    viewBox="0 0 24 24"
-                                    fill="none"
-                                    stroke="currentColor"
-                                    stroke-width="2"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
-                                    class="icon"
+                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"
                                 >
                                     <path d="M4 20v-10a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v10"></path>
                                     <path d="M4 20h16"></path>
@@ -112,34 +78,23 @@
 
                         <div class="card-body">
 
-                            {{-- Nome --}}
                             <div class="mb-3">
 
                                 <label class="form-label">
                                     Nome do talhão
                                 </label>
 
-                                <input
-                                    type="text"
-                                    name="nome"
-                                    id="input-nome"
-                                    class="form-control"
-                                    placeholder="Ex: Talhão 01"
-                                    required
-                                    autofocus
+                                <input type="text" name="nome" id="input-nome" class="form-control" placeholder="Ex: Talhão 01" required autofocus
                                 >
 
-                                <div
-                                    class="invalid-feedback"
-                                    id="error-nome"
-                                ></div>
+                                <div class="invalid-feedback" id="error-nome">
+                                </div>
 
                             </div>
 
 
                             <div class="row">
 
-                                {{-- Cultura --}}
                                 <div class="col-md-7 mb-3">
 
                                     <label class="form-label">
