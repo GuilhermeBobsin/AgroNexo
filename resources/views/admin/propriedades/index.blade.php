@@ -166,7 +166,7 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="text-secondary">Talhões</div>
-                                <div class="fw-bold">12</div>
+                                <div class="fw-bold">{{ $propriedade->talhoes()->count() }}</div>
                             </div>
                             <div class="col-6">
                                 <div class="text-secondary">Principal cultura</div>
