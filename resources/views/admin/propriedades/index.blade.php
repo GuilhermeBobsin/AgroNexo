@@ -156,7 +156,7 @@
                         <div class="row align-items-center mb-3">
                             <div class="col">
                                 <div class="text-secondary">Área total</div>
-                                <div class="h2 mb-0">245,8 ha</div>
+                                <div class="h2 mb-0">{{ $propriedade->talhoes()->sum('area') }} ha</div>
                             </div>
                             <div class="col-auto">
                                 <span class="badge bg-green-lt">Ativa</span>
