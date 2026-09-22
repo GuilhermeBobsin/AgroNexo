@@ -5,8 +5,6 @@
 <main id="content" class="page-body">
 
     <div class="container-xl">
-
-        {{-- Cabeçalho --}}
         <div class="page-header d-print-none mb-4">
             <div class="row align-items-center">
 
@@ -41,7 +39,6 @@
             </div>
         </div>
 
-        {{-- Resumo --}}
         <div class="row row-deck row-cards mb-4">
 
             <div class="col-sm-6 col-lg-3">
@@ -125,10 +122,9 @@
 
         </div>
 
-        {{-- Conteúdo --}}
         <div class="row row-cards">
 
-            {{-- Informações --}}
+
             <div class="col-lg-5">
 
                 <div class="card">
@@ -147,7 +143,6 @@
                     </div>
                 </div>
 
-                {{-- Usuários vinculados --}}
                 <div class="card mt-4">
                     <div class="card-header">
                         <h3 class="card-title">Usuários vinculados</h3>
@@ -177,7 +172,6 @@
 
             </div>
 
-            {{-- Mapa --}}
             <div class="col-lg-7">
                 <div class="card">
                     <div class="card-header">
@@ -195,7 +189,6 @@
 
         </div>
 
-        {{-- Talhões --}}
         <div class="card mt-4">
 
             <div class="card-header">

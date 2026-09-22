@@ -4,7 +4,6 @@
 <main id="content" class="page-body">
     <div class="container-xl">
 
-        {{-- Cabeçalho --}}
         <div class="page-header d-print-none mb-4">
             <div class="row align-items-center">
                 <div class="col">
@@ -24,7 +23,6 @@
             </div>
         </div>
 
-        {{-- Resumo --}}
         <div class="row row-deck row-cards mb-4">
 
             <div class="col-sm-6 col-lg-3">
@@ -112,7 +110,6 @@
 
         </div>
 
-        {{-- Propriedades --}}
         <div class="row row-cards">
 
             @foreach ($propriedades as $propriedade)
