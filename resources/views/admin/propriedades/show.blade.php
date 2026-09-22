@@ -286,18 +286,22 @@ document.addEventListener('DOMContentLoaded', function () {
         return `hsl(${hue}, 65%, 45%)`;
     }
 
-    const mapa = L.map('map-propriedade');
+    // 1. DESATIVA OS CRÉDITOS AQUI (attributionControl: false)
+    const mapa = L.map('map-propriedade', {
+        attributionControl: false
+    });
 
+    // 2. CRÉDITOS (attribution) REMOVIDOS DOS TILE LAYERS
     L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Imagery © Esri', maxZoom: 19,
+        maxZoom: 19,
     }).addTo(mapa);
 
     L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}', {
-        opacity: 0.35, attribution: 'Hillshade © Esri', maxZoom: 19,
+        opacity: 0.35, maxZoom: 19,
     }).addTo(mapa);
 
     L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
-        attribution: 'Labels © Esri', maxZoom: 19,
+        maxZoom: 19,
     }).addTo(mapa);
 
     const grupoTalhoes = L.featureGroup().addTo(mapa);
@@ -321,21 +325,18 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     if (grupoTalhoes.getLayers().length > 0) {
-        // Tem talhão desenhado — enquadra neles (inclui a sede se ela também existir)
         const bounds = grupoTalhoes.getBounds();
         if (propriedadeLat && propriedadeLng) {
             bounds.extend([propriedadeLat, propriedadeLng]);
         }
         mapa.fitBounds(bounds, { padding: [30, 30] });
     } else if (propriedadeLat && propriedadeLng) {
-        // Nenhum talhão com polígono ainda, mas a propriedade tem localização — foca nela
         mapa.setView([propriedadeLat, propriedadeLng], 14);
         L.marker([propriedadeLat, propriedadeLng])
             .addTo(mapa)
             .bindPopup(`<strong>{{ addslashes($propriedade->nome) }}</strong><br>{{ addslashes($propriedade->localizacao) }}`)
             .openPopup();
     } else {
-        // Nem talhão nem localização da propriedade — visão neutra do Brasil
         mapa.setView([-14.235, -51.925], 4);
     }
 });
