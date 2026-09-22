@@ -15,9 +15,7 @@ class PropriedadeController extends Controller
         $contagem = $propriedades->count();
         $talhoes = Talhao::all()->count();
         $areaTotal = Talhao::sum('area');
-        $quantidadeCulturas = Talhao::whereNotNull('cultura_id')
-    ->distinct('cultura_id')
-    ->count('cultura_id');
+        $quantidadeCulturas = Talhao::whereNotNull('cultura_id')->distinct('cultura_id')->count('cultura_id');
 
         return view('admin.propriedades.index', compact('propriedades', 'contagem', 'talhoes', 'areaTotal', 'quantidadeCulturas'));
     }
