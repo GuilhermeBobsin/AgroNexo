@@ -10,13 +10,24 @@ return new class extends Migration
     {
         Schema::create('talhoes', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('propriedade_id')->constrained('propriedades')->cascadeOnDelete();
-            $table->foreignId('cultura_id')->nullable()->constrained('culturas')->nullOnDelete();
+
+            $table->foreignId('propriedade_id')
+                ->constrained('propriedades')
+                ->cascadeOnDelete();
+
+            $table->foreignId('cultura_id')
+                ->nullable()
+                ->constrained('culturas')
+                ->nullOnDelete();
+
             $table->string('nome');
+
             $table->decimal('area', 10, 2)->nullable();
-            $table->decimal('latitude', 10, 7)->nullable();
-            $table->decimal('longitude', 10, 7)->nullable();
+
+            $table->json('limite')->nullable();
+
             $table->timestamps();
+
             $table->unique(['propriedade_id', 'nome']);
         });
     }
