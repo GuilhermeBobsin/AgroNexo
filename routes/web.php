@@ -6,6 +6,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Agronomo\DashboardController as AgronomoDashboardController;
 use App\Http\Controllers\Operador\DashboardController as OperadorDashboardController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\TalhaoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -38,6 +39,40 @@ Route::middleware('auth')->group(function () {
         Route::post('/propriedades', [PropriedadeController::class, 'store'])->name('propriedades.store');
         Route::get('/propriedades/{propriedade}', [PropriedadeController::class, 'show'])->name('propriedades.show');
 
+        Route::get(
+            '/propriedades/{propriedade}/talhoes',
+            [TalhaoController::class, 'index']
+        )->name('propriedades.talhoes.index');
+
+        Route::get(
+            '/propriedades/{propriedade}/talhoes/create',
+            [TalhaoController::class, 'create']
+        )->name('propriedades.talhoes.create');
+
+        Route::post(
+            '/propriedades/{propriedade}/talhoes',
+            [TalhaoController::class, 'store']
+        )->name('propriedades.talhoes.store');
+
+        Route::get(
+            '/propriedades/{propriedade}/talhoes/{talhao}',
+            [TalhaoController::class, 'show']
+        )->name('propriedades.talhoes.show');
+
+        Route::get(
+            '/propriedades/{propriedade}/talhoes/{talhao}/edit',
+            [TalhaoController::class, 'edit']
+        )->name('propriedades.talhoes.edit');
+
+        Route::put(
+            '/propriedades/{propriedade}/talhoes/{talhao}',
+            [TalhaoController::class, 'update']
+        )->name('propriedades.talhoes.update');
+
+        Route::delete(
+            '/propriedades/{propriedade}/talhoes/{talhao}',
+            [TalhaoController::class, 'destroy']
+        )->name('propriedades.talhoes.destroy');
     });
 
     Route::prefix('agronomo')->name('agronomo.')->middleware('perfil:agronomo')->group(function () {
