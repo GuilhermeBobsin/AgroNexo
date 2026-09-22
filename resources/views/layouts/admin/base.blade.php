@@ -5,8 +5,25 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+/>
+
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
     <title>AgroNexo - Gestão Agrícola</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler.min.css" />
+    <script>
+        (() => {
+            const theme = localStorage.getItem('theme') || 'light';
+
+            document.documentElement.setAttribute('data-bs-theme', theme);
+        })();
+    </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
 </head>
@@ -303,6 +320,16 @@
             checkItems();
         });
     </script> -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script type="module">
+        import { initAjaxForms } from "{{ asset('js/core/ajax-form.js') }}";
+        import { initPasswordToggles } from "{{ asset('js/core/password-toggle.js') }}";
+
+        document.addEventListener('DOMContentLoaded', () => {
+            initAjaxForms();
+            initPasswordToggles();
+        });
+    </script>
 </body>
 
 </html>

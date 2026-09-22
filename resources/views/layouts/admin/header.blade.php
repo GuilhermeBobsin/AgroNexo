@@ -391,8 +391,8 @@
                                     <span class="nav-link-title"> Usuários </span>
                                 </a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#"> Todos os usuários </a>
-                                    <a class="dropdown-item" href="#"> Novo usuário </a>
+                                    <a class="dropdown-item" href="{{ route('admin.usuarios.index') }}"> Todos os usuários </a>
+                                    <a class="dropdown-item" href="{{ route('admin.usuarios.create') }}"> Novo usuário </a>
                                     <a class="dropdown-item" href="#"> Perfis e acessos </a>
                                 </div>
                             </li>
@@ -414,7 +414,7 @@
                                 <div class="dropdown-menu">
                                     <div class="dropdown-menu-columns">
                                         <div class="dropdown-menu-column">
-                                            <a class="dropdown-item" href="#"> Todas as propriedades </a>
+                                            <a class="dropdown-item" href="{{ route('admin.propriedades.index') }}"> Todas as propriedades </a>
                                             <a class="dropdown-item" href="#"> Nova propriedade </a>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="#"> Talhões </a>

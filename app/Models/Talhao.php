@@ -11,13 +11,18 @@ class Talhao extends Model
 {
     use HasFactory;
 
+    protected $table = 'talhoes';
     protected $fillable = [
         'propriedade_id',
         'cultura_id',
         'nome',
         'area',
-        'latitude',
-        'longitude',
+        'limite'
+    ];
+
+    protected $casts = [
+        'area' => 'decimal:2',
+        'limite' => 'array',
     ];
 
     public function propriedade(): BelongsTo
