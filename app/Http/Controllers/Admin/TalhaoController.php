@@ -79,7 +79,7 @@ class TalhaoController extends Controller
 
         return redirect()
             ->route(
-                'admin.propriedades.talhoes.index',
+                'admin.propriedades.show',
                 $propriedade
             )
             ->with(
