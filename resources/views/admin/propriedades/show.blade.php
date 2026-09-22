@@ -581,49 +581,45 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
 
-        const latitude = {
-            {
-                $propriedade - > latitude
-            }
-        };
-        const longitude = {
-            {
-                $propriedade - > longitude
-            }
-        };
+        const latitude = @js((float) $propriedade->latitude);
+        const longitude = @js((float) $propriedade->longitude);
 
         const mapa = L.map('map-propriedade').setView(
             [latitude, longitude],
             16
         );
 
-        const satelite = L.tileLayer(
-            'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-                attribution: 'Imagery © Esri'
+        // Satélite
+        L.tileLayer(
+            'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+            {
+                attribution: 'Imagery © Esri',
+                maxZoom: 19,
             }
-        );
+        ).addTo(mapa);
 
-        satelite.addTo(mapa);
-
-        const relevo = L.tileLayer(
-            'https://services.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}', {
+        // Relevo
+        L.tileLayer(
+            'https://services.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}',
+            {
                 opacity: 0.35,
-                attribution: 'Hillshade © Esri'
+                attribution: 'Hillshade © Esri',
+                maxZoom: 19,
             }
-        );
+        ).addTo(mapa);
 
-        relevo.addTo(mapa);
-
-        const nomes = L.tileLayer(
-            'https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
-                attribution: 'Labels © Esri'
+        // Nomes de cidades e locais
+        L.tileLayer(
+            'https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+            {
+                attribution: 'Labels © Esri',
+                maxZoom: 19,
             }
-        );
+        ).addTo(mapa);
 
-        nomes.addTo(mapa);
-
+        // Marcador da propriedade
         L.marker([latitude, longitude])
             .addTo(mapa)
             .bindPopup(
