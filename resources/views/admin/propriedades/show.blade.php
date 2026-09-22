@@ -15,8 +15,7 @@
                     <div class="mb-2">
                         <a
                             href="{{ route('admin.propriedades.index') }}"
-                            class="text-secondary text-decoration-none"
-                        >
+                            class="text-secondary text-decoration-none">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -27,8 +26,7 @@
                                 stroke-width="2"
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
-                                class="icon icon-1 me-1"
-                            >
+                                class="icon icon-1 me-1">
                                 <path d="M15 6l-6 6l6 6"></path>
                             </svg>
 
@@ -51,8 +49,7 @@
 
                         <a
                             href="#"
-                            class="btn"
-                        >
+                            class="btn">
                             <svg
                                 xmlns="http://www.w3.org/2000/svg"
                                 width="24"
@@ -63,8 +60,7 @@
                                 stroke-width="2"
                                 stroke-linecap="round"
                                 stroke-linejoin="round"
-                                class="icon"
-                            >
+                                class="icon">
                                 <path d="M4 20h4l10.5 -10.5a2.828 2.828 0 1 0 -4 -4l-10.5 10.5v4"></path>
                                 <path d="M13.5 6.5l4 4"></path>
                             </svg>
@@ -101,8 +97,7 @@
                                     stroke-width="2"
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
-                                    class="icon"
-                                >
+                                    class="icon">
                                     <path d="M3 21l18 0"></path>
                                     <path d="M5 21v-14l8 -4l6 3v15"></path>
                                 </svg>
@@ -145,8 +140,7 @@
                                     stroke-width="2"
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
-                                    class="icon"
-                                >
+                                    class="icon">
                                     <path d="M3 3l18 18"></path>
                                     <path d="M3 21l18 -18"></path>
                                 </svg>
@@ -189,8 +183,7 @@
                                     stroke-width="2"
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
-                                    class="icon"
-                                >
+                                    class="icon">
                                     <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"></path>
                                     <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
                                 </svg>
@@ -233,8 +226,7 @@
                                     stroke-width="2"
                                     stroke-linecap="round"
                                     stroke-linejoin="round"
-                                    class="icon"
-                                >
+                                    class="icon">
                                     <path d="M5 12l5 5l10 -10"></path>
                                 </svg>
                             </span>
@@ -348,45 +340,45 @@
 
                         @forelse ($propriedade->usuarios as $usuario)
 
-                            <div class="list-group-item">
+                        <div class="list-group-item">
 
-                                <div class="row align-items-center">
+                            <div class="row align-items-center">
 
-                                    <div class="col-auto">
-                                        <span class="avatar">
-                                            {{ strtoupper(substr($usuario->name, 0, 1)) }}
-                                        </span>
+                                <div class="col-auto">
+                                    <span class="avatar">
+                                        {{ strtoupper(substr($usuario->name, 0, 1)) }}
+                                    </span>
+                                </div>
+
+                                <div class="col">
+
+                                    <div class="fw-semibold">
+                                        {{ $usuario->name }}
                                     </div>
 
-                                    <div class="col">
-
-                                        <div class="fw-semibold">
-                                            {{ $usuario->name }}
-                                        </div>
-
-                                        <div class="text-secondary small">
-                                            {{ $usuario->email }}
-                                        </div>
-
+                                    <div class="text-secondary small">
+                                        {{ $usuario->email }}
                                     </div>
 
-                                    <div class="col-auto">
+                                </div>
 
-                                        <span class="badge bg-blue-lt">
-                                            {{ ucfirst($usuario->pivot->papel) }}
-                                        </span>
+                                <div class="col-auto">
 
-                                    </div>
+                                    <span class="badge bg-blue-lt">
+                                        {{ ucfirst($usuario->pivot->papel) }}
+                                    </span>
 
                                 </div>
 
                             </div>
 
+                        </div>
+
                         @empty
 
-                            <div class="card-body text-secondary">
-                                Nenhum usuário vinculado.
-                            </div>
+                        <div class="card-body text-secondary">
+                            Nenhum usuário vinculado.
+                        </div>
 
                         @endforelse
 
@@ -425,8 +417,7 @@
                                 width: 100%;
                                 border-radius: 0 0 8px 8px;
                                 overflow: hidden;
-                            "
-                        ></div>
+                            "></div>
 
                     </div>
 
@@ -454,8 +445,9 @@
 
                 <div class="card-actions">
 
-                    <a href="#" class="btn btn-primary">
-
+                    <a
+                        href="{{ route('admin.propriedades.talhoes.create', $propriedade) }}"
+                        class="btn btn-primary">
                         <svg
                             xmlns="http://www.w3.org/2000/svg"
                             width="24"
@@ -466,14 +458,12 @@
                             stroke-width="2"
                             stroke-linecap="round"
                             stroke-linejoin="round"
-                            class="icon"
-                        >
+                            class="icon">
                             <path d="M12 5l0 14"></path>
                             <path d="M5 12l14 0"></path>
                         </svg>
 
                         Novo talhão
-
                     </a>
 
                 </div>
@@ -484,95 +474,94 @@
 
                 @if ($propriedade->talhoes->count())
 
-                    <div class="table-responsive">
+                <div class="table-responsive">
 
-                        <table class="table table-vcenter">
+                    <table class="table table-vcenter">
 
-                            <thead>
-                                <tr>
-                                    <th>Nome</th>
-                                    <th>Cultura</th>
-                                    <th>Área</th>
-                                    <th class="w-1"></th>
-                                </tr>
-                            </thead>
+                        <thead>
+                            <tr>
+                                <th>Nome</th>
+                                <th>Cultura</th>
+                                <th>Área</th>
+                                <th class="w-1"></th>
+                            </tr>
+                        </thead>
 
-                            <tbody>
+                        <tbody>
 
-                                @foreach ($propriedade->talhoes as $talhao)
+                            @foreach ($propriedade->talhoes as $talhao)
 
-                                    <tr>
+                            <tr>
 
-                                        <td>
-                                            <span class="fw-semibold">
-                                                {{ $talhao->nome }}
-                                            </span>
-                                        </td>
+                                <td>
+                                    <span class="fw-semibold">
+                                        {{ $talhao->nome }}
+                                    </span>
+                                </td>
 
-                                        <td>
-                                            {{ $talhao->cultura?->nome ?? '—' }}
-                                        </td>
+                                <td>
+                                    {{ $talhao->cultura?->nome ?? '—' }}
+                                </td>
 
-                                        <td>
-                                            {{ $talhao->area }} ha
-                                        </td>
+                                <td>
+                                    {{ $talhao->area }} ha
+                                </td>
 
-                                        <td>
-                                            <a href="#" class="btn btn-sm">
-                                                Visualizar
-                                            </a>
-                                        </td>
+                                <td>
+                                    <a href="#" class="btn btn-sm">
+                                        Visualizar
+                                    </a>
+                                </td>
 
-                                    </tr>
+                            </tr>
 
-                                @endforeach
+                            @endforeach
 
-                            </tbody>
+                        </tbody>
 
-                        </table>
+                    </table>
 
-                    </div>
+                </div>
 
                 @else
 
-                    <div class="empty">
+                <div class="empty">
 
-                        <div class="empty-img">
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="128"
-                                height="128"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                stroke-width="1"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                class="icon text-secondary"
-                            >
-                                <path d="M3 21l18 0"></path>
-                                <path d="M5 21v-14l8 -4l6 3v15"></path>
-                                <path d="M9 21v-8h4v8"></path>
-                            </svg>
-                        </div>
+                    <div class="empty-img">
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="128"
+                            height="128"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="1"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="icon text-secondary">
+                            <path d="M3 21l18 0"></path>
+                            <path d="M5 21v-14l8 -4l6 3v15"></path>
+                            <path d="M9 21v-8h4v8"></path>
+                        </svg>
+                    </div>
 
-                        <p class="empty-title">
-                            Nenhum talhão cadastrado
-                        </p>
+                    <p class="empty-title">
+                        Nenhum talhão cadastrado
+                    </p>
 
-                        <p class="empty-subtitle text-secondary">
-                            Os talhões desta propriedade serão cadastrados aqui.
-                        </p>
+                    <p class="empty-subtitle text-secondary">
+                        Os talhões desta propriedade serão cadastrados aqui.
+                    </p>
 
-                        <div class="empty-action">
+                    <div class="empty-action">
 
-                            <a href="#" class="btn btn-primary">
-                                Novo talhão
-                            </a>
-
-                        </div>
+                        <a href="#" class="btn btn-primary">
+                            Novo talhão
+                        </a>
 
                     </div>
+
+                </div>
 
                 @endif
 
@@ -587,58 +576,62 @@
 
 <link
     rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
 
-    const latitude = {{ $propriedade->latitude }};
-    const longitude = {{ $propriedade->longitude }};
+        const latitude = {
+            {
+                $propriedade - > latitude
+            }
+        };
+        const longitude = {
+            {
+                $propriedade - > longitude
+            }
+        };
 
-    const mapa = L.map('map-propriedade').setView(
-        [latitude, longitude],
-        16
-    );
+        const mapa = L.map('map-propriedade').setView(
+            [latitude, longitude],
+            16
+        );
 
-    const satelite = L.tileLayer(
-        'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-        {
-            attribution: 'Imagery © Esri'
-        }
-    );
+        const satelite = L.tileLayer(
+            'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Imagery © Esri'
+            }
+        );
 
-    satelite.addTo(mapa);
+        satelite.addTo(mapa);
 
-    const relevo = L.tileLayer(
-        'https://services.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}',
-        {
-            opacity: 0.35,
-            attribution: 'Hillshade © Esri'
-        }
-    );
+        const relevo = L.tileLayer(
+            'https://services.arcgisonline.com/ArcGIS/rest/services/Elevation/World_Hillshade/MapServer/tile/{z}/{y}/{x}', {
+                opacity: 0.35,
+                attribution: 'Hillshade © Esri'
+            }
+        );
 
-    relevo.addTo(mapa);
+        relevo.addTo(mapa);
 
-    const nomes = L.tileLayer(
-        'https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-        {
-            attribution: 'Labels © Esri'
-        }
-    );
+        const nomes = L.tileLayer(
+            'https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+                attribution: 'Labels © Esri'
+            }
+        );
 
-    nomes.addTo(mapa);
+        nomes.addTo(mapa);
 
-    L.marker([latitude, longitude])
-        .addTo(mapa)
-        .bindPopup(
-            `<strong>{{ addslashes($propriedade->nome) }}</strong><br>{{ addslashes($propriedade->localizacao) }}`
-        )
-        .openPopup();
+        L.marker([latitude, longitude])
+            .addTo(mapa)
+            .bindPopup(
+                `<strong>{{ addslashes($propriedade->nome) }}</strong><br>{{ addslashes($propriedade->localizacao) }}`
+            )
+            .openPopup();
 
-});
+    });
 </script>
 
 @endsection
