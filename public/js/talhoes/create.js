@@ -506,8 +506,7 @@ form.addEventListener('submit', async function (event) {
 
         setTimeout(() => {
 
-            window.location.href =
-                "{{ route('admin.propriedades.talhoes.index', $propriedade) }}";
+            window.location.href = form.dataset.redirectUrl;
 
         }, 700);
 

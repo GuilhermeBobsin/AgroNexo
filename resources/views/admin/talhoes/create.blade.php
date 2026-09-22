@@ -26,7 +26,7 @@
             </div>
         </div>
 
-        <form id="form-criar-talhao" method="POST" action="{{ route('admin.propriedades.talhoes.store', $propriedade) }}">
+        <form id="form-criar-talhao" method="POST" action="{{ route('admin.propriedades.talhoes.store', $propriedade) }}" data-redirect-url="{{ route('admin.propriedades.talhoes.index', $propriedade) }}" >
             @csrf
 
             <input type="hidden" name="limite" id="input-limite">
