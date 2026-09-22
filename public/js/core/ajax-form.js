@@ -41,7 +41,7 @@ function initAjaxForm(form) {
                 return;
             }
 
-            showSuccess(data.message);
+            const toastPromise = showSuccess(data.message);
             form.reset();
             form.dispatchEvent(new CustomEvent('ajax-success', { detail: data }));
         } catch (err) {
