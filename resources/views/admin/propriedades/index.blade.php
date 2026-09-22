@@ -61,7 +61,7 @@
                             </span>
                             <div>
                                 <div class="text-secondary">Área total</div>
-                                <div class="h2 mb-0">1.248 ha</div>
+                                <div class="h2 mb-0">{{ $areaTotal }} ha</div>
                             </div>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                             </span>
                             <div>
                                 <div class="text-secondary">Talhões</div>
-                                <div class="h2 mb-0">42</div>
+                                <div class="h2 mb-0">{{ $talhoes }}</div>
                             </div>
                         </div>
                     </div>
@@ -102,8 +102,8 @@
                                 </svg>
                             </span>
                             <div>
-                                <div class="text-secondary">Culturas</div>
-                                <div class="h2 mb-0">4</div>
+                                <div class="text-secondary">Culturas Plantadas</div>
+                                <div class="h2 mb-0">{{ $quantidadeCulturas }}</div>
                             </div>
                         </div>
                     </div>

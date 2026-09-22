@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Propriedade;
+use App\Models\Talhao;
 use Illuminate\Http\Request;
 
 class PropriedadeController extends Controller
@@ -12,8 +13,13 @@ class PropriedadeController extends Controller
     {
         $propriedades = Propriedade::orderBy('nome')->paginate(12);
         $contagem = $propriedades->count();
-        $areaTotal = $propriedades->sum('area');
-        return view('admin.propriedades.index', compact('propriedades', 'contagem', 'areaTotal'));
+        $talhoes = Talhao::all()->count();
+        $areaTotal = Talhao::sum('area');
+        $quantidadeCulturas = Talhao::whereNotNull('cultura_id')
+    ->distinct('cultura_id')
+    ->count('cultura_id');
+
+        return view('admin.propriedades.index', compact('propriedades', 'contagem', 'talhoes', 'areaTotal', 'quantidadeCulturas'));
     }
 
     public function create()
