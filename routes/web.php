@@ -3,10 +3,10 @@
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\PropriedadeController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\TalhaoController;
 use App\Http\Controllers\Agronomo\DashboardController as AgronomoDashboardController;
 use App\Http\Controllers\Operador\DashboardController as OperadorDashboardController;
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\TalhaoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
