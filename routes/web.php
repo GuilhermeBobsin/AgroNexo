@@ -52,6 +52,9 @@ Route::middleware('auth')->group(function () {
 
         //culturas
         Route::get('/culturas', [CulturaController::class, 'index'])->name('culturas.index');
+        Route::post('/culturas', [CulturaController::class, 'store'])->name('culturas.store');
+        Route::put('/culturas/{cultura}', [CulturaController::class, 'update'])->name('culturas.update');
+        Route::delete('/culturas/{cultura}', [CulturaController::class, 'destroy'])->name('culturas.destroy');  
 
     });
 

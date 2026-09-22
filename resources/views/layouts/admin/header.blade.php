@@ -418,7 +418,7 @@
                                             <a class="dropdown-item" href="#"> Nova propriedade </a>
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="#"> Talhões </a>
-                                            <a class="dropdown-item" href="#"> Culturas </a>
+                                            <a class="dropdown-item" href="{{ route('admin.culturas.index') }}"> Culturas </a>
                                         </div>
                             </li>
                             <li class="nav-item dropdown">
