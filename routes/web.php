@@ -61,7 +61,11 @@ Route::middleware('auth')->group(function () {
 
         //recursos
         Route::get('/recursos', [RecursoController::class, 'index'])->name('recursos.index');
+        Route::get('/recursos/create', [RecursoController::class, 'create'])->name('recursos.create');
         Route::post('/recursos', [RecursoController::class, 'store'])->name('recursos.store');
+        Route::get('/recursos/{recurso}', [RecursoController::class, 'show'])->name('recursos.show');
+        Route::get('/recursos/{recurso}/edit', [RecursoController::class, 'edit'])->name('recursos.edit');
+        Route::put('/recursos/{recurso}', [RecursoController::class, 'update'])->name('recursos.update');
 
         //tarefas
         Route::get('/tarefas', [TarefaController::class, 'index'])->name('tarefas.index');

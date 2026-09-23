@@ -12,9 +12,16 @@ class RecursoController extends Controller
     public function index()
     {
         $recursos = Recurso::with('propriedade')->orderBy('nome')->paginate(15);
+        $contagens = Recurso::selectRaw("count(*) as total, sum(status = 'disponivel') as disponiveis, sum(status = 'em_uso') as em_uso, sum(status = 'manutencao') as manutencao")->first();
+
+        return view('admin.recursos.index', compact('recursos', 'contagens'));
+    }
+
+    public function create()
+    {
         $propriedades = Propriedade::orderBy('nome')->get();
 
-        return view('admin.recursos.index', compact('recursos', 'propriedades'));
+        return view('admin.recursos.create', compact('propriedades'));
     }
 
     public function store(Request $request)
@@ -33,5 +40,37 @@ class RecursoController extends Controller
         }
 
         return redirect()->route('admin.recursos.index')->with('success', 'Recurso cadastrado com sucesso.');
+    }
+
+    public function show(Recurso $recurso)
+    {
+        $recurso->load('propriedade');
+
+        return view('admin.recursos.show', compact('recurso'));
+    }
+
+    public function edit(Recurso $recurso)
+    {
+        $propriedades = Propriedade::orderBy('nome')->get();
+
+        return view('admin.recursos.edit', compact('recurso', 'propriedades'));
+    }
+
+    public function update(Request $request, Recurso $recurso)
+    {
+        $validated = $request->validate([
+            'propriedade_id' => 'required|exists:propriedades,id',
+            'nome' => 'required|string|max:255',
+            'tipo' => 'required|in:trator,implemento,pulverizador,colheitadeira,outro',
+            'status' => 'required|in:disponivel,em_uso,manutencao',
+        ]);
+
+        $recurso->update($validated);
+
+        if ($request->wantsJson()) {
+            return response()->json(['message' => 'Recurso atualizado com sucesso.']);
+        }
+
+        return redirect()->route('admin.recursos.show', $recurso)->with('success', 'Recurso atualizado com sucesso.');
     }
 }
