@@ -49,4 +49,9 @@ class Talhao extends Model
     {
         return $this->hasMany(LeituraClimatica::class);
     }
+
+    public function tarefas(): HasMany
+    {
+        return $this->hasMany(Tarefa::class);
+    }
 }
