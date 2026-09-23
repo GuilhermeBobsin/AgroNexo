@@ -41,4 +41,9 @@ class Propriedade extends Model
             ->withPivot('estoque_atual', 'estoque_minimo', 'data_validade')
             ->withTimestamps();
     }
+
+    public function recursos(): HasMany
+    {
+        return $this->hasMany(Recurso::class);
+    }
 }
