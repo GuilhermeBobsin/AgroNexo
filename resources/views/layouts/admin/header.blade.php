@@ -431,13 +431,10 @@
                                             </path>
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> Aplicações </span>
+                                    <span class="nav-link-title"> Tarefas </span>
                                 </a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#"> Todas as aplicações </a>
-                                    <a class="dropdown-item" href="#"> Nova aplicação </a>
-                                    <a class="dropdown-item" href="#"> Aplicações planejadas </a>
-                                    <a class="dropdown-item" href="#"> Histórico </a>
+                                    <a class="dropdown-item" href="#"> Listar tarefas </a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">
