@@ -50,6 +50,15 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="card mt-3"><div class="card-body">
+                            <h3 class="card-title">Acesso às propriedades</h3>
+                            <p class="text-secondary">Selecione as propriedades que este usuário pode acessar. Administradores têm acesso a todas.</p>
+                            @forelse ($propriedades as $propriedade)
+                                <label class="form-check mb-2"><input class="form-check-input" type="checkbox" name="propriedade_ids[]" value="{{ $propriedade->id }}" @checked(in_array($propriedade->id, old('propriedade_ids', [])))><span class="form-check-label">{{ $propriedade->nome }}</span></label>
+                            @empty
+                                <div class="text-secondary">Cadastre uma propriedade para conceder acesso.</div>
+                            @endforelse
+                        </div></div>
                     </div>
                 </div>
 

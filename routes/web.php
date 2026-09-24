@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CulturaController;
+use App\Http\Controllers\Admin\AplicacaoController;
 use App\Http\Controllers\Admin\EstoqueController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\PropriedadeController;
@@ -34,6 +35,8 @@ Route::middleware('auth')->group(function () {
     Route::middleware('perfil:operador')->get('/dashboard/operador', [OperadorDashboardController::class, 'index'])->name('dashboard.operador');
 
     Route::prefix('admin')->name('admin.')->middleware('perfil:admin')->group(function () {
+        Route::get('/aplicacoes', [AplicacaoController::class, 'index'])->name('aplicacoes.index');
+        Route::get('/aplicacoes/{aplicacao}', [AplicacaoController::class, 'show'])->name('aplicacoes.show');
         //dashboard e usuarios
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index');

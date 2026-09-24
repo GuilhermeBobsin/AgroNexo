@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Operador;
 use App\Http\Controllers\Controller;
 use App\Models\Recurso;
 use App\Models\Tarefa;
+use App\Models\Aplicacao;
+use App\Models\Produto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -14,6 +16,7 @@ class TarefaController extends Controller
     {
         $query = Tarefa::with(['propriedade', 'talhao'])
             ->where('responsavel_id', auth()->id())
+            ->whereHas('propriedade.usuarios', fn ($q) => $q->where('users.id', auth()->id()))
             ->orderBy('data_prevista');
 
         if ($request->filled('status')) {
@@ -27,9 +30,9 @@ class TarefaController extends Controller
 
     public function show(Tarefa $tarefa)
     {
-        abort_unless($tarefa->responsavel_id === auth()->id(), 403);
+        abort_unless($tarefa->responsavel_id === auth()->id() && $tarefa->propriedade->usuarios()->where('users.id', auth()->id())->exists(), 403);
 
-        $tarefa->load(['propriedade', 'talhao', 'recurso', 'produto']);
+        $tarefa->load(['propriedade', 'talhao', 'recurso', 'produto', 'aplicacao']);
 
         return view('operador.tarefas.show', compact('tarefa'));
     }
@@ -38,7 +41,20 @@ class TarefaController extends Controller
     {
         abort_unless($tarefa->responsavel_id === auth()->id(), 403);
 
-        $validated = $request->validate(['status' => 'required|in:em_andamento,concluida,cancelada']);
+        abort_unless($tarefa->propriedade->usuarios()->where('users.id', auth()->id())->exists(), 403);
+        $rules = ['status' => 'required|in:em_andamento,concluida,cancelada'];
+        if ($tarefa->tipo === 'aplicacao' && $request->input('status') === 'concluida') {
+            $rules += [
+                'dose_realizada' => 'required|numeric|min:0.001|max:9999999.999',
+                'equipamento' => 'nullable|string|max:255',
+                'temperatura' => 'nullable|numeric|between:-50,70',
+                'umidade' => 'nullable|numeric|between:0,100',
+                'velocidade_vento' => 'nullable|numeric|min:0|max:500',
+                'precipitacao' => 'nullable|numeric|min:0|max:999999',
+                'observacoes_aplicacao' => 'nullable|string|max:2000',
+            ];
+        }
+        $validated = $request->validate($rules);
 
         DB::transaction(function () use ($tarefa, $validated) {
             $tarefa = Tarefa::whereKey($tarefa->id)->lockForUpdate()->firstOrFail();
@@ -73,10 +89,46 @@ class TarefaController extends Controller
                     }
                 }
             }
+
+            if ($novoStatus === 'concluida' && $tarefa->tipo === 'aplicacao') {
+                abort_unless($tarefa->talhao_id && $tarefa->produto_id, 422, 'A tarefa precisa ter talhão e produto para registrar a aplicação.');
+                abort_unless(! $tarefa->aplicacao()->exists(), 422, 'Esta tarefa já possui uma aplicação registrada.');
+
+                $estoque = DB::table('produto_propriedade')
+                    ->where('produto_id', $tarefa->produto_id)
+                    ->where('propriedade_id', $tarefa->propriedade_id)
+                    ->lockForUpdate()
+                    ->first();
+                abort_unless($estoque, 422, 'O produto não possui estoque cadastrado para esta propriedade.');
+                $dose = (float) $validated['dose_realizada'];
+                abort_unless((float) $estoque->estoque_atual >= $dose, 422, 'Estoque insuficiente para registrar a quantidade aplicada.');
+
+                DB::table('produto_propriedade')->where('id', $estoque->id)->update([
+                    'estoque_atual' => DB::raw('estoque_atual - '.number_format($dose, 3, '.', '')),
+                    'updated_at' => now(),
+                ]);
+
+                Aplicacao::create([
+                    'tarefa_id' => $tarefa->id,
+                    'talhao_id' => $tarefa->talhao_id,
+                    'produto_id' => $tarefa->produto_id,
+                    'usuario_id' => auth()->id(),
+                    'status' => 'realizada',
+                    'dose' => $dose,
+                    'equipamento' => $validated['equipamento'] ?? $tarefa->recurso?->nome,
+                    'data_aplicacao' => today(),
+                    'hora_aplicacao' => now()->format('H:i:s'),
+                    'temperatura' => $validated['temperatura'] ?? null,
+                    'umidade' => $validated['umidade'] ?? null,
+                    'velocidade_vento' => $validated['velocidade_vento'] ?? null,
+                    'precipitacao' => $validated['precipitacao'] ?? null,
+                    'observacoes' => $validated['observacoes_aplicacao'] ?? null,
+                ]);
+            }
         });
 
         if ($request->wantsJson()) {
-            return response()->json(['message' => 'Status atualizado com sucesso.', 'status' => $validated['status']]);
+            return response()->json(['message' => $tarefa->tipo === 'aplicacao' && $validated['status'] === 'concluida' ? 'Aplicação registrada e estoque atualizado.' : 'Status atualizado com sucesso.', 'status' => $validated['status']]);
         }
 
         return back()->with('success', 'Status atualizado com sucesso.');

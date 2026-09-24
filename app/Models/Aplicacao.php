@@ -15,6 +15,7 @@ class Aplicacao extends Model
 
     protected $fillable = [
         'talhao_id',
+        'tarefa_id',
         'produto_id',
         'usuario_id',
         'status',
@@ -51,5 +52,10 @@ class Aplicacao extends Model
     public function alertas(): HasMany
     {
         return $this->hasMany(Alerta::class);
+    }
+
+    public function tarefa(): BelongsTo
+    {
+        return $this->belongsTo(Tarefa::class);
     }
 }

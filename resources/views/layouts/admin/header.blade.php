@@ -437,7 +437,7 @@
 
                             <li class="nav-item dropdown {{ request()->routeIs('admin.recursos.*') ? 'active' : '' }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-recursos" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M7 10h10l1 10h-12l1-10z"/><path d="M9 10v-2a3 3 0 0 1 6 0v2"/><path d="M12 14v2"/></svg></span>
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M14.7 6.3a5 5 0 0 0-6.4 6.4l-4.8 4.8a2 2 0 0 0 2.8 2.8l4.8-4.8a5 5 0 0 0 6.4-6.4l-3 3l-3-3z"/><path d="M5 5l3 3"/></svg></span>
                                     <span class="nav-link-title">Recursos</span>
                                 </a>
                                 <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('admin.recursos.index') }}">Todos os recursos</a><a class="dropdown-item" href="{{ route('admin.recursos.create') }}">Novo recurso</a></div>
@@ -447,22 +447,37 @@
                                     <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M9 11l3 3l8-8"/><path d="M20 12v6a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2v-12a2 2 0 0 1 2-2h9"/></svg></span>
                                     <span class="nav-link-title">Tarefas</span>
                                 </a>
-                                <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('admin.tarefas.index') }}">Todas as tarefas</a><a class="dropdown-item" href="{{ route('admin.tarefas.create') }}">Nova tarefa</a></div>
+                                <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('admin.tarefas.index') }}">Todas as tarefas</a><a class="dropdown-item" href="{{ route('admin.tarefas.create') }}">Nova tarefa</a><a class="dropdown-item" href="{{ route('admin.aplicacoes.index') }}">Registro de aplicações</a></div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#navbar-agenda" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M4 7h16v13H4z"/><path d="M8 3v8"/><path d="M16 3v8"/><path d="M4 11h16"/><path d="M8 15h.01"/><path d="M12 15h.01"/></svg></span>
+                                    <span class="nav-link-title">Agenda</span>
+                                </a>
+                                <div class="dropdown-menu"><span class="dropdown-item text-secondary">Calendário · integração futura</span><a class="dropdown-item" href="{{ route('admin.tarefas.index') }}">Tarefas</a><a class="dropdown-item" href="{{ route('admin.tarefas.index', ['status' => 'pendente']) }}">Pendências</a><a class="dropdown-item" href="{{ route('admin.tarefas.create') }}">Nova tarefa</a></div>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#navbar-clima" data-bs-toggle="dropdown" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M7 18a4.6 4.4 0 0 1 0-9a5 4.5 0 0 1 9.7-1.5a4 4 0 0 1 2.3 7.5"/><path d="M11 15l-1 5"/><path d="M16 15l-1 5"/></svg></span>
                                     <span class="nav-link-title">Clima</span>
                                 </a>
-                                <div class="dropdown-menu"><span class="dropdown-item text-secondary">Disponível após integração climática</span></div>
+                                <div class="dropdown-menu"><span class="dropdown-item text-secondary">Clima atual · integração pendente</span><span class="dropdown-item text-secondary">Previsão · integração pendente</span><span class="dropdown-item text-secondary">Condições para aplicação · integração pendente</span></div>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#navbar-inteligencia" data-bs-toggle="dropdown" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M12 8a3 3 0 1 0 0 6a3 3 0 0 0 0-6z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1l-1.7 1.7l-.1-.1a1.7 1.7 0 0 0-1.9-.3a1.7 1.7 0 0 0-1 1.5v.2h-2.4v-.2a1.7 1.7 0 0 0-1-1.5a1.7 1.7 0 0 0-1.9.3l-.1.1L8 17l.1-.1A1.7 1.7 0 0 0 8.4 15a1.7 1.7 0 0 0-1.5-1H6.7v-2.4h.2a1.7 1.7 0 0 0 1.5-1a1.7 1.7 0 0 0-.3-1.9L8 8.6l1.7-1.7l.1.1a1.7 1.7 0 0 0 1.9.3a1.7 1.7 0 0 0 1-1.5v-.2h2.4v.2a1.7 1.7 0 0 0 1 1.5a1.7 1.7 0 0 0 1.9-.3l.1-.1l1.7 1.7l-.1.1a1.7 1.7 0 0 0-.3 1.9a1.7 1.7 0 0 0 1.5 1h.2V14h-.2a1.7 1.7 0 0 0-1.5 1z"/></svg></span>
                                     <span class="nav-link-title">Inteligência</span>
                                 </a>
-                                <div class="dropdown-menu"><span class="dropdown-item text-secondary">Em planejamento</span></div>
-                            </li>                        </ul>
+                                <div class="dropdown-menu"><span class="dropdown-item text-secondary">Alertas climáticos · planejamento</span><span class="dropdown-item text-secondary">Regras · planejamento</span><span class="dropdown-item text-secondary">Histórico de recomendações · planejamento</span><span class="dropdown-item text-secondary">Análise de aplicações · planejamento</span></div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#navbar-custos" data-bs-toggle="dropdown" role="button" aria-expanded="false">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+                                    <span class="nav-link-title">Custos</span>
+                                </a>
+                                <div class="dropdown-menu"><span class="dropdown-item text-secondary">Visão geral · planejamento</span><span class="dropdown-item text-secondary">Custos das aplicações · planejamento</span><span class="dropdown-item text-secondary">Por talhão · planejamento</span><span class="dropdown-item text-secondary">Por período · planejamento</span></div>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>

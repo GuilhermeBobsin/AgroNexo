@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Tarefa extends Model
 {
@@ -52,5 +53,10 @@ class Tarefa extends Model
     public function produto(): BelongsTo
     {
         return $this->belongsTo(Produto::class);
+    }
+
+    public function aplicacao(): HasOne
+    {
+        return $this->hasOne(Aplicacao::class);
     }
 }
