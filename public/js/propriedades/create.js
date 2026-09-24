@@ -27,7 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
     inputNome.addEventListener('input', atualizarPreview);
     inputLocalizacao.addEventListener('input', atualizarPreview);
 
-    const mapa = L.map('map').setView([-29.9230, -50.9921], 10);
+    const mapa = L.map('map', { attributionControl: false }).setView([-29.9230, -50.9921], 10);
 
     L.tileLayer('https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
         attribution: 'Imagery © Esri',

@@ -1,13 +1,6 @@
-/*!
-* Tabler v1.4.0 (https://tabler.io)
-* Copyright 2018-2026 The Tabler Authors
-* Copyright 2018-2026 codecalm.net Paweł Kuna
-* Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
-*/
 (function(factory) {
 	typeof define === "function" && define.amd ? define([], factory) : factory();
 })(function() {
-	//#region js/tabler-theme.ts
 	var themeConfig = {
 		"theme": "auto",
 		"theme-base": "gray",
@@ -36,7 +29,4 @@
 		if (((_localStorage$getItem = localStorage.getItem("tabler-theme")) !== null && _localStorage$getItem !== void 0 ? _localStorage$getItem : "auto") === "auto") if (event.matches) document.documentElement.setAttribute("data-bs-theme", "dark");
 		else document.documentElement.removeAttribute("data-bs-theme");
 	});
-	//#endregion
 });
-
-//# sourceMappingURL=tabler-theme.js.map

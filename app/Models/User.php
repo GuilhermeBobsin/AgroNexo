@@ -36,4 +36,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Aplicacao::class, 'usuario_id');
     }
+
+    public function tarefas(): HasMany
+    {
+        return $this->hasMany(Tarefa::class, 'responsavel_id');
+    }
 }

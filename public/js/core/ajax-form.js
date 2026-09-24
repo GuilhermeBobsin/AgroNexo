@@ -10,13 +10,16 @@ function initAjaxForm(form) {
         form.querySelectorAll('.is-invalid').forEach((el) => el.classList.remove('is-invalid'));
         form.querySelectorAll('.invalid-feedback').forEach((el) => (el.textContent = ''));
 
-        const textoOriginal = btn.textContent;
-        btn.disabled = true;
-        btn.textContent = 'Salvando...';
+        const textoOriginal = btn?.textContent;
+        if (btn) {
+            btn.disabled = true;
+            btn.textContent = 'Salvando...';
+        }
 
         try {
             const response = await fetch(form.action, {
-                method: 'POST',
+                // Forms use Laravel's _method field for PUT/PATCH/DELETE spoofing.
+                method: (form.method || 'POST').toUpperCase(),
                 headers: {
                     'X-CSRF-TOKEN': csrfToken,
                     Accept: 'application/json',
@@ -27,12 +30,13 @@ function initAjaxForm(form) {
             const data = await response.json();
 
             if (response.status === 422) {
-                Object.entries(data.errors).forEach(([campo, mensagens]) => {
-                    form.querySelector(`#input-${campo}`)?.classList.add('is-invalid');
-                    const feedback = form.querySelector(`#error-${campo}`);
+                Object.entries(data.errors || {}).forEach(([campo, mensagens]) => {
+                    const field = form.querySelector(`[name="${CSS.escape(campo)}"]`);
+                    field?.classList.add('is-invalid');
+                    const feedback = form.querySelector(`#error-${CSS.escape(campo)}, [data-error="${CSS.escape(campo)}"]`);
                     if (feedback) feedback.textContent = mensagens[0];
                 });
-                showError('Verifique os campos', 'Alguns dados precisam de ajuste antes de continuar.');
+                showError(data.errors ? 'Verifique os campos' : 'Não foi possível alterar o status', data.message || 'Alguns dados precisam de ajuste antes de continuar.');
                 return;
             }
 
@@ -41,15 +45,16 @@ function initAjaxForm(form) {
                 return;
             }
 
-            showSuccess(data.message);
-            form.reset();
-            form.dispatchEvent(new CustomEvent('ajax-success', { detail: data }));
+            const toastPromise = showSuccess(data.message || 'Alterações salvas com sucesso.');
+            form.dispatchEvent(new CustomEvent('ajax-success', { detail: { ...data, toastPromise } }));
         } catch (err) {
             console.error(err);
             showError('Erro de conexão', 'Não foi possível se conectar ao servidor.');
         } finally {
-            btn.disabled = false;
-            btn.textContent = textoOriginal;
+            if (btn) {
+                btn.disabled = false;
+                btn.textContent = textoOriginal;
+            }
         }
     });
 }

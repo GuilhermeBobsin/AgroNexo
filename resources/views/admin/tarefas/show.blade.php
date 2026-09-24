@@ -1,0 +1,15 @@
+@extends('layouts.admin.base')
+
+@section('content')
+@php $statusLabels = ['pendente' => 'Pendente', 'em_andamento' => 'Em andamento', 'concluida' => 'Concluída', 'cancelada' => 'Cancelada']; $statusColors = ['pendente' => 'yellow', 'em_andamento' => 'blue', 'concluida' => 'green', 'cancelada' => 'red']; @endphp
+<main id="content" class="page-body"><div class="container-xl">
+    <div class="page-header mb-4"><div class="row align-items-center"><div class="col"><div class="text-secondary mb-1"><a href="{{ route('admin.tarefas.index') }}">Tarefas</a> / Detalhes</div><h2 class="page-title">{{ $tarefa->titulo }}</h2></div><div class="col-auto ms-auto d-flex gap-2">@if ($tarefa->status === 'pendente')<a href="{{ route('admin.tarefas.edit', $tarefa) }}" class="btn btn-primary">Editar tarefa</a>@endif<a href="{{ route('admin.tarefas.index') }}" class="btn">Voltar à lista</a></div></div></div>
+    @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+    @if ($tarefa->aplicacao)<div class="alert alert-success">Aplicação registrada: <a href="{{ route('admin.aplicacoes.show', $tarefa->aplicacao) }}">ver detalhes do registro</a>.</div>@endif
+    <div class="row row-cards"><div class="col-lg-8"><div class="card"><div class="card-header"><h3 class="card-title">Detalhes da tarefa</h3><div class="card-actions"><span class="badge bg-{{ $statusColors[$tarefa->status] ?? 'secondary' }}-lt">{{ $statusLabels[$tarefa->status] ?? $tarefa->status }}</span></div></div><div class="card-body"><div class="datagrid">
+        <div class="datagrid-item"><div class="datagrid-title">Tipo</div><div class="datagrid-content">{{ ucfirst(str_replace('_', ' ', $tarefa->tipo)) }}</div></div><div class="datagrid-item"><div class="datagrid-title">Propriedade</div><div class="datagrid-content">{{ $tarefa->propriedade->nome }}</div></div><div class="datagrid-item"><div class="datagrid-title">Talhão</div><div class="datagrid-content">{{ $tarefa->talhao->nome ?? '—' }}</div></div><div class="datagrid-item"><div class="datagrid-title">Responsável</div><div class="datagrid-content">{{ $tarefa->responsavel->name }}</div></div><div class="datagrid-item"><div class="datagrid-title">Recurso</div><div class="datagrid-content">{{ $tarefa->recurso->nome ?? '—' }}</div></div><div class="datagrid-item"><div class="datagrid-title">Previsão</div><div class="datagrid-content">{{ $tarefa->data_prevista->format('d/m/Y') }} {{ $tarefa->hora_prevista ? substr($tarefa->hora_prevista, 0, 5) : '' }}</div></div>
+        @if ($tarefa->produto)<div class="datagrid-item"><div class="datagrid-title">Produto / dose</div><div class="datagrid-content">{{ $tarefa->produto->nome }} · {{ $tarefa->dose }}</div></div>@endif
+        <div class="datagrid-item"><div class="datagrid-title">Orientações</div><div class="datagrid-content">{{ $tarefa->observacoes ?: '—' }}</div></div>@if ($tarefa->data_conclusao)<div class="datagrid-item"><div class="datagrid-title">Concluída em</div><div class="datagrid-content">{{ $tarefa->data_conclusao->format('d/m/Y H:i') }}</div></div>@endif
+    </div></div></div></div></div>
+</div></main>
+@endsection

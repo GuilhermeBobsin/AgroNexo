@@ -1,0 +1,47 @@
+@extends('layouts.admin.base')
+
+@section('content')
+<main id="content" class="page-body"><div class="container-xl">
+    <div class="page-header mb-4"><div><h2 class="page-title">Editar tarefa</h2><div class="text-secondary mt-1">Atualize a atividade antes que o operador a inicie.</div></div></div>
+    <div class="row"><div class="col-lg-9 col-xl-8"><form id="form-tarefa" method="POST" action="{{ route('admin.tarefas.update', $tarefa) }}" data-ajax-form>@csrf @method('PUT')
+        <div class="card"><div class="card-body">
+            <div class="mb-3"><label for="propriedade_id" class="form-label">Propriedade</label><select id="propriedade_id" name="propriedade_id" class="form-select" required><option value="">Selecione</option>@foreach ($propriedades as $propriedade)<option value="{{ $propriedade->id }}" @selected(old('propriedade_id', $tarefa->propriedade_id) == $propriedade->id)>{{ $propriedade->nome }}</option>@endforeach</select><div class="invalid-feedback" id="error-propriedade_id"></div></div>
+            <div class="mb-3"><label for="titulo" class="form-label">Título da tarefa</label><input id="titulo" name="titulo" class="form-control" maxlength="255" value="{{ old('titulo', $tarefa->titulo) }}" required><div class="invalid-feedback" id="error-titulo"></div></div>
+            <div class="row"><div class="col-md-6 mb-3"><label for="tipo" class="form-label">Tipo de atividade</label><select id="tipo" name="tipo" class="form-select" required>@foreach (['aplicacao' => 'Aplicação', 'aracao' => 'Aração', 'calagem' => 'Calagem', 'irrigacao' => 'Irrigação', 'manutencao' => 'Manutenção', 'outro' => 'Outro'] as $valor => $label)<option value="{{ $valor }}" @selected(old('tipo', $tarefa->tipo) === $valor)>{{ $label }}</option>@endforeach</select><div class="invalid-feedback" id="error-tipo"></div></div><div class="col-md-6 mb-3"><label for="talhao_id" class="form-label">Talhão <span class="text-secondary">(opcional)</span></label><select id="talhao_id" name="talhao_id" class="form-select"><option value="">Sem talhão específico</option>@foreach ($propriedades as $propriedade)@foreach ($propriedade->talhoes as $talhao)<option value="{{ $talhao->id }}" data-propriedade="{{ $propriedade->id }}" @selected(old('talhao_id', $tarefa->talhao_id) == $talhao->id)>{{ $talhao->nome }}</option>@endforeach @endforeach</select><div class="invalid-feedback" id="error-talhao_id"></div></div></div>
+            <div class="row"><div class="col-md-6 mb-3"><label for="responsavel_id" class="form-label">Operador responsável</label><select id="responsavel_id" name="responsavel_id" class="form-select" required><option value="">Selecione</option>@foreach ($usuarios as $usuario)<option value="{{ $usuario->id }}" data-propriedades="{{ $usuario->propriedades->pluck('id')->implode(',') }}" @selected(old('responsavel_id', $tarefa->responsavel_id) == $usuario->id)>{{ $usuario->name }}</option>@endforeach</select><div class="invalid-feedback" id="error-responsavel_id"></div></div><div class="col-md-6 mb-3"><label for="recurso_id" class="form-label">Recurso <span class="text-secondary">(opcional)</span></label><select id="recurso_id" name="recurso_id" class="form-select"><option value="">Sem recurso</option>@foreach ($propriedades as $propriedade)@foreach ($propriedade->recursos as $recurso)<option value="{{ $recurso->id }}" data-propriedade="{{ $propriedade->id }}" @selected(old('recurso_id', $tarefa->recurso_id) == $recurso->id)>{{ $recurso->nome }} ({{ $recurso->status === 'disponivel' ? 'disponível' : str_replace('_', ' ', $recurso->status) }})</option>@endforeach @endforeach</select><div class="invalid-feedback" id="error-recurso_id"></div></div></div>
+            <div id="campos-aplicacao" class="row {{ old('tipo', $tarefa->tipo) === 'aplicacao' ? '' : 'd-none' }}"><div class="col-md-6 mb-3"><label for="produto_id" class="form-label">Produto</label><select id="produto_id" name="produto_id" class="form-select"><option value="">Selecione</option>@foreach ($produtos as $produto)@foreach ($produto->propriedades as $propriedadeProduto)<option value="{{ $produto->id }}" data-propriedade="{{ $propriedadeProduto->id }}" @selected(old('produto_id', $tarefa->produto_id) == $produto->id && $propriedadeProduto->id == old('propriedade_id', $tarefa->propriedade_id))>{{ $produto->nome }} (estoque: {{ number_format((float) $propriedadeProduto->pivot->estoque_atual, 3, ',', '.') }} {{ $produto->unidade }})</option>@endforeach @endforeach</select><div class="invalid-feedback" id="error-produto_id"></div><div class="form-hint">A lista mostra produtos vinculados à propriedade selecionada.</div></div><div class="col-md-6 mb-3"><label for="dose" class="form-label">Dose</label><input id="dose" name="dose" type="number" min="0.001" step="0.001" value="{{ old('dose', $tarefa->dose) }}" class="form-control"><div class="invalid-feedback" id="error-dose"></div></div></div>
+            <div class="row"><div class="col-md-6 mb-3"><label for="data_prevista" class="form-label">Data prevista</label><input id="data_prevista" name="data_prevista" type="date" value="{{ old('data_prevista', $tarefa->data_prevista->format('Y-m-d')) }}" class="form-control" required><div class="invalid-feedback" id="error-data_prevista"></div></div><div class="col-md-6 mb-3"><label for="hora_prevista" class="form-label">Horário <span class="text-secondary">(opcional)</span></label><input id="hora_prevista" name="hora_prevista" type="time" value="{{ old('hora_prevista', $tarefa->hora_prevista ? substr($tarefa->hora_prevista, 0, 5) : '') }}" class="form-control"><div class="invalid-feedback" id="error-hora_prevista"></div></div></div>
+            <div class="mb-3"><label for="observacoes" class="form-label">Orientações</label><textarea id="observacoes" name="observacoes" class="form-control" rows="3" maxlength="1000">{{ old('observacoes', $tarefa->observacoes) }}</textarea><div class="invalid-feedback" id="error-observacoes"></div></div>
+            <div class="form-footer d-flex gap-2"><a href="{{ route('admin.tarefas.show', $tarefa) }}" class="btn">Cancelar</a><button type="submit" class="btn btn-primary ms-auto">Salvar alterações</button></div>
+        </div></div>
+    </form></div></div>
+</div></main>
+<script type="module">
+    const propriedade = document.getElementById('propriedade_id');
+    const responsavel = document.getElementById('responsavel_id');
+    const filtros = [document.getElementById('talhao_id'), document.getElementById('recurso_id'), document.getElementById('produto_id')];
+    const atualizarOpcoes = () => filtros.forEach((select) => [...select.options].forEach((option) => {
+        if (!option.dataset.propriedade) return;
+        option.hidden = propriedade.value !== option.dataset.propriedade;
+        if (option.hidden && option.selected) select.value = '';
+    }));
+    const atualizarResponsaveis = () => [...responsavel.options].forEach((option) => {
+        if (!option.dataset.propriedades) return;
+        option.hidden = !option.dataset.propriedades.split(',').includes(propriedade.value);
+        if (option.hidden && option.selected) responsavel.value = '';
+    });
+    propriedade.addEventListener('change', atualizarResponsaveis);
+    atualizarResponsaveis();
+    propriedade.addEventListener('change', atualizarOpcoes);
+    atualizarOpcoes();
+    document.getElementById('tipo').addEventListener('change', (event) => {
+        const aplicacao = event.target.value === 'aplicacao';
+        document.getElementById('campos-aplicacao').classList.toggle('d-none', !aplicacao);
+        document.getElementById('produto_id').required = aplicacao;
+        document.getElementById('dose').required = aplicacao;
+    });
+    document.getElementById('produto_id').required = document.getElementById('tipo').value === 'aplicacao';
+    document.getElementById('dose').required = document.getElementById('tipo').value === 'aplicacao';
+    document.getElementById('form-tarefa').addEventListener('ajax-success', (event) => event.detail.toastPromise.then(() => window.location.assign(event.detail.redirect)));
+</script>
+@endsection

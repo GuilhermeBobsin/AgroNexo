@@ -1,10 +1,11 @@
 @extends('layouts.admin.base')
 
 @section('content')
+@if (session('success'))<div class="container-xl pt-3"><div class="alert alert-success">{{ session('success') }}</div></div>@endif
+@if (session('error'))<div class="container-xl pt-3"><div class="alert alert-danger">{{ session('error') }}</div></div>@endif
 <main id="content" class="page-body">
     <div class="container-xl">
 
-        {{-- Cabeçalho --}}
         <div class="page-header d-print-none mb-4">
             <div class="row align-items-center">
                 <div class="col">
@@ -24,7 +25,6 @@
             </div>
         </div>
 
-        {{-- Resumo --}}
         <div class="row row-deck row-cards mb-4">
 
             <div class="col-sm-6 col-lg-3">
@@ -61,7 +61,7 @@
                             </span>
                             <div>
                                 <div class="text-secondary">Área total</div>
-                                <div class="h2 mb-0">1.248 ha</div>
+                                <div class="h2 mb-0">{{ $areaTotal }} ha</div>
                             </div>
                         </div>
                     </div>
@@ -82,7 +82,7 @@
                             </span>
                             <div>
                                 <div class="text-secondary">Talhões</div>
-                                <div class="h2 mb-0">42</div>
+                                <div class="h2 mb-0">{{ $talhoes }}</div>
                             </div>
                         </div>
                     </div>
@@ -102,8 +102,8 @@
                                 </svg>
                             </span>
                             <div>
-                                <div class="text-secondary">Culturas</div>
-                                <div class="h2 mb-0">4</div>
+                                <div class="text-secondary">Culturas Plantadas</div>
+                                <div class="h2 mb-0">{{ $quantidadeCulturas }}</div>
                             </div>
                         </div>
                     </div>
@@ -112,7 +112,6 @@
 
         </div>
 
-        {{-- Propriedades --}}
         <div class="row row-cards">
 
             @foreach ($propriedades as $propriedade)
@@ -145,8 +144,8 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <a class="dropdown-item" href="{{ route('admin.propriedades.show', $propriedade->id) }}">Visualizar</a>
-                                    <a class="dropdown-item" href="#">Editar</a>
-                                    <a class="dropdown-item text-danger" href="#">Excluir</a>
+                                    <a class="dropdown-item" href="{{ route('admin.propriedades.edit', $propriedade) }}">Editar</a>
+                                    <form method="POST" action="{{ route('admin.propriedades.destroy', $propriedade) }}" onsubmit="return confirm('Excluir {{ addslashes($propriedade->nome) }}?')">@csrf @method('DELETE')<button class="dropdown-item text-danger">Excluir</button></form>
                                 </div>
                             </div>
                         </div>
@@ -156,7 +155,7 @@
                         <div class="row align-items-center mb-3">
                             <div class="col">
                                 <div class="text-secondary">Área total</div>
-                                <div class="h2 mb-0">245,8 ha</div>
+                                <div class="h2 mb-0">{{ $propriedade->talhoes()->sum('area') }} ha</div>
                             </div>
                             <div class="col-auto">
                                 <span class="badge bg-green-lt">Ativa</span>
@@ -166,7 +165,7 @@
                         <div class="row">
                             <div class="col-6">
                                 <div class="text-secondary">Talhões</div>
-                                <div class="fw-bold">12</div>
+                                <div class="fw-bold">{{ $propriedade->talhoes()->count() }}</div>
                             </div>
                             <div class="col-6">
                                 <div class="text-secondary">Principal cultura</div>
@@ -176,7 +175,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <a href="#" class="btn btn-primary w-100">Ver propriedade</a>
+                        <a href="{{ route('admin.propriedades.show', $propriedade) }}" class="btn btn-primary w-100">Ver propriedade</a>
                     </div>
                 </div>
             </div>

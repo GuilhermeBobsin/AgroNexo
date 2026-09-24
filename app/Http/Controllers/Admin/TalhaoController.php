@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Cultura;
 use App\Models\Propriedade;
 use App\Models\Talhao;
@@ -78,7 +79,7 @@ class TalhaoController extends Controller
 
         return redirect()
             ->route(
-                'admin.propriedades.talhoes.index',
+                'admin.propriedades.show',
                 $propriedade
             )
             ->with(

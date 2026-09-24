@@ -25,6 +25,11 @@ class Produto extends Model
         return $this->hasMany(Aplicacao::class);
     }
 
+    public function tarefas(): HasMany
+    {
+        return $this->hasMany(Tarefa::class);
+    }
+
     public function propriedades(): BelongsToMany
     {
         return $this->belongsToMany(Propriedade::class, 'produto_propriedade')

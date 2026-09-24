@@ -1,5 +1,5 @@
 export function showSuccess(message) {
-    Swal.fire({
+    return Swal.fire({
         icon: 'success',
         title: 'Sucesso!',
         text: message,
@@ -9,5 +9,5 @@ export function showSuccess(message) {
 }
 
 export function showError(title, message) {
-    Swal.fire({ icon: 'error', title, text: message });
+    return Swal.fire({ icon: 'error', title, text: message });
 }

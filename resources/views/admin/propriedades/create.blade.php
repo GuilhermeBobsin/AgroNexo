@@ -19,8 +19,6 @@
             @csrf
 
             <div class="row g-4">
-
-                {{-- Coluna esquerda --}}
                 <div class="col-lg-7">
                     <div class="card">
                         <div class="card-body">
@@ -102,7 +100,6 @@
                     </div>
                 </div>
 
-                {{-- Coluna direita: pré-visualização --}}
                 <div class="col-lg-5">
                     <div class="text-secondary mb-2 small">Pré-visualização</div>
 

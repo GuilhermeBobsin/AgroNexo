@@ -40,11 +40,12 @@ let poligonoTalhao = null;
 // MAPA
 // ==========================================================
 
-const mapa = L.map('map').setView(
+const mapa = L.map('map', {
+    attributionControl: false // <-- Adicione esta linha
+}).setView(
     [propriedadeLat, propriedadeLng],
     16
 );
-
 
 // Satélite
 L.tileLayer(
@@ -506,8 +507,7 @@ form.addEventListener('submit', async function (event) {
 
         setTimeout(() => {
 
-            window.location.href =
-                "{{ route('admin.propriedades.talhoes.index', $propriedade) }}";
+            window.location.href = form.dataset.redirectUrl;
 
         }, 700);
 
