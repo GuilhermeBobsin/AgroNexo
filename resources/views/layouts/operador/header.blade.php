@@ -489,10 +489,10 @@
                                             </path>
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> Clima </span>
+                                    <span class="nav-link-title"> Tarefas </span>
                                 </a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="./form-elements.html"> Form elements </a>
+                                    <a class="dropdown-item" href="{{ route('operador.tarefas.index') }}"> Listar Tarefas</a>
                                     <a class="dropdown-item" href="./form-layout.html">
                                         Form layouts
                                         <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">New</span>
