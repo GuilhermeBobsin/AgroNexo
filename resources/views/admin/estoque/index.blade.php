@@ -13,7 +13,6 @@
     <form method="GET" class="card card-body mb-3"><div class="row g-2 align-items-end">
         <div class="col-md-5"><label class="form-label" for="busca">Buscar produto ou propriedade</label><input id="busca" name="busca" value="{{ request('busca') }}" class="form-control" placeholder="Nome ou princípio ativo"></div>
         <div class="col-md-4"><label class="form-label" for="filtro-propriedade">Propriedade</label><select id="filtro-propriedade" name="propriedade_id" class="form-select"><option value="">Todas as propriedades</option>@foreach ($propriedades as $propriedade)<option value="{{ $propriedade->id }}" @selected(request('propriedade_id') == $propriedade->id)>{{ $propriedade->nome }}</option>@endforeach</select></div>
-        <div class="col-md-auto"><label class="form-check mb-2"><input class="form-check-input" type="checkbox" name="baixo" value="1" @checked(request()->boolean('baixo'))><span class="form-check-label">Abaixo do mínimo</span></label></div>
         <div class="col-auto"><button class="btn btn-primary">Filtrar</button> <a href="{{ route('admin.estoque.index') }}" class="btn">Limpar</a></div>
     </div></form>
     <div class="card"><div class="table-responsive"><table class="table table-vcenter card-table"><thead><tr><th>Produto</th><th>Propriedade</th><th>Quantidade</th><th>Mínimo</th><th>Validade</th><th>Situação</th><th></th></tr></thead><tbody>

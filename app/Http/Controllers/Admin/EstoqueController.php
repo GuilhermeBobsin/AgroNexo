@@ -44,10 +44,6 @@ class EstoqueController extends Controller
             $query->where('estoque.propriedade_id', $request->integer('propriedade_id'));
         }
 
-        if ($request->boolean('baixo')) {
-            $query->whereColumn('estoque.estoque_atual', '<=', 'estoque.estoque_minimo');
-        }
-
         $estoques = $query->paginate(15)->withQueryString();
         $propriedades = Propriedade::orderBy('nome')->get(['id', 'nome']);
         $resumo = DB::table('produto_propriedade')

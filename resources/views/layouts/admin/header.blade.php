@@ -433,9 +433,8 @@
                                     <span class="nav-link-title"> Estoque </span>
                                 </a>
                                 <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="{{ route('admin.estoque.index') }}"> Estoque atual </a>
-                                    <a class="dropdown-item" href="{{ route('admin.estoque.index', ['baixo' => 1]) }}"> Estoque baixo </a>
-                                    <a class="dropdown-item" href="{{ route('admin.estoque.create') }}"> Novo lançamento </a>
+                                    <a class="dropdown-item" href="{{ route('admin.produtos.index') }}"> Ver produtos </a>
+                                    <a class="dropdown-item" href="{{ route('admin.estoque.index') }}"> Ver estoque </a>
                                 </div>
                             </li>
                             <li class="nav-item dropdown">

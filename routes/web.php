@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\CulturaController;
 use App\Http\Controllers\Admin\EstoqueController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\PropriedadeController;
+use App\Http\Controllers\Admin\ProdutoController;
 use App\Http\Controllers\Admin\RecursoController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\TalhaoController;
@@ -59,6 +60,15 @@ Route::middleware('auth')->group(function () {
         Route::post('/culturas', [CulturaController::class, 'store'])->name('culturas.store');
         Route::put('/culturas/{cultura}', [CulturaController::class, 'update'])->name('culturas.update');
         Route::delete('/culturas/{cultura}', [CulturaController::class, 'destroy'])->name('culturas.destroy');
+
+        //produtos
+        Route::get('/produtos', [ProdutoController::class, 'index'])->name('produtos.index');
+        Route::get('/produtos/create', [ProdutoController::class, 'create'])->name('produtos.create');
+        Route::post('/produtos', [ProdutoController::class, 'store'])->name('produtos.store');
+        Route::get('/produtos/{produto}', [ProdutoController::class, 'show'])->name('produtos.show');
+        Route::get('/produtos/{produto}/edit', [ProdutoController::class, 'edit'])->name('produtos.edit');
+        Route::put('/produtos/{produto}', [ProdutoController::class, 'update'])->name('produtos.update');
+        Route::delete('/produtos/{produto}', [ProdutoController::class, 'destroy'])->name('produtos.destroy');
 
         //estoque de produtos por propriedade
         Route::get('/estoque', [EstoqueController::class, 'index'])->name('estoque.index');

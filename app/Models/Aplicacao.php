@@ -11,6 +11,8 @@ class Aplicacao extends Model
 {
     use HasFactory;
 
+    protected $table = 'aplicacoes';
+
     protected $fillable = [
         'talhao_id',
         'produto_id',
