@@ -127,4 +127,13 @@ class TarefaController extends Controller
 
         return view('admin.tarefas.show', compact('tarefa'));
     }
+
+    public function destroy(Request $request, Tarefa $tarefa)
+    {
+        abort_unless($tarefa->status === 'pendente', 403, 'Só é possível excluir tarefas pendentes.');
+        $tarefa->delete();
+        return $request->wantsJson()
+            ? response()->json(['message' => 'Tarefa excluída com sucesso.'])
+            : redirect()->route('admin.tarefas.index')->with('success', 'Tarefa excluída com sucesso.');
+    }
 }

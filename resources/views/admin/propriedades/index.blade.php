@@ -1,6 +1,8 @@
 @extends('layouts.admin.base')
 
 @section('content')
+@if (session('success'))<div class="container-xl pt-3"><div class="alert alert-success">{{ session('success') }}</div></div>@endif
+@if (session('error'))<div class="container-xl pt-3"><div class="alert alert-danger">{{ session('error') }}</div></div>@endif
 <main id="content" class="page-body">
     <div class="container-xl">
 
@@ -142,8 +144,8 @@
                                 </a>
                                 <div class="dropdown-menu dropdown-menu-end">
                                     <a class="dropdown-item" href="{{ route('admin.propriedades.show', $propriedade->id) }}">Visualizar</a>
-                                    <a class="dropdown-item" href="#">Editar</a>
-                                    <a class="dropdown-item text-danger" href="#">Excluir</a>
+                                    <a class="dropdown-item" href="{{ route('admin.propriedades.edit', $propriedade) }}">Editar</a>
+                                    <form method="POST" action="{{ route('admin.propriedades.destroy', $propriedade) }}" onsubmit="return confirm('Excluir {{ addslashes($propriedade->nome) }}?')">@csrf @method('DELETE')<button class="dropdown-item text-danger">Excluir</button></form>
                                 </div>
                             </div>
                         </div>
@@ -173,7 +175,7 @@
                     </div>
 
                     <div class="card-footer">
-                        <a href="#" class="btn btn-primary w-100">Ver propriedade</a>
+                        <a href="{{ route('admin.propriedades.show', $propriedade) }}" class="btn btn-primary w-100">Ver propriedade</a>
                     </div>
                 </div>
             </div>

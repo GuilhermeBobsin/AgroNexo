@@ -44,6 +44,7 @@
                             <td><div class="btn-list flex-nowrap">
                                 <a href="{{ route('admin.recursos.show', $recurso) }}" class="btn btn-sm">Ver</a>
                                 <a href="{{ route('admin.recursos.edit', $recurso) }}" class="btn btn-sm">Editar</a>
+                                <button type="button" class="btn btn-sm btn-outline-danger btn-remover-recurso" data-url="{{ route('admin.recursos.destroy', $recurso) }}" data-nome="{{ $recurso->nome }}">Excluir</button>
                             </div></td>
                         </tr>
                     @empty
@@ -60,4 +61,14 @@
         </ul></div>@endif
     </div>
 </main>
+<script type="module">
+document.querySelectorAll('.btn-remover-recurso').forEach((button) => button.addEventListener('click', async () => {
+    const result = await Swal.fire({icon:'warning',title:`Excluir ${button.dataset.nome}?`,text:'Recursos vinculados a tarefas são protegidos pelo histórico.',showCancelButton:true,confirmButtonText:'Excluir',cancelButtonText:'Cancelar',confirmButtonColor:'#d63939'});
+    if (!result.isConfirmed) return;
+    const response = await fetch(button.dataset.url,{method:'POST',headers:{'X-CSRF-TOKEN':document.querySelector('meta[name="csrf-token"]').content,Accept:'application/json'},body:new URLSearchParams({_method:'DELETE'})});
+    const data=await response.json();
+    if(!response.ok){await Swal.fire({icon:'error',title:'Não foi possível excluir',text:data.message||'Tente novamente.'});return;}
+    window.location.reload();
+}));
+</script>
 @endsection

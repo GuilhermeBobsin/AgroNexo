@@ -46,4 +46,9 @@ class Propriedade extends Model
     {
         return $this->hasMany(Recurso::class);
     }
+
+    public function tarefas(): HasMany
+    {
+        return $this->hasMany(Tarefa::class);
+    }
 }

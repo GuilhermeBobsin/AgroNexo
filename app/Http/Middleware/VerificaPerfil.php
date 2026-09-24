@@ -17,6 +17,10 @@ class VerificaPerfil
     {
         $user = $request->user();
 
+        if ($user && $user->status !== 'ativo') {
+            abort(403, 'Seu acesso está inativo. Entre em contato com um administrador.');
+        }
+
         if (! $user || ! in_array($user->perfil, $perfis, true)) {
             $perfilAtual = $user?->perfil ?? 'operador';
 

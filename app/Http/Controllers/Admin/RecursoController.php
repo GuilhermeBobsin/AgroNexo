@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Propriedade;
 use App\Models\Recurso;
 use Illuminate\Http\Request;
+use App\Models\Tarefa;
 
 class RecursoController extends Controller
 {
@@ -78,5 +79,18 @@ class RecursoController extends Controller
         }
 
         return redirect()->route('admin.recursos.show', $recurso)->with('success', 'Recurso atualizado com sucesso.');
+    }
+
+    public function destroy(Request $request, Recurso $recurso)
+    {
+        if (Tarefa::where('recurso_id', $recurso->id)->exists()) {
+            return $request->wantsJson()
+                ? response()->json(['message' => 'Este recurso está associado a tarefas e não pode ser excluído.'], 422)
+                : back()->with('error', 'Este recurso está associado a tarefas e não pode ser excluído.');
+        }
+        $recurso->delete();
+        return $request->wantsJson()
+            ? response()->json(['message' => 'Recurso excluído com sucesso.'])
+            : redirect()->route('admin.recursos.index')->with('success', 'Recurso excluído com sucesso.');
     }
 }

@@ -39,11 +39,17 @@ Route::middleware('auth')->group(function () {
         Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index');
         Route::get('/usuarios/create', [UserController::class, 'create'])->name('usuarios.create');
         Route::post('/usuarios', [UserController::class, 'store'])->name('usuarios.store');
+        Route::get('/usuarios/{user}/edit', [UserController::class, 'edit'])->name('usuarios.edit');
+        Route::put('/usuarios/{user}', [UserController::class, 'update'])->name('usuarios.update');
+        Route::delete('/usuarios/{user}', [UserController::class, 'destroy'])->name('usuarios.destroy');
 
         //propriedades
         Route::get('/propriedades', [PropriedadeController::class, 'index'])->name('propriedades.index');
         Route::get('/propriedades/create', [PropriedadeController::class, 'create'])->name('propriedades.create');
         Route::post('/propriedades', [PropriedadeController::class, 'store'])->name('propriedades.store');
+        Route::get('/propriedades/{propriedade}/edit', [PropriedadeController::class, 'edit'])->name('propriedades.edit');
+        Route::put('/propriedades/{propriedade}', [PropriedadeController::class, 'update'])->name('propriedades.update');
+        Route::delete('/propriedades/{propriedade}', [PropriedadeController::class, 'destroy'])->name('propriedades.destroy');
         Route::get('/propriedades/{propriedade}', [PropriedadeController::class, 'show'])->name('propriedades.show');
 
         //talhoes
@@ -86,6 +92,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/recursos/{recurso}', [RecursoController::class, 'show'])->name('recursos.show');
         Route::get('/recursos/{recurso}/edit', [RecursoController::class, 'edit'])->name('recursos.edit');
         Route::put('/recursos/{recurso}', [RecursoController::class, 'update'])->name('recursos.update');
+        Route::delete('/recursos/{recurso}', [RecursoController::class, 'destroy'])->name('recursos.destroy');
 
         //tarefas
         Route::get('/tarefas', [TarefaController::class, 'index'])->name('tarefas.index');
@@ -94,6 +101,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/tarefas/{tarefa}', [TarefaController::class, 'show'])->name('tarefas.show');
         Route::get('/tarefas/{tarefa}/edit', [TarefaController::class, 'edit'])->name('tarefas.edit');
         Route::put('/tarefas/{tarefa}', [TarefaController::class, 'update'])->name('tarefas.update');
+        Route::delete('/tarefas/{tarefa}', [TarefaController::class, 'destroy'])->name('tarefas.destroy');
     });
 
     Route::prefix('agronomo')->name('agronomo.')->middleware('perfil:agronomo')->group(function () {
