@@ -8,12 +8,13 @@ use App\Models\Propriedade;
 use App\Models\Tarefa;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class TarefaController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Tarefa::with(['propriedade', 'talhao', 'responsavel'])
+        $query = Tarefa::with(['propriedade', 'talhao', 'responsavel', 'recurso'])
             ->orderBy('data_prevista');
 
         if ($request->filled('status')) {
@@ -32,20 +33,42 @@ class TarefaController extends Controller
     {
         $propriedades = Propriedade::with('talhoes', 'recursos')->orderBy('nome')->get();
         $produtos = Produto::orderBy('nome')->get();
-        $usuarios = User::orderBy('name')->get();
+        $usuarios = User::where('perfil', 'operador')->orderBy('name')->get();
 
         return view('admin.tarefas.create', compact('propriedades', 'produtos', 'usuarios'));
     }
 
     public function store(Request $request)
     {
+        $validated = $request->validate($this->validationRules($request));
+
+        if ($request->input('tipo') !== 'aplicacao') {
+            $validated['produto_id'] = null;
+            $validated['dose'] = null;
+        }
+
+        $tarefa = Tarefa::create($validated);
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => 'Tarefa criada com sucesso.',
+                'id' => $tarefa->id,
+                'redirect' => route('admin.tarefas.show', $tarefa),
+            ], 201);
+        }
+
+        return redirect()->route('admin.tarefas.index')->with('success', 'Tarefa criada com sucesso.');
+    }
+
+    private function validationRules(Request $request): array
+    {
         $rules = [
             'propriedade_id' => 'required|exists:propriedades,id',
-            'talhao_id' => 'nullable|exists:talhoes,id',
+            'talhao_id' => ['nullable', Rule::exists('talhoes', 'id')->where('propriedade_id', $request->input('propriedade_id'))],
             'tipo' => 'required|in:aplicacao,aracao,calagem,irrigacao,manutencao,outro',
             'titulo' => 'required|string|max:255',
-            'responsavel_id' => 'required|exists:users,id',
-            'recurso_id' => 'nullable|exists:recursos,id',
+            'responsavel_id' => ['required', Rule::exists('users', 'id')->where('perfil', 'operador')],
+            'recurso_id' => ['nullable', Rule::exists('recursos', 'id')->where('propriedade_id', $request->input('propriedade_id'))],
             'data_prevista' => 'required|date',
             'hora_prevista' => 'nullable|date_format:H:i',
             'observacoes' => 'nullable|string|max:1000',
@@ -56,15 +79,40 @@ class TarefaController extends Controller
             $rules['dose'] = 'required|numeric|min:0.001';
         }
 
-        $validated = $request->validate($rules);
+        return $rules;
+    }
 
-        $tarefa = Tarefa::create($validated);
+    public function edit(Tarefa $tarefa)
+    {
+        abort_unless($tarefa->status === 'pendente', 403, 'Só é possível editar tarefas pendentes.');
+        $tarefa->load(['propriedade', 'talhao', 'recurso']);
+        $propriedades = Propriedade::with('talhoes', 'recursos')->orderBy('nome')->get();
+        $produtos = Produto::orderBy('nome')->get();
+        $usuarios = User::where('perfil', 'operador')->orderBy('name')->get();
 
-        if ($request->wantsJson()) {
-            return response()->json(['message' => 'Tarefa criada com sucesso.', 'id' => $tarefa->id], 201);
+        return view('admin.tarefas.edit', compact('tarefa', 'propriedades', 'produtos', 'usuarios'));
+    }
+
+    public function update(Request $request, Tarefa $tarefa)
+    {
+        abort_unless($tarefa->status === 'pendente', 403, 'Só é possível editar tarefas pendentes.');
+        $validated = $request->validate($this->validationRules($request));
+
+        if ($request->input('tipo') !== 'aplicacao') {
+            $validated['produto_id'] = null;
+            $validated['dose'] = null;
         }
 
-        return redirect()->route('admin.tarefas.index')->with('success', 'Tarefa criada com sucesso.');
+        $tarefa->update($validated);
+
+        if ($request->wantsJson()) {
+            return response()->json([
+                'message' => 'Tarefa atualizada com sucesso.',
+                'redirect' => route('admin.tarefas.show', $tarefa),
+            ]);
+        }
+
+        return redirect()->route('admin.tarefas.show', $tarefa)->with('success', 'Tarefa atualizada com sucesso.');
     }
 
     public function show(Tarefa $tarefa)

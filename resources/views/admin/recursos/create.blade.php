@@ -12,7 +12,7 @@
         @endif
 
         <div class="row"><div class="col-lg-8 col-xl-7">
-            <form method="POST" action="{{ route('admin.recursos.store') }}">
+            <form method="POST" action="{{ route('admin.recursos.store') }}" data-ajax-form id="form-recurso">
                 @csrf
                 <div class="card"><div class="card-body">
                     @include('admin.recursos._form', ['recurso' => null])
@@ -25,4 +25,9 @@
         </div></div>
     </div>
 </main>
+<script type="module">
+    document.getElementById('form-recurso')?.addEventListener('ajax-success', (event) => {
+        event.detail.toastPromise.then(() => window.location.assign(event.detail.redirect));
+    });
+</script>
 @endsection

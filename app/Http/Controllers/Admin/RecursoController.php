@@ -36,7 +36,10 @@ class RecursoController extends Controller
         Recurso::create($validated);
 
         if ($request->wantsJson()) {
-            return response()->json(['message' => 'Recurso cadastrado com sucesso.'], 201);
+            return response()->json([
+                'message' => 'Recurso cadastrado com sucesso.',
+                'redirect' => route('admin.recursos.index'),
+            ], 201);
         }
 
         return redirect()->route('admin.recursos.index')->with('success', 'Recurso cadastrado com sucesso.');
@@ -68,7 +71,10 @@ class RecursoController extends Controller
         $recurso->update($validated);
 
         if ($request->wantsJson()) {
-            return response()->json(['message' => 'Recurso atualizado com sucesso.']);
+            return response()->json([
+                'message' => 'Recurso atualizado com sucesso.',
+                'redirect' => route('admin.recursos.show', $recurso),
+            ]);
         }
 
         return redirect()->route('admin.recursos.show', $recurso)->with('success', 'Recurso atualizado com sucesso.');
