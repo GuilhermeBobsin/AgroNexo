@@ -32,7 +32,8 @@ class TarefaController extends Controller
     public function create()
     {
         $propriedades = Propriedade::with('talhoes', 'recursos')->orderBy('nome')->get();
-        $produtos = Produto::orderBy('nome')->get();
+        $produtos = Produto::with(['propriedades' => fn ($query) => $query->select('propriedades.id', 'propriedades.nome')])
+            ->orderBy('nome')->get();
         $usuarios = User::where('perfil', 'operador')->orderBy('name')->get();
 
         return view('admin.tarefas.create', compact('propriedades', 'produtos', 'usuarios'));
@@ -75,7 +76,11 @@ class TarefaController extends Controller
         ];
 
         if ($request->input('tipo') === 'aplicacao') {
-            $rules['produto_id'] = 'required|exists:produtos,id';
+            $rules['produto_id'] = [
+                'required',
+                Rule::exists('produto_propriedade', 'produto_id')
+                    ->where('propriedade_id', $request->input('propriedade_id')),
+            ];
             $rules['dose'] = 'required|numeric|min:0.001';
         }
 
@@ -87,7 +92,8 @@ class TarefaController extends Controller
         abort_unless($tarefa->status === 'pendente', 403, 'Só é possível editar tarefas pendentes.');
         $tarefa->load(['propriedade', 'talhao', 'recurso']);
         $propriedades = Propriedade::with('talhoes', 'recursos')->orderBy('nome')->get();
-        $produtos = Produto::orderBy('nome')->get();
+        $produtos = Produto::with(['propriedades' => fn ($query) => $query->select('propriedades.id', 'propriedades.nome')])
+            ->orderBy('nome')->get();
         $usuarios = User::where('perfil', 'operador')->orderBy('name')->get();
 
         return view('admin.tarefas.edit', compact('tarefa', 'propriedades', 'produtos', 'usuarios'));

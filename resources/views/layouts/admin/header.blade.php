@@ -396,46 +396,6 @@
                                     <a class="dropdown-item" href="#"> Perfis e acessos </a>
                                 </div>
                             </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
-                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-stack-2">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M12 4l-8 4l8 4l8 -4l-8 -4" />
-                                            <path d="M4 12l8 4l8 -4" />
-                                            <path d="M4 16l8 4l8 -4" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title"> Estoque </span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <a class="dropdown-item" href="#"> Produtos </a>
-                                    <a class="dropdown-item" href="#"> Estoque atual </a>
-                                    <a class="dropdown-item" href="#"> Estoque baixo </a>
-                                    <a class="dropdown-item" href="#"> Vencimentos </a>
-                                </div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown"
-                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-sun">
-                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                            <path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
-                                            <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
-                                        </svg>
-                                    </span>
-                                    <span class="nav-link-title"> Recursos </span>
-                                </a>
-                                <div class="dropdown-menu">
-                                    <div class="dropdown-menu-columns">
-                                        <div class="dropdown-menu-column">
-                                            <a class="dropdown-item" href="{{ route('admin.recursos.index') }}"> Ver recursos </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </li>
                             <li class="nav-item dropdown {{ request()->routeIs(['admin.propriedades.*', 'admin.culturas.*']) ? 'active' : '' }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
@@ -459,7 +419,47 @@
                                             <a class="dropdown-item" href="{{ route('admin.culturas.index') }}"> Culturas </a>
                                         </div>
                             </li>
-                            
+                            <li class="nav-item dropdown {{ request()->routeIs('admin.estoque.*') ? 'active' : '' }}">
+                                <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
+                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-stack-2">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M12 4l-8 4l8 4l8 -4l-8 -4" />
+                                            <path d="M4 12l8 4l8 -4" />
+                                            <path d="M4 16l8 4l8 -4" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title"> Estoque </span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="{{ route('admin.estoque.index') }}"> Estoque atual </a>
+                                    <a class="dropdown-item" href="{{ route('admin.estoque.index', ['baixo' => 1]) }}"> Estoque baixo </a>
+                                    <a class="dropdown-item" href="{{ route('admin.estoque.create') }}"> Novo lançamento </a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown"
+                                    data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-sun">
+                                            <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                                            <path d="M8 12a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                                            <path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title"> Recursos </span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <div class="dropdown-menu-columns">
+                                        <div class="dropdown-menu-column">
+                                            <a class="dropdown-item" href="{{ route('admin.recursos.index') }}"> Ver recursos </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+
+
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#navbar-form" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
