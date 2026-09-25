@@ -34,7 +34,7 @@
             <div class="row row-cards">
                 <div class="col-lg-7">
                     <section class="card h-100" aria-labelledby="tarefas-title">
-                        <div class="card-header"><h2 class="card-title" id="tarefas-title">Tarefas em aberto</h2></div>
+                        <div class="card-header"><h2 class="card-title" id="tarefas-title">Tarefas em aberto</h2><div class="card-actions"><a href="{{ route('agronomo.tarefas.index') }}">Ver todas</a></div></div>
                         <div class="table-responsive">
                             <table class="table table-vcenter card-table">
                                 <thead><tr><th>Tarefa</th><th>Propriedade / talhão</th><th>Responsável</th><th>Data</th><th>Status</th></tr></thead>
@@ -62,7 +62,7 @@
 
                 <div class="col-lg-5">
                     <section class="card h-100" aria-labelledby="aplicacoes-title">
-                        <div class="card-header"><h2 class="card-title" id="aplicacoes-title">Aplicações recentes</h2></div>
+                        <div class="card-header"><h2 class="card-title" id="aplicacoes-title">Aplicações recentes</h2><div class="card-actions"><a href="{{ route('agronomo.aplicacoes.index') }}">Ver todas</a></div></div>
                         <div class="list-group list-group-flush">
                             @forelse ($aplicacoesRecentes as $aplicacao)
                                 <div class="list-group-item">

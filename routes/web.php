@@ -11,6 +11,8 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\TalhaoController;
 use App\Http\Controllers\Admin\TarefaController;
 use App\Http\Controllers\Agronomo\DashboardController as AgronomoDashboardController;
+use App\Http\Controllers\Agronomo\AplicacaoController as AgronomoAplicacaoController;
+use App\Http\Controllers\Agronomo\TarefaController as AgronomoTarefaController;
 use App\Http\Controllers\Operador\DashboardController as OperadorDashboardController;
 use App\Http\Controllers\Operador\TarefaController as OperadorTarefaController;
 use App\Http\Controllers\ProfileController;
@@ -109,6 +111,10 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('agronomo')->name('agronomo.')->middleware('perfil:agronomo')->group(function () {
         Route::get('/dashboard', [AgronomoDashboardController::class, 'index'])->name('dashboard');
+        Route::get('/tarefas', [AgronomoTarefaController::class, 'index'])->name('tarefas.index');
+        Route::get('/tarefas/{tarefa}', [AgronomoTarefaController::class, 'show'])->name('tarefas.show');
+        Route::get('/aplicacoes', [AgronomoAplicacaoController::class, 'index'])->name('aplicacoes.index');
+        Route::get('/aplicacoes/{aplicacao}', [AgronomoAplicacaoController::class, 'show'])->name('aplicacoes.show');
     });
 
     Route::prefix('operador')->name('operador.')->middleware('perfil:operador')->group(function () {
