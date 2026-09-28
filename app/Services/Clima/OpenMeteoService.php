@@ -19,11 +19,12 @@ class OpenMeteoService
             ->acceptJson()
             ->timeout(20)
             ->retry(2, 500)
-            ->get('/forecast', [
+            ->get('/ecmwf', [
                 'latitude' => $propriedade->latitude,
                 'longitude' => $propriedade->longitude,
-                'hourly' => 'temperature_2m,relative_humidity_2m,wind_speed_10m,wind_gusts_10m,precipitation,precipitation_probability',
-                'forecast_days' => 7,
+                'hourly' => 'temperature_2m,relative_humidity_2m,wind_speed_10m,wind_gusts_10m,precipitation,precipitation_probability,sunshine_duration,soil_moisture_0_to_7cm,weather_code',
+                'past_days' => config('clima.dias_historico', 7),
+                'forecast_days' => config('clima.dias_previsao', 7),
                 'timezone' => 'America/Sao_Paulo',
                 'wind_speed_unit' => 'kmh',
             ])->throw()->json();
@@ -39,18 +40,19 @@ class OpenMeteoService
         foreach ($propriedade->talhoes()->pluck('id') as $talhaoId) {
             foreach ($timestamps as $i => $timestamp) {
                 $previstoPara = \Illuminate\Support\Carbon::parse($timestamp, 'America/Sao_Paulo');
-                if ($previstoPara->lt($now->copy()->startOfHour())) {
-                    continue;
-                }
                 PrevisaoClimatica::updateOrCreate(
                     ['talhao_id' => $talhaoId, 'previsto_para' => $previstoPara],
                     [
+                        'tipo_dado' => $previstoPara->lt($now->copy()->startOfHour()) ? 'historico_estimado' : 'previsao',
                         'temperatura' => $horas['temperature_2m'][$i] ?? null,
                         'umidade' => $horas['relative_humidity_2m'][$i] ?? null,
                         'velocidade_vento' => $horas['wind_speed_10m'][$i] ?? null,
                         'rajada_vento' => $horas['wind_gusts_10m'][$i] ?? null,
                         'precipitacao' => $horas['precipitation'][$i] ?? null,
                         'chance_chuva' => $horas['precipitation_probability'][$i] ?? null,
+                        'duracao_sol' => $horas['sunshine_duration'][$i] ?? null,
+                        'umidade_solo' => $horas['soil_moisture_0_to_7cm'][$i] ?? null,
+                        'codigo_tempo' => $horas['weather_code'][$i] ?? null,
                         'fonte' => 'open-meteo',
                         'atualizado_em' => $now,
                     ]

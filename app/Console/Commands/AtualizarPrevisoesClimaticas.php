@@ -15,9 +15,15 @@ class AtualizarPrevisoesClimaticas extends Command
     public function handle(OpenMeteoService $clima): int
     {
         $falhas = 0;
-        $propriedades = Propriedade::whereNotNull('latitude')->whereNotNull('longitude')->with('talhoes')->get();
+        $propriedades = Propriedade::whereHas('talhoes')->with('talhoes')->get();
+        if ($propriedades->isEmpty()) {
+            $this->warn('Não há propriedades com talhões cadastrados para atualizar.');
+            return self::SUCCESS;
+        }
         foreach ($propriedades as $propriedade) {
-            if ($propriedade->talhoes->isEmpty()) {
+            if ($propriedade->latitude === null || $propriedade->longitude === null) {
+                $falhas++;
+                $this->error("{$propriedade->nome}: informe latitude e longitude para sincronizar o clima.");
                 continue;
             }
             try {
