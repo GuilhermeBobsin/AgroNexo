@@ -3,30 +3,44 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\RegraClimatica;
-use App\Models\Tarefa;
+use App\Models\PrevisaoClimatica;
+use App\Models\Propriedade;
+use App\Models\Talhao;
 use App\Services\Clima\InteligenciaClimatica;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
-use Illuminate\Validation\Rule;
 
 class InteligenciaController extends Controller
 {
     public function index(InteligenciaClimatica $inteligencia)
     {
-        $regras = RegraClimatica::orderBy('tipo_tarefa')->orderBy('nome')->get();
-        $tarefas = Tarefa::with(['propriedade', 'talhao'])
-            ->whereIn('status', ['pendente', 'em_andamento'])
-            ->whereDate('data_prevista', '>=', today())
-            ->orderBy('data_prevista')->limit(100)->get()
-            ->map(function (Tarefa $tarefa) use ($inteligencia) {
-                $tarefa->alertas_climaticos = $inteligencia->alertasParaTarefa($tarefa);
-                $tarefa->clima_disponivel = $inteligencia->temPrevisaoParaTarefa($tarefa);
-                return $tarefa;
-            });
-        $atualizadoEm = \App\Models\PrevisaoClimatica::max('atualizado_em');
+        $propriedades = Propriedade::with('talhoes')->whereHas('talhoes')->orderBy('nome')->get();
+        $locais = $propriedades->flatMap(fn (Propriedade $propriedade) => $propriedade->talhoes->map(fn (Talhao $talhao) => [
+            'propriedade' => $propriedade,
+            'talhao' => $talhao,
+            'dias' => $inteligencia->semana($talhao),
+        ]));
+        $atualizadoEm = PrevisaoClimatica::max('atualizado_em');
 
-        return view('admin.inteligencia.index', compact('regras', 'tarefas', 'atualizadoEm'));
+        return view('admin.inteligencia.index', compact('locais', 'atualizadoEm'));
+    }
+
+    public function avaliar(Request $request, InteligenciaClimatica $inteligencia)
+    {
+        $dados = $request->validate([
+            'tipo' => ['required', 'in:aplicacao,aracao,calagem'],
+            'talhao_id' => ['required', 'integer', 'exists:talhoes,id'],
+            'data_prevista' => ['required', 'date'],
+            'hora_prevista' => ['nullable', 'date_format:H:i'],
+        ]);
+        $talhao = Talhao::findOrFail($dados['talhao_id']);
+
+        return response()->json($inteligencia->avaliarTipoDia(
+            $dados['tipo'],
+            $talhao,
+            $dados['data_prevista'],
+            $dados['hora_prevista'] ?? null,
+        ));
     }
 
     public function sincronizar()
@@ -34,42 +48,7 @@ class InteligenciaController extends Controller
         $codigo = Artisan::call('clima:atualizar-previsoes');
         $saida = trim(Artisan::output());
         return back()->with($codigo === 0 ? 'success' : 'error', ($codigo === 0
-            ? 'Atualização de previsões concluída.'
+            ? 'Previsões atualizadas.'
             : 'A atualização terminou com falhas.') . ($saida !== '' ? ' ' . $saida : ''));
-    }
-
-    public function storeRegra(Request $request)
-    {
-        RegraClimatica::create($this->validarRegra($request));
-        return back()->with('success', 'Regra climática criada.');
-    }
-
-    public function updateRegra(Request $request, RegraClimatica $regra)
-    {
-        $regra->update($this->validarRegra($request));
-        return back()->with('success', 'Regra climática atualizada.');
-    }
-
-    public function destroyRegra(RegraClimatica $regra)
-    {
-        $regra->delete();
-        return back()->with('success', 'Regra climática removida.');
-    }
-
-    private function validarRegra(Request $request): array
-    {
-        return $request->validate([
-            'nome' => ['required', 'string', 'max:120'],
-            'tipo_tarefa' => ['nullable', Rule::in(['aplicacao', 'aracao', 'calagem', 'irrigacao', 'manutencao', 'outro'])],
-            'variavel' => ['required', Rule::in(['temperatura', 'umidade', 'velocidade_vento', 'rajada_vento', 'precipitacao', 'chance_chuva'])],
-            'agregacao' => ['required', Rule::in(['maximo', 'soma', 'media'])],
-            'janela_horas' => ['required', 'integer', 'between:1,168'],
-            'operador' => ['required', Rule::in(['maior', 'maior_igual', 'menor', 'menor_igual', 'igual'])],
-            'valor' => ['required', 'numeric', 'between:-10000,10000'],
-            'unidade' => ['nullable', 'string', 'max:20'],
-            'gravidade' => ['required', Rule::in(['baixa', 'media', 'alta'])],
-            'mensagem' => ['required', 'string', 'max:1000'],
-            'ativa' => ['nullable', 'boolean'],
-        ]) + ['ativa' => $request->boolean('ativa')];
     }
 }
