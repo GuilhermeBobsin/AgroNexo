@@ -9,6 +9,8 @@ class RegraClimatica extends Model
 {
     use HasFactory;
 
+    protected $table = 'regras_climaticas';
+
     protected $fillable = [
         'nome',
         'tipo_tarefa',
