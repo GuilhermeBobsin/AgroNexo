@@ -50,6 +50,11 @@ class Talhao extends Model
         return $this->hasMany(LeituraClimatica::class);
     }
 
+    public function previsoesClimaticas(): HasMany
+    {
+        return $this->hasMany(PrevisaoClimatica::class);
+    }
+
     public function tarefas(): HasMany
     {
         return $this->hasMany(Tarefa::class);

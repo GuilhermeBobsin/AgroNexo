@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use App\Services\Clima\InteligenciaClimatica;
 
 class TarefaController extends Controller
 {
@@ -133,11 +134,12 @@ class TarefaController extends Controller
         return redirect()->route('admin.tarefas.show', $tarefa)->with('success', 'Tarefa atualizada com sucesso.');
     }
 
-    public function show(Tarefa $tarefa)
+    public function show(Tarefa $tarefa, InteligenciaClimatica $inteligencia)
     {
         $tarefa->load(['propriedade', 'talhao', 'responsavel', 'recurso', 'produto', 'aplicacao', 'recomendacao.agronomo']);
+        $orientacaoClimatica = $inteligencia->orientacaoParaTarefa($tarefa);
 
-        return view('admin.tarefas.show', compact('tarefa'));
+        return view('admin.tarefas.show', compact('tarefa', 'orientacaoClimatica'));
     }
 
     public function destroy(Request $request, Tarefa $tarefa)

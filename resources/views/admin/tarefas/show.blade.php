@@ -5,6 +5,7 @@
 <main id="content" class="page-body"><div class="container-xl">
     <div class="page-header mb-4"><div class="row align-items-center"><div class="col"><div class="text-secondary mb-1"><a href="{{ route('admin.tarefas.index') }}">Tarefas</a> / Detalhes</div><h2 class="page-title">{{ $tarefa->titulo }}</h2></div><div class="col-auto ms-auto d-flex gap-2">@if ($tarefa->status === 'pendente')<a href="{{ route('admin.tarefas.edit', $tarefa) }}" class="btn btn-primary">Editar tarefa</a>@endif<a href="{{ route('admin.tarefas.index') }}" class="btn">Voltar à lista</a></div></div></div>
     @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+    @include('components.alertas-climaticos-tarefa')
     @if ($tarefa->aplicacao)<div class="alert alert-success">Aplicação registrada: <a href="{{ route('admin.aplicacoes.show', $tarefa->aplicacao) }}">ver detalhes do registro</a>.</div>@endif
     @if ($tarefa->recomendacao)<div class="alert alert-info">Tarefa originada da recomendação técnica de {{ $tarefa->recomendacao->agronomo?->name }}. <a href="{{ route('admin.recomendacoes.show', $tarefa->recomendacao) }}">Ver recomendação</a>.</div>@endif
     <div class="row row-cards"><div class="col-lg-8"><div class="card"><div class="card-header"><h3 class="card-title">Detalhes da tarefa</h3><div class="card-actions"><span class="badge bg-{{ $statusColors[$tarefa->status] ?? 'secondary' }}-lt">{{ $statusLabels[$tarefa->status] ?? $tarefa->status }}</span></div></div><div class="card-body"><div class="datagrid">

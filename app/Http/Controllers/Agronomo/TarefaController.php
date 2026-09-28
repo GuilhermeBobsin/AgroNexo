@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Tarefa;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use App\Services\Clima\InteligenciaClimatica;
 
 class TarefaController extends Controller
 {
@@ -47,12 +48,13 @@ class TarefaController extends Controller
         return view('agronomo.tarefas.index', compact('tarefas', 'propriedades'));
     }
 
-    public function show(Tarefa $tarefa)
+    public function show(Tarefa $tarefa, InteligenciaClimatica $inteligencia)
     {
         abort_unless(auth()->user()->propriedades()->whereKey($tarefa->propriedade_id)->exists(), 404);
 
         $tarefa->load(['propriedade', 'talhao.cultura', 'responsavel', 'recurso', 'produto', 'aplicacao', 'recomendacao']);
+        $orientacaoClimatica = $inteligencia->orientacaoParaTarefa($tarefa);
 
-        return view('agronomo.tarefas.show', compact('tarefa'));
+        return view('agronomo.tarefas.show', compact('tarefa', 'orientacaoClimatica'));
     }
 }

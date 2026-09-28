@@ -8,6 +8,7 @@
 <main class="page-body"><div class="container-xl">
     <div class="page-header mb-4"><div class="row align-items-center"><div class="col"><div class="text-secondary mb-1"><a href="{{ route('agronomo.tarefas.index') }}">Tarefas</a> / Detalhes</div><h1 class="page-title">{{ $tarefa->titulo }}</h1></div><div class="col-auto"><span class="badge bg-{{ $statusColors[$tarefa->status] ?? 'secondary' }}-lt">{{ $statusLabels[$tarefa->status] ?? $tarefa->status }}</span></div></div></div>
     @if ($tarefa->aplicacao)<div class="alert alert-success">Esta tarefa gerou um registro de aplicação. <a href="{{ route('agronomo.aplicacoes.show', $tarefa->aplicacao) }}">Ver aplicação</a>.</div>@endif
+    @include('components.alertas-climaticos-tarefa')
     @if ($tarefa->recomendacao)<div class="alert alert-info">Esta tarefa foi criada a partir da sua recomendação técnica. <a href="{{ route('agronomo.recomendacoes.show', $tarefa->recomendacao) }}">Ver recomendação</a>.</div>@endif
     <div class="row"><div class="col-lg-9"><section class="card"><div class="card-header"><h2 class="card-title">Dados da tarefa</h2></div><div class="card-body"><div class="datagrid">
         <div class="datagrid-item"><div class="datagrid-title">Tipo</div><div class="datagrid-content">{{ ucfirst(str_replace('_', ' ', $tarefa->tipo)) }}</div></div>

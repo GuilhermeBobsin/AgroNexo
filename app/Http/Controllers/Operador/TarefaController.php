@@ -9,6 +9,7 @@ use App\Models\Aplicacao;
 use App\Models\Produto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Services\Clima\InteligenciaClimatica;
 
 class TarefaController extends Controller
 {
@@ -28,13 +29,14 @@ class TarefaController extends Controller
         return view('operador.tarefas.index', compact('tarefas'));
     }
 
-    public function show(Tarefa $tarefa)
+    public function show(Tarefa $tarefa, InteligenciaClimatica $inteligencia)
     {
         abort_unless($tarefa->responsavel_id === auth()->id() && $tarefa->propriedade->usuarios()->where('users.id', auth()->id())->exists(), 403);
 
         $tarefa->load(['propriedade', 'talhao', 'recurso', 'produto', 'aplicacao']);
+        $orientacaoClimatica = $inteligencia->orientacaoParaTarefa($tarefa);
 
-        return view('operador.tarefas.show', compact('tarefa'));
+        return view('operador.tarefas.show', compact('tarefa', 'orientacaoClimatica'));
     }
 
     public function atualizarStatus(Request $request, Tarefa $tarefa)
