@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Produto;
 use App\Models\Propriedade;
 use App\Models\Recomendacao;
+use App\Models\User;
+use App\Notifications\AtualizacaoOperacional;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -70,6 +72,15 @@ class RecomendacaoController extends Controller
         $validated['agronomo_id'] = auth()->id();
 
         $recomendacao = Recomendacao::create($validated);
+
+        User::where('perfil', 'admin')->where('status', 'ativo')->each(function (User $admin) use ($recomendacao) {
+            $admin->notify(new AtualizacaoOperacional(
+                'Nova recomendação técnica',
+                auth()->user()->name . ' enviou: ' . $recomendacao->titulo,
+                route('admin.recomendacoes.show', $recomendacao),
+                'clipboard-check'
+            ));
+        });
 
         return redirect()->route('agronomo.recomendacoes.show', $recomendacao)
             ->with('success', 'Recomendação enviada para análise do administrador.');
