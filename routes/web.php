@@ -42,10 +42,8 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('admin')->name('admin.')->middleware('perfil:admin')->group(function () {
         Route::get('/inteligencia', [AdminInteligenciaController::class, 'index'])->name('inteligencia.index');
+        Route::get('/inteligencia/avaliar', [AdminInteligenciaController::class, 'avaliar'])->name('inteligencia.avaliar');
         Route::post('/inteligencia/sincronizar', [AdminInteligenciaController::class, 'sincronizar'])->name('inteligencia.sincronizar');
-        Route::post('/inteligencia/regras', [AdminInteligenciaController::class, 'storeRegra'])->name('inteligencia.regras.store');
-        Route::patch('/inteligencia/regras/{regra}', [AdminInteligenciaController::class, 'updateRegra'])->name('inteligencia.regras.update');
-        Route::delete('/inteligencia/regras/{regra}', [AdminInteligenciaController::class, 'destroyRegra'])->name('inteligencia.regras.destroy');
         Route::get('/aplicacoes', [AplicacaoController::class, 'index'])->name('aplicacoes.index');
         Route::get('/aplicacoes/{aplicacao}', [AplicacaoController::class, 'show'])->name('aplicacoes.show');
         Route::get('/recomendacoes', [AdminRecomendacaoController::class, 'index'])->name('recomendacoes.index');
