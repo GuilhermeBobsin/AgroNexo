@@ -20,6 +20,7 @@ use App\Http\Controllers\Agronomo\InteligenciaController as AgronomoInteligencia
 use App\Http\Controllers\Operador\DashboardController as OperadorDashboardController;
 use App\Http\Controllers\Operador\TarefaController as OperadorTarefaController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\NotificacaoController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -27,6 +28,8 @@ Route::get('/', function () {
 });
 
 Route::middleware('auth')->group(function () {
+    Route::get('/notificacoes/{notification}', [NotificacaoController::class, 'abrir'])->name('notificacoes.abrir');
+    Route::post('/notificacoes/marcar-todas-lidas', [NotificacaoController::class, 'marcarTodasComoLidas'])->name('notificacoes.marcar-todas-lidas');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
