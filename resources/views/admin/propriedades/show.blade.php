@@ -195,11 +195,9 @@
                             <div class="text-secondary">Não há agrônomos ativos cadastrados.</div>
                         @endforelse
                     </div>
-                    @if ($agronomos->isNotEmpty())
-                        <div class="card-footer d-flex justify-content-end">
-                            <button class="btn btn-primary">Salvar agrônomos</button>
-                        </div>
-                    @endif
+                    <div class="card-footer d-flex justify-content-end">
+                        <button class="btn btn-primary">Salvar agrônomos</button>
+                    </div>
                 </form>
 
             </div>

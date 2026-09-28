@@ -7,6 +7,7 @@ use App\Models\Propriedade;
 use App\Models\Talhao;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class PropriedadeController extends Controller
@@ -100,11 +101,13 @@ class PropriedadeController extends Controller
         ]);
 
         $selecionados = collect($validated['agronomo_ids'] ?? [])->map(fn ($id) => (int) $id)->unique();
-        $atuais = $propriedade->usuarios()->where('users.perfil', 'agronomo')->pluck('users.id');
-        $propriedade->usuarios()->detach($atuais->diff($selecionados)->all());
-        foreach ($selecionados as $agronomoId) {
-            $propriedade->usuarios()->syncWithoutDetaching([$agronomoId => ['papel' => 'agronomo']]);
-        }
+        DB::transaction(function () use ($propriedade, $selecionados) {
+            $atuais = $propriedade->usuarios()->where('users.perfil', 'agronomo')->pluck('users.id');
+            $propriedade->usuarios()->detach($atuais->diff($selecionados)->all());
+            foreach ($selecionados as $agronomoId) {
+                $propriedade->usuarios()->syncWithoutDetaching([$agronomoId => ['papel' => 'agronomo']]);
+            }
+        });
 
         return redirect()->route('admin.propriedades.show', $propriedade)
             ->with('success', 'Agrônomos da propriedade atualizados com sucesso.');
