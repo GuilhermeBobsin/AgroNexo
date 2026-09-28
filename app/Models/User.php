@@ -41,4 +41,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(Tarefa::class, 'responsavel_id');
     }
+
+    public function recomendacoes(): HasMany
+    {
+        return $this->hasMany(Recomendacao::class, 'agronomo_id');
+    }
 }

@@ -357,6 +357,12 @@
             <span class="nav-link-title">Tarefas</span>
         </a>
     </li>
+    <li class="nav-item {{ request()->routeIs('agronomo.recomendacoes.*') ? 'active' : '' }}">
+        <a class="nav-link" href="{{ route('agronomo.recomendacoes.index') }}">
+            <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg></span>
+            <span class="nav-link-title">Recomendações</span>
+        </a>
+    </li>
     <li class="nav-item {{ request()->routeIs('agronomo.aplicacoes.*') ? 'active' : '' }}">
         <a class="nav-link" href="{{ route('agronomo.aplicacoes.index') }}">
             <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"></path><path d="M9 3h6v4h-6z"></path><path d="M9 14l2 2l4 -4"></path></svg></span>

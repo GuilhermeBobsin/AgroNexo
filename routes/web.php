@@ -5,6 +5,7 @@ use App\Http\Controllers\Admin\AplicacaoController;
 use App\Http\Controllers\Admin\EstoqueController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboardController;
 use App\Http\Controllers\Admin\PropriedadeController;
+use App\Http\Controllers\Admin\RecomendacaoController as AdminRecomendacaoController;
 use App\Http\Controllers\Admin\ProdutoController;
 use App\Http\Controllers\Admin\RecursoController;
 use App\Http\Controllers\Admin\UserController;
@@ -13,6 +14,7 @@ use App\Http\Controllers\Admin\TarefaController;
 use App\Http\Controllers\Agronomo\DashboardController as AgronomoDashboardController;
 use App\Http\Controllers\Agronomo\AplicacaoController as AgronomoAplicacaoController;
 use App\Http\Controllers\Agronomo\TarefaController as AgronomoTarefaController;
+use App\Http\Controllers\Agronomo\RecomendacaoController as AgronomoRecomendacaoController;
 use App\Http\Controllers\Operador\DashboardController as OperadorDashboardController;
 use App\Http\Controllers\Operador\TarefaController as OperadorTarefaController;
 use App\Http\Controllers\ProfileController;
@@ -39,6 +41,10 @@ Route::middleware('auth')->group(function () {
     Route::prefix('admin')->name('admin.')->middleware('perfil:admin')->group(function () {
         Route::get('/aplicacoes', [AplicacaoController::class, 'index'])->name('aplicacoes.index');
         Route::get('/aplicacoes/{aplicacao}', [AplicacaoController::class, 'show'])->name('aplicacoes.show');
+        Route::get('/recomendacoes', [AdminRecomendacaoController::class, 'index'])->name('recomendacoes.index');
+        Route::get('/recomendacoes/{recomendacao}', [AdminRecomendacaoController::class, 'show'])->name('recomendacoes.show');
+        Route::patch('/recomendacoes/{recomendacao}/criar-tarefa', [AdminRecomendacaoController::class, 'criarTarefa'])->name('recomendacoes.criar-tarefa');
+        Route::patch('/recomendacoes/{recomendacao}/recusar', [AdminRecomendacaoController::class, 'recusar'])->name('recomendacoes.recusar');
         //dashboard e usuarios
         Route::get('/dashboard', [AdminDashboardController::class, 'index'])->name('dashboard');
         Route::get('/usuarios', [UserController::class, 'index'])->name('usuarios.index');
@@ -116,6 +122,10 @@ Route::middleware('auth')->group(function () {
         Route::get('/tarefas/{tarefa}', [AgronomoTarefaController::class, 'show'])->name('tarefas.show');
         Route::get('/aplicacoes', [AgronomoAplicacaoController::class, 'index'])->name('aplicacoes.index');
         Route::get('/aplicacoes/{aplicacao}', [AgronomoAplicacaoController::class, 'show'])->name('aplicacoes.show');
+        Route::get('/recomendacoes', [AgronomoRecomendacaoController::class, 'index'])->name('recomendacoes.index');
+        Route::get('/recomendacoes/create', [AgronomoRecomendacaoController::class, 'create'])->name('recomendacoes.create');
+        Route::post('/recomendacoes', [AgronomoRecomendacaoController::class, 'store'])->name('recomendacoes.store');
+        Route::get('/recomendacoes/{recomendacao}', [AgronomoRecomendacaoController::class, 'show'])->name('recomendacoes.show');
     });
 
     Route::prefix('operador')->name('operador.')->middleware('perfil:operador')->group(function () {

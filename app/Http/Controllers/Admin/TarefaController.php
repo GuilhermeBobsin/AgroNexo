@@ -5,9 +5,11 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Produto;
 use App\Models\Propriedade;
+use App\Models\Recomendacao;
 use App\Models\Tarefa;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
 class TarefaController extends Controller
@@ -133,7 +135,7 @@ class TarefaController extends Controller
 
     public function show(Tarefa $tarefa)
     {
-        $tarefa->load(['propriedade', 'talhao', 'responsavel', 'recurso', 'produto', 'aplicacao']);
+        $tarefa->load(['propriedade', 'talhao', 'responsavel', 'recurso', 'produto', 'aplicacao', 'recomendacao.agronomo']);
 
         return view('admin.tarefas.show', compact('tarefa'));
     }
@@ -141,7 +143,19 @@ class TarefaController extends Controller
     public function destroy(Request $request, Tarefa $tarefa)
     {
         abort_unless($tarefa->status === 'pendente', 403, 'Só é possível excluir tarefas pendentes.');
-        $tarefa->delete();
+        DB::transaction(function () use ($tarefa) {
+            $tarefa = Tarefa::whereKey($tarefa->id)->lockForUpdate()->firstOrFail();
+            abort_unless($tarefa->status === 'pendente', 403, 'Só é possível excluir tarefas pendentes.');
+            if ($tarefa->recomendacao_id) {
+                Recomendacao::whereKey($tarefa->recomendacao_id)->lockForUpdate()->update([
+                    'status' => 'pendente',
+                    'analisado_por' => null,
+                    'analisado_em' => null,
+                    'parecer_admin' => 'A tarefa anterior foi removida pelo administrador e a recomendação voltou para análise.',
+                ]);
+            }
+            $tarefa->delete();
+        });
         return $request->wantsJson()
             ? response()->json(['message' => 'Tarefa excluída com sucesso.'])
             : redirect()->route('admin.tarefas.index')->with('success', 'Tarefa excluída com sucesso.');

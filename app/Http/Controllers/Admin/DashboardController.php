@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Aplicacao;
 use App\Models\Propriedade;
+use App\Models\Recomendacao;
 use App\Models\Tarefa;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -48,6 +49,7 @@ class DashboardController extends Controller
             'concluidas' => (clone $tarefasQuery)->where('status', 'concluida')->count(),
             'aplicacoes' => (clone $aplicacoesQuery)->where('status', 'realizada')->count(),
         ];
+        $recomendacoesPendentes = Recomendacao::where('status', 'pendente')->count();
 
         $tarefas = (clone $tarefasQuery)->with(['propriedade', 'talhao', 'responsavel'])
             ->whereIn('status', ['pendente', 'em_andamento'])
@@ -82,6 +84,6 @@ class DashboardController extends Controller
             return $propriedade;
         });
 
-        return view('admin.dashboard', compact('indicadores', 'tarefas', 'aplicacoes', 'propriedades', 'operadores', 'resumoPropriedades'));
+        return view('admin.dashboard', compact('indicadores', 'recomendacoesPendentes', 'tarefas', 'aplicacoes', 'propriedades', 'operadores', 'resumoPropriedades'));
     }
 }

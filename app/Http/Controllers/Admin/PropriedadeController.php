@@ -47,8 +47,8 @@ class PropriedadeController extends Controller
 
     public function destroy(Request $request, Propriedade $propriedade)
     {
-        if ($propriedade->talhoes()->exists() || $propriedade->recursos()->exists() || $propriedade->produtos()->exists() || $propriedade->alertas()->exists() || $propriedade->tarefas()->exists()) {
-            return back()->with('error', 'Esta propriedade tem talhões, recursos, estoque, tarefas ou alertas vinculados. Remova ou mova os registros dependentes antes de excluí-la.');
+        if ($propriedade->talhoes()->exists() || $propriedade->recursos()->exists() || $propriedade->produtos()->exists() || $propriedade->alertas()->exists() || $propriedade->tarefas()->exists() || $propriedade->recomendacoes()->exists()) {
+            return back()->with('error', 'Esta propriedade tem talhões, recursos, estoque, tarefas, recomendações ou alertas vinculados. Remova ou mova os registros dependentes antes de excluí-la.');
         }
         $propriedade->usuarios()->detach();
         $propriedade->delete();
