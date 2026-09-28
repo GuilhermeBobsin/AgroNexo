@@ -54,6 +54,7 @@ Route::middleware('auth')->group(function () {
         Route::post('/propriedades', [PropriedadeController::class, 'store'])->name('propriedades.store');
         Route::get('/propriedades/{propriedade}/edit', [PropriedadeController::class, 'edit'])->name('propriedades.edit');
         Route::put('/propriedades/{propriedade}', [PropriedadeController::class, 'update'])->name('propriedades.update');
+        Route::put('/propriedades/{propriedade}/agronomos', [PropriedadeController::class, 'updateAgronomos'])->name('propriedades.agronomos.update');
         Route::delete('/propriedades/{propriedade}', [PropriedadeController::class, 'destroy'])->name('propriedades.destroy');
         Route::get('/propriedades/{propriedade}', [PropriedadeController::class, 'show'])->name('propriedades.show');
 

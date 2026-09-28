@@ -171,6 +171,37 @@
                     </div>
                 </div>
 
+                <form class="card mt-4" method="POST" action="{{ route('admin.propriedades.agronomos.update', $propriedade) }}">
+                    @csrf
+                    @method('PUT')
+                    <div class="card-header">
+                        <div>
+                            <h3 class="card-title">Agrônomos responsáveis</h3>
+                            <div class="card-subtitle">Defina quais agrônomos podem consultar tarefas e aplicações desta propriedade.</div>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        @error('agronomo_ids')<div class="alert alert-danger">{{ $message }}</div>@enderror
+                        @error('agronomo_ids.*')<div class="alert alert-danger">{{ $message }}</div>@enderror
+                        @forelse ($agronomos as $agronomo)
+                            <label class="form-check mb-2">
+                                <input class="form-check-input" type="checkbox" name="agronomo_ids[]" value="{{ $agronomo->id }}" @checked(in_array($agronomo->id, old('agronomo_ids', $agronomosSelecionados)))>
+                                <span class="form-check-label">
+                                    <span class="d-block fw-semibold">{{ $agronomo->name }}</span>
+                                    <span class="text-secondary small">{{ $agronomo->email }}</span>
+                                </span>
+                            </label>
+                        @empty
+                            <div class="text-secondary">Não há agrônomos ativos cadastrados.</div>
+                        @endforelse
+                    </div>
+                    @if ($agronomos->isNotEmpty())
+                        <div class="card-footer d-flex justify-content-end">
+                            <button class="btn btn-primary">Salvar agrônomos</button>
+                        </div>
+                    @endif
+                </form>
+
             </div>
 
             <div class="col-lg-7">
