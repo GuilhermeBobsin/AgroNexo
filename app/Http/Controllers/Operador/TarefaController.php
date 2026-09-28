@@ -34,10 +34,9 @@ class TarefaController extends Controller
         abort_unless($tarefa->responsavel_id === auth()->id() && $tarefa->propriedade->usuarios()->where('users.id', auth()->id())->exists(), 403);
 
         $tarefa->load(['propriedade', 'talhao', 'recurso', 'produto', 'aplicacao']);
-        $alertasClimaticos = $inteligencia->alertasParaTarefa($tarefa);
-        $climaDisponivel = $inteligencia->temPrevisaoParaTarefa($tarefa);
+        $orientacaoClimatica = $inteligencia->orientacaoParaTarefa($tarefa);
 
-        return view('operador.tarefas.show', compact('tarefa', 'alertasClimaticos', 'climaDisponivel'));
+        return view('operador.tarefas.show', compact('tarefa', 'orientacaoClimatica'));
     }
 
     public function atualizarStatus(Request $request, Tarefa $tarefa)

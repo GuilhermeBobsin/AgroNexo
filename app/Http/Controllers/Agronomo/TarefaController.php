@@ -53,9 +53,8 @@ class TarefaController extends Controller
         abort_unless(auth()->user()->propriedades()->whereKey($tarefa->propriedade_id)->exists(), 404);
 
         $tarefa->load(['propriedade', 'talhao.cultura', 'responsavel', 'recurso', 'produto', 'aplicacao', 'recomendacao']);
-        $alertasClimaticos = $inteligencia->alertasParaTarefa($tarefa);
-        $climaDisponivel = $inteligencia->temPrevisaoParaTarefa($tarefa);
+        $orientacaoClimatica = $inteligencia->orientacaoParaTarefa($tarefa);
 
-        return view('agronomo.tarefas.show', compact('tarefa', 'alertasClimaticos', 'climaDisponivel'));
+        return view('agronomo.tarefas.show', compact('tarefa', 'orientacaoClimatica'));
     }
 }

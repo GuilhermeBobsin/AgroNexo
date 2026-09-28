@@ -137,10 +137,9 @@ class TarefaController extends Controller
     public function show(Tarefa $tarefa, InteligenciaClimatica $inteligencia)
     {
         $tarefa->load(['propriedade', 'talhao', 'responsavel', 'recurso', 'produto', 'aplicacao', 'recomendacao.agronomo']);
-        $alertasClimaticos = $inteligencia->alertasParaTarefa($tarefa);
-        $climaDisponivel = $inteligencia->temPrevisaoParaTarefa($tarefa);
+        $orientacaoClimatica = $inteligencia->orientacaoParaTarefa($tarefa);
 
-        return view('admin.tarefas.show', compact('tarefa', 'alertasClimaticos', 'climaDisponivel'));
+        return view('admin.tarefas.show', compact('tarefa', 'orientacaoClimatica'));
     }
 
     public function destroy(Request $request, Tarefa $tarefa)
