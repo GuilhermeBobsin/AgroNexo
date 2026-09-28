@@ -468,7 +468,7 @@
                                     <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M12 8a3 3 0 1 0 0 6a3 3 0 0 0 0-6z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1l-1.7 1.7l-.1-.1a1.7 1.7 0 0 0-1.9-.3a1.7 1.7 0 0 0-1 1.5v.2h-2.4v-.2a1.7 1.7 0 0 0-1-1.5a1.7 1.7 0 0 0-1.9.3l-.1.1L8 17l.1-.1A1.7 1.7 0 0 0 8.4 15a1.7 1.7 0 0 0-1.5-1H6.7v-2.4h.2a1.7 1.7 0 0 0 1.5-1a1.7 1.7 0 0 0-.3-1.9L8 8.6l1.7-1.7l.1.1a1.7 1.7 0 0 0 1.9.3a1.7 1.7 0 0 0 1-1.5v-.2h2.4v.2a1.7 1.7 0 0 0 1 1.5a1.7 1.7 0 0 0 1.9-.3l.1-.1l1.7 1.7l-.1.1a1.7 1.7 0 0 0-.3 1.9a1.7 1.7 0 0 0 1.5 1h.2V14h-.2a1.7 1.7 0 0 0-1.5 1z"/></svg></span>
                                     <span class="nav-link-title">Inteligência</span>
                                 </a>
-                                <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('admin.inteligencia.index') }}">Painel e regras climáticas</a></div>
+                                <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('admin.inteligencia.index') }}">Recomendações por dia</a></div>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#navbar-custos" data-bs-toggle="dropdown" role="button" aria-expanded="false">
