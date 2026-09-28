@@ -100,8 +100,8 @@ class UserController extends Controller
         if ($user->perfil === 'admin' && $user->status === 'ativo' && User::where('perfil', 'admin')->where('status', 'ativo')->count() <= 1) {
             return back()->with('error', 'Mantenha ao menos um administrador ativo no sistema.');
         }
-        if ($user->tarefas()->exists() || $user->aplicacoes()->exists()) {
-            return back()->with('error', 'Este usuário possui tarefas ou aplicações no histórico e não pode ser excluído. Desative o acesso pela edição.');
+        if ($user->tarefas()->exists() || $user->aplicacoes()->exists() || $user->recomendacoes()->exists()) {
+            return back()->with('error', 'Este usuário possui tarefas, aplicações ou recomendações no histórico e não pode ser excluído. Desative o acesso pela edição.');
         }
         DB::transaction(function () use ($user) {
             $user->propriedades()->detach();

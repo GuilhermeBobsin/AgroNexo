@@ -10,6 +10,7 @@ class Tarefa extends Model
 {
     protected $fillable = [
         'propriedade_id',
+        'recomendacao_id',
         'talhao_id',
         'tipo',
         'titulo',
@@ -58,5 +59,10 @@ class Tarefa extends Model
     public function aplicacao(): HasOne
     {
         return $this->hasOne(Aplicacao::class);
+    }
+
+    public function recomendacao(): BelongsTo
+    {
+        return $this->belongsTo(Recomendacao::class);
     }
 }

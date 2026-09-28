@@ -51,4 +51,9 @@ class Propriedade extends Model
     {
         return $this->hasMany(Tarefa::class);
     }
+
+    public function recomendacoes(): HasMany
+    {
+        return $this->hasMany(Recomendacao::class);
+    }
 }

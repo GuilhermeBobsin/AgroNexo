@@ -4,11 +4,11 @@
 <main class="page-body">
     <div class="container-xl">
         <div class="page-header mb-4">
-            <div>
+            <div class="row align-items-center"><div class="col">
                 <div class="page-pretitle">Visão operacional</div>
                 <h1 class="page-title">Olá, {{ $usuario->name }}</h1>
                 <div class="text-secondary mt-1">Acompanhe as atividades e aplicações das propriedades vinculadas a você.</div>
-            </div>
+            </div><div class="col-auto"><a class="btn btn-primary" href="{{ route('agronomo.recomendacoes.create') }}">Nova recomendação técnica</a></div></div>
         </div>
         <div class="alert alert-info mb-4">Seu perfil é de acompanhamento técnico: o administrador planeja as tarefas e o operador registra a execução e as aplicações realizadas.</div>
 

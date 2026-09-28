@@ -51,7 +51,7 @@ class TarefaController extends Controller
     {
         abort_unless(auth()->user()->propriedades()->whereKey($tarefa->propriedade_id)->exists(), 404);
 
-        $tarefa->load(['propriedade', 'talhao.cultura', 'responsavel', 'recurso', 'produto', 'aplicacao']);
+        $tarefa->load(['propriedade', 'talhao.cultura', 'responsavel', 'recurso', 'produto', 'aplicacao', 'recomendacao']);
 
         return view('agronomo.tarefas.show', compact('tarefa'));
     }
