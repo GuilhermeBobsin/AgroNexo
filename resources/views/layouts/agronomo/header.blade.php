@@ -388,14 +388,14 @@
             <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M20 16.2a4.5 4.5 0 0 0 -2.5 -8.5a6 6 0 0 0 -11.5 1.8a3.5 3.5 0 0 0 .5 6.7h13.5"></path><path d="M8 19l-1 2M13 19l-1 2M18 19l-1 2"></path></svg></span>
             <span class="nav-link-title">Clima</span>
         </a>
-        <div class="dropdown-menu"><span class="dropdown-item text-secondary">Disponível após integração com API de clima</span></div>
+        <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('agronomo.inteligencia.index') }}">Previsão e avisos climáticos</a></div>
     </li>
     <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#navbar-inteligencia" data-bs-toggle="dropdown" role="button" aria-expanded="false">
             <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3z"></path><path d="M19 14l1.2 2.8L23 18l-2.8 1.2L19 22l-1.2-2.8L15 18l2.8-1.2L19 14z"></path></svg></span>
             <span class="nav-link-title">Inteligência</span>
         </a>
-        <div class="dropdown-menu"><span class="dropdown-item text-secondary">Planejada para uma próxima etapa</span></div>
+        <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('agronomo.inteligencia.index') }}">Tarefas com avisos climáticos</a></div>
     </li>
 </ul>
                     </div>
