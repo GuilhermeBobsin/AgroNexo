@@ -11,10 +11,12 @@ use App\Http\Controllers\Admin\RecursoController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\TalhaoController;
 use App\Http\Controllers\Admin\TarefaController;
+use App\Http\Controllers\Admin\InteligenciaController as AdminInteligenciaController;
 use App\Http\Controllers\Agronomo\DashboardController as AgronomoDashboardController;
 use App\Http\Controllers\Agronomo\AplicacaoController as AgronomoAplicacaoController;
 use App\Http\Controllers\Agronomo\TarefaController as AgronomoTarefaController;
 use App\Http\Controllers\Agronomo\RecomendacaoController as AgronomoRecomendacaoController;
+use App\Http\Controllers\Agronomo\InteligenciaController as AgronomoInteligenciaController;
 use App\Http\Controllers\Operador\DashboardController as OperadorDashboardController;
 use App\Http\Controllers\Operador\TarefaController as OperadorTarefaController;
 use App\Http\Controllers\ProfileController;
@@ -39,6 +41,11 @@ Route::middleware('auth')->group(function () {
     Route::middleware('perfil:operador')->get('/dashboard/operador', [OperadorDashboardController::class, 'index'])->name('dashboard.operador');
 
     Route::prefix('admin')->name('admin.')->middleware('perfil:admin')->group(function () {
+        Route::get('/inteligencia', [AdminInteligenciaController::class, 'index'])->name('inteligencia.index');
+        Route::post('/inteligencia/sincronizar', [AdminInteligenciaController::class, 'sincronizar'])->name('inteligencia.sincronizar');
+        Route::post('/inteligencia/regras', [AdminInteligenciaController::class, 'storeRegra'])->name('inteligencia.regras.store');
+        Route::patch('/inteligencia/regras/{regra}', [AdminInteligenciaController::class, 'updateRegra'])->name('inteligencia.regras.update');
+        Route::delete('/inteligencia/regras/{regra}', [AdminInteligenciaController::class, 'destroyRegra'])->name('inteligencia.regras.destroy');
         Route::get('/aplicacoes', [AplicacaoController::class, 'index'])->name('aplicacoes.index');
         Route::get('/aplicacoes/{aplicacao}', [AplicacaoController::class, 'show'])->name('aplicacoes.show');
         Route::get('/recomendacoes', [AdminRecomendacaoController::class, 'index'])->name('recomendacoes.index');
@@ -117,6 +124,7 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('agronomo')->name('agronomo.')->middleware('perfil:agronomo')->group(function () {
+        Route::get('/inteligencia', [AgronomoInteligenciaController::class, 'index'])->name('inteligencia.index');
         Route::get('/dashboard', [AgronomoDashboardController::class, 'index'])->name('dashboard');
         Route::get('/tarefas', [AgronomoTarefaController::class, 'index'])->name('tarefas.index');
         Route::get('/tarefas/{tarefa}', [AgronomoTarefaController::class, 'show'])->name('tarefas.show');
