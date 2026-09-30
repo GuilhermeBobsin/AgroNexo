@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('form-criar-usuario');
+    const form = document.getElementById('form-editar-usuario');
 
     form?.addEventListener('ajax-success', (event) => {
         event.detail.toastPromise.then(() => {

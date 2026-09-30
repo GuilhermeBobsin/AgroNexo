@@ -31,12 +31,13 @@ function initAjaxForm(form) {
 
             if (response.status === 422) {
                 Object.entries(data.errors || {}).forEach(([campo, mensagens]) => {
-                    const field = form.querySelector(`[name="${CSS.escape(campo)}"]`);
+                    const campoArray = campo.replace(/\.\d+$/, '[]');
+                    const field = form.querySelector(`[name="${CSS.escape(campo)}"]`) || form.querySelector(`[name="${CSS.escape(campoArray)}"]`);
                     field?.classList.add('is-invalid');
-                    const feedback = form.querySelector(`#error-${CSS.escape(campo)}, [data-error="${CSS.escape(campo)}"]`);
+                    const feedback = form.querySelector(`#error-${CSS.escape(campo)}, [data-error="${CSS.escape(campo)}"], [data-error="${CSS.escape(campoArray)}"]`);
                     if (feedback) feedback.textContent = mensagens[0];
                 });
-                showError(data.errors ? 'Verifique os campos' : 'Não foi possível alterar o status', data.message || 'Alguns dados precisam de ajuste antes de continuar.');
+                showError(data.errors ? 'Verifique os campos' : (form.dataset.errorTitle || 'Não foi possível concluir'), data.message || 'Alguns dados precisam de ajuste antes de continuar.');
                 return;
             }
 
