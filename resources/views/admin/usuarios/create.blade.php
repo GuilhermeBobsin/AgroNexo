@@ -4,7 +4,7 @@
 <div class="page page-center" style="min-height: 80% !important;">
     <div class="container container-normal py-4">
 
-        <form id="form-criar-usuario" action="{{ route('admin.usuarios.store') }}" method="POST" data-ajax-form>
+        <form id="form-criar-usuario" action="{{ route('admin.usuarios.store') }}" method="POST" data-ajax-form data-redirect="{{ route('admin.usuarios.index') }}">
             @csrf
             <div class="row align-items-center g-4">
 
@@ -58,6 +58,7 @@
                             @empty
                                 <div class="text-secondary">Cadastre uma propriedade para conceder acesso.</div>
                             @endforelse
+                            <div class="invalid-feedback d-block" data-error="propriedade_ids[]"></div>
                         </div></div>
                     </div>
                 </div>
