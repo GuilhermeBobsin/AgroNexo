@@ -4,6 +4,7 @@
         const aplicarTema = (tema) => {
             document.documentElement.setAttribute('data-bs-theme', tema);
             localStorage.setItem('theme', tema);
+            localStorage.setItem('tabler-theme', tema);
         };
 
         botoes.forEach((botao) => {
