@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Recomendacao;
 use App\Models\Tarefa;
 use App\Models\User;
+use App\Notifications\AtualizacaoOperacional;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -107,6 +108,19 @@ class RecomendacaoController extends Controller
             return $tarefa;
         });
 
+        $tarefa->responsavel->notify(new AtualizacaoOperacional(
+            'Nova tarefa atribuída',
+            $tarefa->titulo . ' · ' . $tarefa->propriedade->nome,
+            route('operador.tarefas.show', $tarefa),
+            'list-check'
+        ));
+        $recomendacao->agronomo->notify(new AtualizacaoOperacional(
+            'Recomendação aprovada',
+            'A recomendação “' . $recomendacao->titulo . '” foi encaminhada como tarefa.',
+            route('agronomo.recomendacoes.show', $recomendacao),
+            'circle-check'
+        ));
+
         return redirect()->route('admin.tarefas.show', $tarefa)
             ->with('success', 'Recomendação aprovada e convertida em tarefa.');
     }
@@ -128,6 +142,13 @@ class RecomendacaoController extends Controller
                 'parecer_admin' => $validated['parecer_admin'],
             ]);
         });
+
+        $recomendacao->agronomo->notify(new AtualizacaoOperacional(
+            'Recomendação precisa de revisão',
+            'O administrador analisou “' . $recomendacao->titulo . '”. Consulte o parecer.',
+            route('agronomo.recomendacoes.show', $recomendacao),
+            'message-circle'
+        ));
 
         return redirect()->route('admin.recomendacoes.show', $recomendacao)
             ->with('success', 'Recomendação recusada. O parecer ficará visível para o agrônomo.');

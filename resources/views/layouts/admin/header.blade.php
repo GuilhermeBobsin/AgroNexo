@@ -84,131 +84,8 @@
                         </svg>
                     </a>
                 </div>
-                <div class="nav-item dropdown d-none d-md-flex">
-                    <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1"
-                        aria-label="Show notifications" data-bs-auto-close="outside" aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="icon icon-1">
-                            <path
-                                d="M10 5a2 2 0 1 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6">
-                            </path>
-                            <path d="M9 17v1a3 3 0 0 0 6 0v-1"></path>
-                        </svg>
-                        <span class="badge bg-red"></span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
-                        <div class="card">
-                            <div class="card-header d-flex">
-                                <h3 class="card-title">Notifications</h3>
-                                <div class="btn-close ms-auto" data-bs-dismiss="dropdown"></div>
-                            </div>
-                            <div class="list-group list-group-flush list-group-hoverable">
-                                <div class="list-group-item">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto"><span
-                                                class="status-dot status-dot-animated bg-red d-block"></span></div>
-                                        <div class="col text-truncate">
-                                            <a href="#" class="text-body d-block">Example 1</a>
-                                            <div class="d-block text-secondary text-truncate mt-n1">Change deprecated
-                                                html tags to text decoration classes (#29604)</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <a href="#" class="list-group-item-actions">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="icon text-muted icon-2">
-                                                    <path
-                                                        d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
-                                                    </path>
-                                                </svg>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="list-group-item">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto"><span class="status-dot d-block"></span></div>
-                                        <div class="col text-truncate">
-                                            <a href="#" class="text-body d-block">Example 2</a>
-                                            <div class="d-block text-secondary text-truncate mt-n1">
-                                                justify-content:between ⇒ justify-content:space-between (#29734)</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <a href="#" class="list-group-item-actions show">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="icon text-yellow icon-2">
-                                                    <path
-                                                        d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
-                                                    </path>
-                                                </svg>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="list-group-item">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto"><span class="status-dot d-block"></span></div>
-                                        <div class="col text-truncate">
-                                            <a href="#" class="text-body d-block">Example 3</a>
-                                            <div class="d-block text-secondary text-truncate mt-n1">Update
-                                                change-version.js (#29736)</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <a href="#" class="list-group-item-actions">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="icon text-muted icon-2">
-                                                    <path
-                                                        d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
-                                                    </path>
-                                                </svg>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="list-group-item">
-                                    <div class="row align-items-center">
-                                        <div class="col-auto"><span
-                                                class="status-dot status-dot-animated bg-green d-block"></span></div>
-                                        <div class="col text-truncate">
-                                            <a href="#" class="text-body d-block">Example 4</a>
-                                            <div class="d-block text-secondary text-truncate mt-n1">Regenerate
-                                                package-lock.json (#29730)</div>
-                                        </div>
-                                        <div class="col-auto">
-                                            <a href="#" class="list-group-item-actions">
-                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                                    viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                                    stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                                                    class="icon text-muted icon-2">
-                                                    <path
-                                                        d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z">
-                                                    </path>
-                                                </svg>
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="row">
-                                    <div class="col">
-                                        <a href="#" class="btn btn-2 w-100"> Archive all </a>
-                                    </div>
-                                    <div class="col">
-                                        <a href="#" class="btn btn-2 w-100"> Mark all as read </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="nav-item dropdown d-none d-md-flex me-3">
+                @include('layouts.partials.notificacoes-header')
+            <div class="nav-item dropdown d-none d-md-flex me-3">
                     <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show app menu"
                         data-bs-auto-close="outside" aria-expanded="false">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -348,6 +225,7 @@
             </div>
         </div>
     </div>
+@include('layouts.partials.tema-header-script')
 </header>
 <header class="navbar-expand-md">
     <div class="collapse navbar-collapse" id="navbar-menu" style="visibility: visible !important;">
@@ -416,7 +294,7 @@
                                             <a class="dropdown-item" href="{{ route('admin.culturas.index') }}"> Culturas </a>
                                         </div>
                             </li>
-                            <li class="nav-item dropdown {{ request()->routeIs('admin.estoque.*') ? 'active' : '' }}">
+                            <li class="nav-item dropdown {{ request()->routeIs(['admin.estoque.*', 'admin.produtos.*']) ? 'active' : '' }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
                                     data-bs-auto-close="outside" role="button" aria-expanded="false">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
@@ -437,35 +315,54 @@
 
                             <li class="nav-item dropdown {{ request()->routeIs('admin.recursos.*') ? 'active' : '' }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-recursos" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M14.7 6.3a5 5 0 0 0-6.4 6.4l-4.8 4.8a2 2 0 0 0 2.8 2.8l4.8-4.8a5 5 0 0 0 6.4-6.4l-3 3l-3-3z"/><path d="M5 5l3 3"/></svg></span>
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                            <path d="M14.7 6.3a5 5 0 0 0-6.4 6.4l-4.8 4.8a2 2 0 0 0 2.8 2.8l4.8-4.8a5 5 0 0 0 6.4-6.4l-3 3l-3-3z" />
+                                            <path d="M5 5l3 3" />
+                                        </svg></span>
                                     <span class="nav-link-title">Recursos</span>
                                 </a>
                                 <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('admin.recursos.index') }}">Todos os recursos</a><a class="dropdown-item" href="{{ route('admin.recursos.create') }}">Novo recurso</a></div>
                             </li>
                             <li class="nav-item dropdown {{ request()->routeIs(['admin.tarefas.*', 'admin.recomendacoes.*']) ? 'active' : '' }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-tarefas" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M9 11l3 3l8-8"/><path d="M20 12v6a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2v-12a2 2 0 0 1 2-2h9"/></svg></span>
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                            <path d="M9 11l3 3l8-8" />
+                                            <path d="M20 12v6a2 2 0 0 1-2 2h-12a2 2 0 0 1-2-2v-12a2 2 0 0 1 2-2h9" />
+                                        </svg></span>
                                     <span class="nav-link-title">Tarefas</span>
                                 </a>
                                 <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('admin.tarefas.index') }}">Todas as tarefas</a><a class="dropdown-item" href="{{ route('admin.tarefas.create') }}">Nova tarefa</a><a class="dropdown-item" href="{{ route('admin.recomendacoes.index') }}">Recomendações técnicas</a><a class="dropdown-item" href="{{ route('admin.aplicacoes.index') }}">Registro de aplicações</a></div>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#navbar-agenda" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M4 7h16v13H4z"/><path d="M8 3v8"/><path d="M16 3v8"/><path d="M4 11h16"/><path d="M8 15h.01"/><path d="M12 15h.01"/></svg></span>
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                            <path d="M4 7h16v13H4z" />
+                                            <path d="M8 3v8" />
+                                            <path d="M16 3v8" />
+                                            <path d="M4 11h16" />
+                                            <path d="M8 15h.01" />
+                                            <path d="M12 15h.01" />
+                                        </svg></span>
                                     <span class="nav-link-title">Agenda</span>
                                 </a>
                                 <div class="dropdown-menu"><span class="dropdown-item text-secondary">Calendário · integração futura</span><a class="dropdown-item" href="{{ route('admin.tarefas.index') }}">Tarefas</a><a class="dropdown-item" href="{{ route('admin.tarefas.index', ['status' => 'pendente']) }}">Pendências</a><a class="dropdown-item" href="{{ route('admin.tarefas.create') }}">Nova tarefa</a></div>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#navbar-inteligencia" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M12 8a3 3 0 1 0 0 6a3 3 0 0 0 0-6z"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1l-1.7 1.7l-.1-.1a1.7 1.7 0 0 0-1.9-.3a1.7 1.7 0 0 0-1 1.5v.2h-2.4v-.2a1.7 1.7 0 0 0-1-1.5a1.7 1.7 0 0 0-1.9.3l-.1.1L8 17l.1-.1A1.7 1.7 0 0 0 8.4 15a1.7 1.7 0 0 0-1.5-1H6.7v-2.4h.2a1.7 1.7 0 0 0 1.5-1a1.7 1.7 0 0 0-.3-1.9L8 8.6l1.7-1.7l.1.1a1.7 1.7 0 0 0 1.9.3a1.7 1.7 0 0 0 1-1.5v-.2h2.4v.2a1.7 1.7 0 0 0 1 1.5a1.7 1.7 0 0 0 1.9-.3l.1-.1l1.7 1.7l-.1.1a1.7 1.7 0 0 0-.3 1.9a1.7 1.7 0 0 0 1.5 1h.2V14h-.2a1.7 1.7 0 0 0-1.5 1z"/></svg></span>
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                            <path d="M12 8a3 3 0 1 0 0 6a3 3 0 0 0 0-6z" />
+                                            <path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1l-1.7 1.7l-.1-.1a1.7 1.7 0 0 0-1.9-.3a1.7 1.7 0 0 0-1 1.5v.2h-2.4v-.2a1.7 1.7 0 0 0-1-1.5a1.7 1.7 0 0 0-1.9.3l-.1.1L8 17l.1-.1A1.7 1.7 0 0 0 8.4 15a1.7 1.7 0 0 0-1.5-1H6.7v-2.4h.2a1.7 1.7 0 0 0 1.5-1a1.7 1.7 0 0 0-.3-1.9L8 8.6l1.7-1.7l.1.1a1.7 1.7 0 0 0 1.9.3a1.7 1.7 0 0 0 1-1.5v-.2h2.4v.2a1.7 1.7 0 0 0 1 1.5a1.7 1.7 0 0 0 1.9-.3l.1-.1l1.7 1.7l-.1.1a1.7 1.7 0 0 0-.3 1.9a1.7 1.7 0 0 0 1.5 1h.2V14h-.2a1.7 1.7 0 0 0-1.5 1z" />
+                                        </svg></span>
                                     <span class="nav-link-title">Inteligência</span>
                                 </a>
                                 <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('admin.inteligencia.index') }}">Recomendações por dia</a></div>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#navbar-custos" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6"/></svg></span>
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                            <path d="M12 2v20" />
+                                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6" />
+                                        </svg></span>
                                     <span class="nav-link-title">Custos</span>
                                 </a>
                                 <div class="dropdown-menu"><span class="dropdown-item text-secondary">Visão geral · planejamento</span><span class="dropdown-item text-secondary">Custos das aplicações · planejamento</span><span class="dropdown-item text-secondary">Por talhão · planejamento</span><span class="dropdown-item text-secondary">Por período · planejamento</span></div>

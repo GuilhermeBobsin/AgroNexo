@@ -8,6 +8,7 @@ use App\Models\Propriedade;
 use App\Models\Recomendacao;
 use App\Models\Tarefa;
 use App\Models\User;
+use App\Notifications\AtualizacaoOperacional;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -52,6 +53,12 @@ class TarefaController extends Controller
         }
 
         $tarefa = Tarefa::create($validated);
+        $tarefa->responsavel->notify(new AtualizacaoOperacional(
+            'Nova tarefa atribuída',
+            $tarefa->titulo . ' · ' . $tarefa->propriedade->nome,
+            route('operador.tarefas.show', $tarefa),
+            'list-check'
+        ));
 
         if ($request->wantsJson()) {
             return response()->json([
