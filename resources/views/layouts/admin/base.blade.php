@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler.min.css" />
     <script>
         (() => {
-            const theme = localStorage.getItem('theme') || 'light';
+            const theme = localStorage.getItem('tabler-theme') || localStorage.getItem('theme') || 'light';
 
             document.documentElement.setAttribute('data-bs-theme', theme);
         })();
