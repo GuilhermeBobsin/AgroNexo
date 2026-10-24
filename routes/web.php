@@ -27,7 +27,7 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'usuario.ativo'])->group(function () {
     Route::get('/notificacoes/{notification}', [NotificacaoController::class, 'abrir'])->name('notificacoes.abrir');
     Route::post('/notificacoes/marcar-todas-lidas', [NotificacaoController::class, 'marcarTodasComoLidas'])->name('notificacoes.marcar-todas-lidas');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
