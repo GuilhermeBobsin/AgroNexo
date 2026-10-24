@@ -35,6 +35,14 @@ const errorLimite = document.getElementById('error-limite');
 
 let poligonoTalhao = null;
 
+const limiteInicial = (() => {
+    try {
+        return JSON.parse(mapElement.dataset.initialLimit || '[]');
+    } catch {
+        return [];
+    }
+})();
+
 
 // ==========================================================
 // MAPA
@@ -582,5 +590,14 @@ function mostrarErrosValidacao(errors) {
 // ==========================================================
 // ESTADO INICIAL
 // ==========================================================
+
+if (Array.isArray(limiteInicial) && limiteInicial.length >= 3) {
+    poligonoTalhao = L.polygon(limiteInicial, {
+        color: '#206bc4',
+        fillOpacity: 0.15,
+    }).addTo(mapa);
+    mapa.fitBounds(poligonoTalhao.getBounds(), { padding: [24, 24] });
+    atualizarTalhao();
+}
 
 atualizarBotao();

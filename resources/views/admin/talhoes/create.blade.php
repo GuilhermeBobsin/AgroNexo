@@ -18,7 +18,7 @@
                     </div>
 
                     <h2 class="page-title">
-                        Novo talhão
+                        {{ isset($talhao) ? 'Editar talhão' : 'Novo talhão' }}
                     </h2>
 
                 </div>
@@ -47,7 +47,7 @@
 
             @csrf
 
-            <input type="hidden" name="limite" id="input-limite">
+            <input type="hidden" name="limite" id="input-limite" value="{{ json_encode(old('limite', $talhao->limite ?? [])) }}">
 
             <div class="row g-4">
 
@@ -84,7 +84,7 @@
                                     Nome do talhão
                                 </label>
 
-                                <input type="text" name="nome" id="input-nome" class="form-control" placeholder="Ex: Talhão 01" required autofocus
+                                <input type="text" name="nome" id="input-nome" class="form-control" placeholder="Ex: Talhão 01" value="{{ old('nome', $talhao->nome ?? '') }}" required autofocus
                                 >
 
                                 <div class="invalid-feedback" id="error-nome">
@@ -113,7 +113,7 @@
 
                                         @foreach ($culturas as $cultura)
 
-                                            <option value="{{ $cultura->id }}">
+                                            <option value="{{ $cultura->id }}" @selected(old('cultura_id', $talhao->cultura_id ?? null) == $cultura->id)>
                                                 {{ $cultura->nome }}
                                             </option>
 
@@ -144,6 +144,7 @@
                                             id="input-area"
                                             class="form-control"
                                             placeholder="Automática"
+                                            value="{{ old('area', $talhao->area ?? '') }}"
                                             min="0"
                                             step="0.01"
                                             readonly
@@ -201,6 +202,7 @@
                                     id="map"
                                     data-lat="{{ $propriedade->latitude }}"
                                     data-lng="{{ $propriedade->longitude }}"
+                                    data-initial-limit="{{ json_encode($talhao->limite ?? []) }}"
                                     style="
                                         height: 430px;
                                         width: 100%;

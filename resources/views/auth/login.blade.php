@@ -91,7 +91,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="text-center text-secondary mt-3">Ainda não tem uma conta? <a href="{{ route('register') }}" tabindex="-1">Cadastrar</a></div>
+                    <div class="text-center text-secondary mt-3">O acesso é criado por um administrador do AgroNexo.</div>
                 </div>
             </div>
             <div class="col-lg d-none d-lg-block">
