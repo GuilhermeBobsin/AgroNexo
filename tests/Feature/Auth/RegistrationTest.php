@@ -2,7 +2,9 @@
 
 namespace Tests\Feature\Auth;
 
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class RegistrationTest extends TestCase
@@ -26,5 +28,17 @@ class RegistrationTest extends TestCase
         $response->assertNotFound();
         $this->assertGuest();
         $this->assertDatabaseMissing('users', ['email' => 'test@example.com']);
+    }
+
+    public function test_database_defaults_new_users_to_an_active_operator(): void
+    {
+        $user = User::create([
+            'name' => 'Conta interna',
+            'email' => 'interna@example.com',
+            'password' => Hash::make('password'),
+        ]);
+
+        $this->assertSame('operador', $user->fresh()->perfil);
+        $this->assertSame('ativo', $user->fresh()->status);
     }
 }
