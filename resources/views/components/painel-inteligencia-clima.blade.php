@@ -7,7 +7,7 @@
 @forelse ($locais as $local)
     @php
         $atualizacao = $local['atualizado_em'] ? \Illuminate\Support\Carbon::parse($local['atualizado_em']) : null;
-        $desatualizado = !$atualizacao || $atualizacao->lt(now()->subHours(2));
+        $desatualizado = !$atualizacao || $atualizacao->lt(now()->subHours(config('clima.idade_maxima_horas', 2)));
     @endphp
     <section class="card mb-4 climate-location">
         <div class="card-header d-flex align-items-center justify-content-between gap-3 flex-wrap">

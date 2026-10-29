@@ -7,6 +7,8 @@
     @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
     @if ($errors->any())<div class="alert alert-danger">{{ $errors->first() }}</div>@endif
     @if ($tarefa->aplicacao)<div class="alert alert-success">Aplicação registrada: {{ number_format((float) $tarefa->aplicacao->dose, 3, ',', '.') }} {{ $tarefa->produto?->unidade }}. Estoque atualizado.</div>@endif
+    @if ($tarefa->status === 'cancelada' && $tarefa->motivo_cancelamento)<div class="alert alert-danger">Tarefa cancelada em {{ $tarefa->data_cancelamento?->format('d/m/Y H:i') }}. Motivo: {{ $tarefa->motivo_cancelamento }}</div>@endif
+    @if ($tarefa->recurso && $tarefa->recurso->status !== 'disponivel' && $tarefa->status === 'pendente')<div class="alert alert-warning">O recurso {{ $tarefa->recurso->nome }} está indisponível ({{ $tarefa->recurso->status === 'manutencao' ? 'em manutenção' : 'em uso' }}). Não será possível iniciar a tarefa até que esteja disponível.</div>@endif
     @include('components.alertas-climaticos-tarefa')
     <div class="row row-cards"><div class="col-lg-8"><div class="card"><div class="card-header"><h3 class="card-title">Instruções da atividade</h3></div><div class="card-body"><div class="datagrid">
         <div class="datagrid-item"><div class="datagrid-title">Tipo</div><div class="datagrid-content">{{ ucfirst(str_replace('_', ' ', $tarefa->tipo)) }}</div></div><div class="datagrid-item"><div class="datagrid-title">Propriedade</div><div class="datagrid-content">{{ $tarefa->propriedade->nome }}</div></div><div class="datagrid-item"><div class="datagrid-title">Talhão</div><div class="datagrid-content">{{ $tarefa->talhao->nome ?? '—' }}</div></div><div class="datagrid-item"><div class="datagrid-title">Recurso</div><div class="datagrid-content">{{ $tarefa->recurso->nome ?? 'Não há recurso associado' }}</div></div><div class="datagrid-item"><div class="datagrid-title">Data prevista</div><div class="datagrid-content">{{ $tarefa->data_prevista->format('d/m/Y') }} {{ $tarefa->hora_prevista ? substr($tarefa->hora_prevista, 0, 5) : '' }}</div></div>
@@ -27,7 +29,7 @@
                     <div class="col-12"><label class="form-label">Observações da aplicação</label><textarea name="observacoes_aplicacao" class="form-control" rows="2" maxlength="2000">{{ old('observacoes_aplicacao') }}</textarea></div>
                 </div>
             @endif
-            <button type="submit" class="btn btn-success">{{ $tarefa->tipo === 'aplicacao' ? 'Registrar aplicação e concluir' : 'Marcar como concluída' }}</button></form><form method="POST" action="{{ route('operador.tarefas.status', $tarefa) }}" data-ajax-form class="status-form">@csrf @method('PATCH')<input type="hidden" name="status" value="cancelada"><button type="submit" class="btn btn-outline-danger">Cancelar tarefa</button></form>@endif
+            <button type="submit" class="btn btn-success">{{ $tarefa->tipo === 'aplicacao' ? 'Registrar aplicação e concluir' : 'Marcar como concluída' }}</button></form><form method="POST" action="{{ route('operador.tarefas.status', $tarefa) }}" data-ajax-form class="status-form">@csrf @method('PATCH')<input type="hidden" name="status" value="cancelada"><label class="form-label" for="motivo_cancelamento">Motivo do cancelamento</label><input id="motivo_cancelamento" name="motivo_cancelamento" class="form-control mb-2" maxlength="1000" required><button type="submit" class="btn btn-outline-danger">Cancelar tarefa</button></form>@endif
     </div>@endif
     </div></div></div>
 </div></main>

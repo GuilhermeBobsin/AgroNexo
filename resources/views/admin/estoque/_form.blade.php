@@ -23,7 +23,7 @@
 
 <div class="row">
     <div class="col-md-6 mb-3">
-        <label for="estoque_atual" class="form-label">Quantidade atual</label>
+        <label for="estoque_atual" class="form-label">{{ isset($estoque) ? 'Quantidade atual' : 'Saldo inicial' }}</label>
         <input id="estoque_atual" name="estoque_atual" type="number" min="0" max="999999999.999" step="0.001" value="{{ old('estoque_atual', $estoque->estoque_atual ?? '0.000') }}" class="form-control @error('estoque_atual') is-invalid @enderror" required>
         <div class="invalid-feedback" id="error-estoque_atual">@error('estoque_atual'){{ $message }}@enderror</div>
     </div>
@@ -33,6 +33,16 @@
         <div class="invalid-feedback" id="error-estoque_minimo">@error('estoque_minimo'){{ $message }}@enderror</div>
     </div>
 </div>
+
+@if (isset($estoque))
+    <div class="mb-3">
+        <label for="motivo_ajuste" class="form-label">Motivo do ajuste <span class="text-secondary">(obrigatório se alterar a quantidade atual)</span></label>
+        <input id="motivo_ajuste" name="motivo_ajuste" type="text" maxlength="255" value="{{ old('motivo_ajuste') }}" class="form-control @error('motivo_ajuste') is-invalid @enderror" placeholder="Ex.: conferência física, entrada de compra, perda">
+        <div class="invalid-feedback" id="error-motivo_ajuste">@error('motivo_ajuste'){{ $message }}@enderror</div>
+    </div>
+@else
+    <div class="form-hint mb-3">O saldo inicial será registrado automaticamente no livro de movimentações.</div>
+@endif
 
 <div class="mb-3">
     <label for="data_validade" class="form-label">Data de validade <span class="text-secondary">(opcional)</span></label>
