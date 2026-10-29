@@ -7,6 +7,8 @@ use App\Models\Recurso;
 use App\Models\Tarefa;
 use App\Models\Aplicacao;
 use App\Models\Produto;
+use App\Models\MovimentacaoEstoque;
+use App\Models\Recomendacao;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\Clima\InteligenciaClimatica;
@@ -45,9 +47,12 @@ class TarefaController extends Controller
 
         abort_unless($tarefa->propriedade->usuarios()->where('users.id', auth()->id())->exists(), 403);
         $rules = ['status' => 'required|in:em_andamento,concluida,cancelada'];
+        if ($request->input('status') === 'cancelada') {
+            $rules['motivo_cancelamento'] = 'required|string|max:1000';
+        }
         if ($tarefa->tipo === 'aplicacao' && $request->input('status') === 'concluida') {
             $rules += [
-                'dose_realizada' => 'required|numeric|min:0.001|max:9999999.999',
+                'dose_realizada' => 'required|numeric|decimal:0,3|min:0.001|max:9999999.999',
                 'equipamento' => 'nullable|string|max:255',
                 'temperatura' => 'nullable|numeric|between:-50,70',
                 'umidade' => 'nullable|numeric|between:0,100',
@@ -70,7 +75,18 @@ class TarefaController extends Controller
 
             $tarefa->status = $novoStatus;
             $tarefa->data_conclusao = $novoStatus === 'concluida' ? now() : null;
+            $tarefa->data_cancelamento = $novoStatus === 'cancelada' ? now() : null;
+            $tarefa->motivo_cancelamento = $novoStatus === 'cancelada' ? $validated['motivo_cancelamento'] : null;
             $tarefa->save();
+
+            if ($novoStatus === 'cancelada' && $tarefa->recomendacao_id) {
+                Recomendacao::whereKey($tarefa->recomendacao_id)->lockForUpdate()->update([
+                    'status' => 'pendente',
+                    'analisado_por' => null,
+                    'analisado_em' => null,
+                    'parecer_admin' => 'A tarefa foi cancelada pelo operador: '.$validated['motivo_cancelamento'],
+                ]);
+            }
 
             if ($tarefa->recurso_id) {
                 $recurso = Recurso::whereKey($tarefa->recurso_id)->lockForUpdate()->first();
@@ -84,7 +100,7 @@ class TarefaController extends Controller
                             ->where('id', '!=', $tarefa->id)
                             ->where('status', 'em_andamento')
                             ->exists();
-                        if (!$outraTarefaEmAndamento) {
+                        if ($recurso->status === 'em_uso' && !$outraTarefaEmAndamento) {
                             $recurso->status = 'disponivel';
                             $recurso->save();
                         }
@@ -103,12 +119,12 @@ class TarefaController extends Controller
                     ->first();
                 abort_unless($estoque, 422, 'O produto não possui estoque cadastrado para esta propriedade.');
                 $dose = (float) $validated['dose_realizada'];
-                abort_unless((float) $estoque->estoque_atual >= $dose, 422, 'Estoque insuficiente para registrar a quantidade aplicada.');
-
-                DB::table('produto_propriedade')->where('id', $estoque->id)->update([
-                    'estoque_atual' => DB::raw('estoque_atual - '.number_format($dose, 3, '.', '')),
-                    'updated_at' => now(),
-                ]);
+                $linhasAtualizadas = DB::table('produto_propriedade')
+                    ->where('id', $estoque->id)
+                    ->where('estoque_atual', '>=', $dose)
+                    ->decrement('estoque_atual', $dose, ['updated_at' => now()]);
+                abort_unless($linhasAtualizadas === 1, 422, 'Estoque insuficiente para registrar a quantidade aplicada.');
+                $saldoNovo = round((float) $estoque->estoque_atual - $dose, 3);
 
                 Aplicacao::create([
                     'tarefa_id' => $tarefa->id,
@@ -125,6 +141,16 @@ class TarefaController extends Controller
                     'velocidade_vento' => $validated['velocidade_vento'] ?? null,
                     'precipitacao' => $validated['precipitacao'] ?? null,
                     'observacoes' => $validated['observacoes_aplicacao'] ?? null,
+                ]);
+                MovimentacaoEstoque::create([
+                    'produto_propriedade_id' => $estoque->id,
+                    'tarefa_id' => $tarefa->id,
+                    'usuario_id' => auth()->id(),
+                    'tipo' => 'saida',
+                    'quantidade' => $dose,
+                    'saldo_anterior' => $estoque->estoque_atual,
+                    'saldo_atual' => $saldoNovo,
+                    'motivo' => 'Aplicação registrada · tarefa #'.$tarefa->id,
                 ]);
             }
         });

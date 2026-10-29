@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Propriedade;
 use App\Models\Recurso;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Tarefa;
 
 class RecursoController extends Controller
@@ -69,7 +70,24 @@ class RecursoController extends Controller
             'status' => 'required|in:disponivel,em_uso,manutencao',
         ]);
 
-        $recurso->update($validated);
+        $conflito = DB::transaction(function () use ($recurso, $validated) {
+            $recursoAtual = Recurso::whereKey($recurso->id)->lockForUpdate()->firstOrFail();
+            $tarefasEmAndamento = Tarefa::where('recurso_id', $recursoAtual->id)->where('status', 'em_andamento')->exists();
+            if ($tarefasEmAndamento && (
+                (int) $validated['propriedade_id'] !== (int) $recursoAtual->propriedade_id
+                || $validated['status'] !== $recursoAtual->status
+            )) {
+                return true;
+            }
+            $recursoAtual->update($validated);
+            return false;
+        });
+        if ($conflito) {
+            $message = 'Não altere a propriedade ou disponibilidade de um recurso enquanto uma tarefa vinculada está em andamento.';
+            return $request->wantsJson()
+                ? response()->json(['message' => $message], 409)
+                : back()->withInput()->with('error', $message);
+        }
 
         if ($request->wantsJson()) {
             return response()->json([

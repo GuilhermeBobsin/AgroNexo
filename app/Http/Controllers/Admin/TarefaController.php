@@ -12,6 +12,7 @@ use App\Notifications\AtualizacaoOperacional;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use App\Models\Recurso;
 use App\Services\Clima\InteligenciaClimatica;
 
 class TarefaController extends Controller
@@ -121,7 +122,6 @@ class TarefaController extends Controller
 
     public function update(Request $request, Tarefa $tarefa)
     {
-        abort_unless($tarefa->status === 'pendente', 403, 'Só é possível editar tarefas pendentes.');
         $validated = $request->validate($this->validationRules($request));
 
         if ($request->input('tipo') !== 'aplicacao') {
@@ -129,7 +129,11 @@ class TarefaController extends Controller
             $validated['dose'] = null;
         }
 
-        $tarefa->update($validated);
+        DB::transaction(function () use ($tarefa, $validated) {
+            $tarefa = Tarefa::whereKey($tarefa->id)->lockForUpdate()->firstOrFail();
+            abort_unless($tarefa->status === 'pendente', 403, 'Só é possível editar tarefas pendentes.');
+            $tarefa->update($validated);
+        });
 
         if ($request->wantsJson()) {
             return response()->json([
@@ -168,5 +172,50 @@ class TarefaController extends Controller
         return $request->wantsJson()
             ? response()->json(['message' => 'Tarefa excluída com sucesso.'])
             : redirect()->route('admin.tarefas.index')->with('success', 'Tarefa excluída com sucesso.');
+    }
+
+    public function cancelar(Request $request, Tarefa $tarefa)
+    {
+        $dados = $request->validate(['motivo_cancelamento' => 'required|string|max:1000']);
+        DB::transaction(function () use ($tarefa, $dados) {
+            $tarefa = Tarefa::whereKey($tarefa->id)->lockForUpdate()->firstOrFail();
+            abort_unless(in_array($tarefa->status, ['pendente', 'em_andamento'], true), 422, 'Só é possível cancelar tarefas pendentes ou em andamento.');
+
+            $tarefa->update([
+                'status' => 'cancelada',
+                'data_conclusao' => null,
+                'data_cancelamento' => now(),
+                'motivo_cancelamento' => $dados['motivo_cancelamento'],
+            ]);
+
+            if ($tarefa->recomendacao_id) {
+                Recomendacao::whereKey($tarefa->recomendacao_id)->lockForUpdate()->update([
+                    'status' => 'pendente',
+                    'analisado_por' => null,
+                    'analisado_em' => null,
+                    'parecer_admin' => 'A tarefa foi cancelada: '.$dados['motivo_cancelamento'],
+                ]);
+            }
+
+            if ($tarefa->recurso_id) {
+                $recurso = Recurso::whereKey($tarefa->recurso_id)->lockForUpdate()->first();
+                $outraTarefaAtiva = Tarefa::where('recurso_id', $tarefa->recurso_id)
+                    ->where('id', '!=', $tarefa->id)
+                    ->where('status', 'em_andamento')
+                    ->exists();
+                if ($recurso?->status === 'em_uso' && !$outraTarefaAtiva) {
+                    $recurso->update(['status' => 'disponivel']);
+                }
+            }
+        });
+
+        $tarefa->responsavel?->notify(new AtualizacaoOperacional(
+            'Tarefa cancelada',
+            $tarefa->titulo.' · '.$dados['motivo_cancelamento'],
+            route('operador.tarefas.show', $tarefa),
+            'x'
+        ));
+
+        return back()->with('success', 'Tarefa cancelada; o motivo foi registrado e o recurso liberado quando aplicável.');
     }
 }

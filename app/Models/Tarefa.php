@@ -22,12 +22,15 @@ class Tarefa extends Model
         'data_prevista',
         'hora_prevista',
         'data_conclusao',
+        'data_cancelamento',
+        'motivo_cancelamento',
         'observacoes',
     ];
 
     protected $casts = [
         'data_prevista' => 'date',
         'data_conclusao' => 'datetime',
+        'data_cancelamento' => 'datetime',
         'dose' => 'decimal:3',
     ];
 

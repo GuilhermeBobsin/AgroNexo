@@ -89,16 +89,18 @@ class ProdutoController extends Controller
 
     public function destroy(Request $request, Produto $produto)
     {
-        $temAplicacoes = $produto->aplicacoes()->exists();
-        $temTarefas = $produto->tarefas()->exists();
+        $message = DB::transaction(function () use ($produto) {
+            $produtoAtual = Produto::whereKey($produto->id)->lockForUpdate()->firstOrFail();
+            if ($produtoAtual->aplicacoes()->exists() || $produtoAtual->tarefas()->exists() || $produtoAtual->propriedades()->exists()) {
+                return 'Este produto não pode ser removido porque possui estoque ou está vinculado a aplicações/tarefas. Remova primeiro os registros de estoque sem histórico.';
+            }
+            $produtoAtual->delete();
+            return null;
+        });
 
-        if ($temAplicacoes || $temTarefas) {
-            $message = 'Este produto não pode ser removido porque está vinculado a aplicações ou tarefas.';
-
+        if ($message) {
             return response()->json(['message' => $message], 409);
         }
-
-        $produto->delete();
 
         if ($request->wantsJson()) {
             return response()->json(['message' => 'Produto removido com sucesso.']);
