@@ -81,10 +81,6 @@
                                         Selecione as propriedades que este usuário pode acessar.
                                     </p>
 
-                                    <div id="alerta-acesso-total" class="alert alert-info d-none">
-                                        Administradores têm acesso a todas as propriedades automaticamente — nenhuma seleção é necessária.
-                                    </div>
-
                                     <div id="lista-propriedades" style="max-height: 280px; overflow-y: auto;">
                                         @forelse ($propriedades as $propriedade)
                                             <label class="form-check mb-2">
@@ -120,26 +116,9 @@
 
                                     <div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
 
-                                        <label class="form-selectgroup-item flex-fill">
-                                            <input type="radio" name="perfil" value="admin" class="form-selectgroup-input" id="perfil-admin">
-                                            <div class="form-selectgroup-label d-flex align-items-center p-3">
-                                                <span class="me-3">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-2">
-                                                        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-                                                        <path d="M10 13a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                                                        <path d="M8 21v-1a2 2 0 0 1 2 -2h4a2 2 0 0 1 2 2v1" />
-                                                        <path d="M15 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                                                        <path d="M17 10h2a2 2 0 0 1 2 2v1" />
-                                                        <path d="M5 5a2 2 0 1 0 4 0a2 2 0 0 0 -4 0" />
-                                                        <path d="M3 13v-1a2 2 0 0 1 2 -2h2" />
-                                                    </svg>
-                                                </span>
-                                                <span>
-                                                    <span class="d-block fw-bold">Administrador</span>
-                                                    <span class="d-block text-secondary">Gerencia propriedades, usuários e configurações</span>
-                                                </span>
-                                            </div>
-                                        </label>
+                                        <div class="alert alert-info mb-2">
+                                            O primeiro administrador é criado apenas pelo comando de setup no servidor. Para segurança, não é possível criar novos administradores por esta tela.
+                                        </div>
 
                                         <label class="form-selectgroup-item flex-fill mt-2">
                                             <input type="radio" name="perfil" value="agronomo" class="form-selectgroup-input" id="perfil-agronomo">
@@ -198,23 +177,7 @@
 <script type="module" src="{{ asset('js/usuarios/create.js') }}"></script>
 <script type="module">
     document.addEventListener('DOMContentLoaded', () => {
-        const radios = document.querySelectorAll('input[name="perfil"]');
-        const listaPropriedades = document.getElementById('lista-propriedades');
-        const alertaAcessoTotal = document.getElementById('alerta-acesso-total');
-        const textoAcesso = document.getElementById('texto-acesso-propriedades');
-        const checkboxes = listaPropriedades.querySelectorAll('input[type="checkbox"]');
-
-        function atualizarAcesso() {
-            const admin = document.getElementById('perfil-admin').checked;
-
-            checkboxes.forEach((cb) => (cb.disabled = admin));
-            listaPropriedades.classList.toggle('opacity-50', admin);
-            alertaAcessoTotal.classList.toggle('d-none', !admin);
-            textoAcesso.classList.toggle('d-none', admin);
-        }
-
-        radios.forEach((radio) => radio.addEventListener('change', atualizarAcesso));
-        atualizarAcesso();
+        // O formulário web cria somente agrônomos e operadores.
     });
 </script>
 @endsection
