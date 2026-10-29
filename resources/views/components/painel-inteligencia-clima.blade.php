@@ -1,3 +1,4 @@
+{{-- components/painel-inteligencia-clima.blade.php --}}
 @php
     $classesClima = ['indicado' => 'success', 'atencao' => 'warning', 'nao_indicado' => 'danger', 'indisponivel' => 'secondary'];
     $rotulosClima = ['indicado' => 'Indicado', 'atencao' => 'Atenção', 'nao_indicado' => 'Não indicado', 'indisponivel' => 'Sem dados'];
@@ -20,10 +21,82 @@
         <span class="text-secondary small">Uma avaliação por operação em cada talhão</span>
     </div>
     <div class="row row-cards">
-        <div class="col-6 col-xl-3"><div class="card card-sm"><div class="card-body"><div class="subheader">Talhões monitorados</div><div class="h1 mb-0">{{ count($locais) }}</div></div></div></div>
-        <div class="col-6 col-xl-3"><div class="card card-sm"><div class="card-body"><div class="subheader">Operações indicadas</div><div class="h1 mb-0 text-success">{{ $resumoHoje['indicado'] }}</div></div></div></div>
-        <div class="col-6 col-xl-3"><div class="card card-sm"><div class="card-body"><div class="subheader">Atenções e restrições</div><div class="h1 mb-0 text-warning">{{ $resumoHoje['restricao'] }}</div></div></div></div>
-        <div class="col-6 col-xl-3"><div class="card card-sm"><div class="card-body"><div class="subheader">Avaliações sem dados</div><div class="h1 mb-0 text-secondary">{{ $resumoHoje['indisponivel'] }}</div></div></div></div>
+        <div class="col-6 col-xl-3">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <span class="avatar bg-blue-lt me-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                <path d="M4 20v-10a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v10" />
+                                <path d="M4 20h16" />
+                                <path d="M8 4v4" />
+                                <path d="M16 4v4" />
+                            </svg>
+                        </span>
+                        <div>
+                            <div class="subheader">Talhões monitorados</div>
+                            <div class="h1 mb-0">{{ count($locais) }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <span class="avatar bg-green-lt me-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M9 12l2 2l4 -4" />
+                            </svg>
+                        </span>
+                        <div>
+                            <div class="subheader">Operações indicadas</div>
+                            <div class="h1 mb-0 text-success">{{ $resumoHoje['indicado'] }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <span class="avatar bg-orange-lt me-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                <path d="M12 9v4" />
+                                <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
+                                <path d="M12 16h.01" />
+                            </svg>
+                        </span>
+                        <div>
+                            <div class="subheader">Atenções e restrições</div>
+                            <div class="h1 mb-0 text-warning">{{ $resumoHoje['restricao'] }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-6 col-xl-3">
+            <div class="card card-sm">
+                <div class="card-body">
+                    <div class="d-flex align-items-center">
+                        <span class="avatar bg-secondary-lt me-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                <path d="M12 17l0 .01" />
+                                <path d="M12 13.5a1.5 1.5 0 0 1 1 -1.5a2.6 2.6 0 1 0 -3 -4" />
+                            </svg>
+                        </span>
+                        <div>
+                            <div class="subheader">Avaliações sem dados</div>
+                            <div class="h1 mb-0 text-secondary">{{ $resumoHoje['indisponivel'] }}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 @endif
@@ -35,12 +108,30 @@
     @endphp
     <section class="card mb-4 climate-location">
         <div class="card-header d-flex align-items-center justify-content-between gap-3 flex-wrap">
-            <div>
-                <h2 class="card-title mb-1">{{ $local['propriedade']->nome }} · {{ $local['talhao']->nome }}</h2>
-                <div class="text-secondary small">{{ $local['talhao']->area ? number_format((float) $local['talhao']->area, 2, ',', '.') . ' ha' : 'Área não informada' }} · Coordenadas da propriedade: {{ $local['propriedade']->latitude }}, {{ $local['propriedade']->longitude }}</div>
+            <div class="d-flex align-items-center">
+                <span class="avatar bg-azure-lt me-3">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                        <path d="M9 11a3 3 0 1 0 6 0a3 3 0 0 0 -6 0" />
+                        <path d="M17.657 16.657l-4.244 4.243a2 2 0 0 1 -2.827 0l-4.243 -4.243a8 8 0 1 1 11.314 0z" />
+                    </svg>
+                </span>
+                <div>
+                    <h2 class="card-title mb-1">{{ $local['propriedade']->nome }} · {{ $local['talhao']->nome }}</h2>
+                    <div class="text-secondary small">{{ $local['talhao']->area ? number_format((float) $local['talhao']->area, 2, ',', '.') . ' ha' : 'Área não informada' }} · Coordenadas da propriedade: {{ $local['propriedade']->latitude }}, {{ $local['propriedade']->longitude }}</div>
+                </div>
             </div>
             <div class="text-end">
-                <span class="badge bg-{{ $desatualizado ? 'warning' : 'success' }}-lt">{{ $desatualizado ? 'Dados desatualizados' : 'Dados recentes' }}</span>
+                <span class="badge bg-{{ $desatualizado ? 'warning' : 'success' }}-lt">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-sm me-1">
+                        @if ($desatualizado)
+                            <path d="M3 12a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                            <path d="M12 7v5l3 3" />
+                        @else
+                            <path d="M5 12l5 5l10 -10" />
+                        @endif
+                    </svg>
+                    {{ $desatualizado ? 'Dados desatualizados' : 'Dados recentes' }}
+                </span>
                 <div class="small text-secondary mt-1">{{ $atualizacao ? 'Atualizado ' . $atualizacao->diffForHumans() : 'Aguardando primeira sincronização' }}</div>
             </div>
         </div>
@@ -50,8 +141,11 @@
                     @php($condicoes = $dia['condicoes'])
                     <div class="col-12 col-xl-6">
                         <article class="card card-sm climate-day h-100">
-                            <div class="card-header py-2">
-                                <h3 class="card-title">{{ ['Sun'=>'Dom','Mon'=>'Seg','Tue'=>'Ter','Wed'=>'Qua','Thu'=>'Qui','Fri'=>'Sex','Sat'=>'Sáb'][$dia['data']->format('D')] }}, {{ $dia['data']->format('d/m') }}</h3>
+                            <div class="card-header py-2 d-flex align-items-center justify-content-between">
+                                <h3 class="card-title mb-0">{{ ['Sun'=>'Dom','Mon'=>'Seg','Tue'=>'Ter','Wed'=>'Qua','Thu'=>'Qui','Fri'=>'Sex','Sat'=>'Sáb'][$dia['data']->format('D')] }}, {{ $dia['data']->format('d/m') }}</h3>
+                                @if ($dia['data']->isToday())
+                                    <span class="badge bg-blue-lt">Hoje</span>
+                                @endif
                             </div>
                             <div class="card-body">
                                 @if ($condicoes['disponivel'])
@@ -72,7 +166,28 @@
                                         <div class="climate-recommendation">
                                             <div class="d-flex align-items-center justify-content-between gap-2 mb-1">
                                                 <span class="fw-semibold">{{ $nome }}</span>
-                                                <span class="badge bg-{{ $classesClima[$avaliacao['status']] ?? 'secondary' }}-lt">{{ $rotulosClima[$avaliacao['status']] ?? 'Orientação' }}</span>
+                                                <span class="badge bg-{{ $classesClima[$avaliacao['status']] ?? 'secondary' }}-lt">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-sm me-1">
+                                                        @switch($avaliacao['status'])
+                                                            @case('indicado')
+                                                                <path d="M5 12l5 5l10 -10" />
+                                                                @break
+                                                            @case('atencao')
+                                                                <path d="M12 9v4" />
+                                                                <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
+                                                                <path d="M12 16h.01" />
+                                                                @break
+                                                            @case('nao_indicado')
+                                                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                                                <path d="M10 10l4 4m0 -4l-4 4" />
+                                                                @break
+                                                            @default
+                                                                <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                                                                <path d="M12 17l0 .01" />
+                                                        @endswitch
+                                                    </svg>
+                                                    {{ $rotulosClima[$avaliacao['status']] ?? 'Orientação' }}
+                                                </span>
                                             </div>
                                             <p class="text-secondary small mb-0">{{ $avaliacao['mensagem'] }}</p>
                                         </div>
@@ -88,7 +203,14 @@
     </section>
 @empty
     <div class="empty">
-        <div class="empty-icon"><i class="ti ti-cloud-off"></i></div>
+        <div class="empty-img">
+            <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" class="icon text-secondary">
+                <path d="M3 3l18 18" />
+                <path d="M9.172 9.172a4 4 0 0 0 4.656 4.656" />
+                <path d="M7.825 7.81c-2.154 .461 -3.825 2.08 -3.825 4.19c0 .151 .009 .301 .024 .448c-.014 .213 -.019 .328 -.019 .552c0 2.21 1.79 4 4 4h9" />
+                <path d="M17.912 17.912a4 4 0 0 0 1.088 -2.912a4 4 0 0 0 -4 -4h-1" />
+            </svg>
+        </div>
         <p class="empty-title">Nenhum talhão disponível para análise</p>
         <p class="empty-subtitle text-secondary">Cadastre propriedades com coordenadas e seus talhões para visualizar a inteligência climática.</p>
     </div>
