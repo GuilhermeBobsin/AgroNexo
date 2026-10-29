@@ -34,6 +34,8 @@ Route::middleware(['auth', 'usuario.ativo'])->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     Route::get('/dashboard', function () {
+        abort_unless(in_array(auth()->user()->perfil, ['admin', 'agronomo', 'operador'], true), 403, 'O perfil da conta não é válido.');
+
         return redirect()->route(
             'dashboard.' . auth()->user()->perfil
         );
@@ -46,6 +48,7 @@ Route::middleware(['auth', 'usuario.ativo'])->group(function () {
     Route::prefix('admin')->name('admin.')->middleware('perfil:admin')->group(function () {
         Route::get('/inteligencia', [AdminInteligenciaController::class, 'index'])->name('inteligencia.index');
         Route::get('/inteligencia/avaliar', [AdminInteligenciaController::class, 'avaliar'])->name('inteligencia.avaliar');
+        Route::get('/inteligencia/sincronizacao/status', [AdminInteligenciaController::class, 'status'])->name('inteligencia.sincronizacao.status');
         Route::post('/inteligencia/sincronizar', [AdminInteligenciaController::class, 'sincronizar'])->name('inteligencia.sincronizar');
         Route::get('/aplicacoes', [AplicacaoController::class, 'index'])->name('aplicacoes.index');
         Route::get('/aplicacoes/{aplicacao}', [AplicacaoController::class, 'show'])->name('aplicacoes.show');

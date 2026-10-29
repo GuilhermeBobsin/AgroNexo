@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Services\Clima\OpenMeteoService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\RequestException;
 use RuntimeException;
 use Tests\TestCase;
 
@@ -62,6 +63,33 @@ class OpenMeteoServiceTest extends TestCase
         }
     }
 
+    public function test_it_keeps_last_good_weather_cache_when_open_meteo_is_unavailable(): void
+    {
+        $propriedade = $this->propriedadeComTalhao();
+        $talhaoId = $propriedade->talhoes()->value('id');
+        PrevisaoClimatica::create([
+            'talhao_id' => $talhaoId,
+            'previsto_para' => now()->addHour()->startOfHour(),
+            'tipo_dado' => 'previsao',
+            'velocidade_vento' => 6,
+            'atualizado_em' => now()->subHour(),
+        ]);
+        Http::fake(['api.open-meteo.com/*' => Http::response(['reason' => 'temporarily unavailable'], 503)]);
+
+        try {
+            app(OpenMeteoService::class)->atualizarPropriedade($propriedade);
+            $this->fail('Uma resposta HTTP 503 deve ser tratada como falha de sincronização.');
+        } catch (RequestException) {
+            $this->assertDatabaseCount('previsoes_climaticas', 1);
+            $this->assertDatabaseHas('previsoes_climaticas', [
+                'talhao_id' => $talhaoId,
+                'velocidade_vento' => 6,
+            ]);
+        }
+
+        Http::assertSentCount(2); // duas tentativas HTTP configuradas no serviço
+    }
+
     public function test_admin_intelligence_screen_renders_location_freshness_and_weather_metrics(): void
     {
         $propriedade = $this->propriedadeComTalhao();
@@ -85,6 +113,8 @@ class OpenMeteoServiceTest extends TestCase
             ->assertOk()
             ->assertSee('Fazenda teste · Talhão 1')
             ->assertSee('Dados recentes')
+            ->assertSee('CC BY 4.0')
+            ->assertSee('Resumo de hoje')
             ->assertSee('Vento máx.')
             ->assertSee('ET₀');
     }

@@ -9,11 +9,56 @@
                     <div class="text-secondary">Recomendações automáticas de operação para os próximos sete dias.</div>
                 </div>
                 <div class="col-auto">
-                    <form method="POST" action="{{ route('admin.inteligencia.sincronizar') }}">@csrf<button class="btn btn-primary">Atualizar previsão agora</button></form>
+                    <form method="POST" action="{{ route('admin.inteligencia.sincronizar') }}">@csrf<button class="btn btn-primary"><i class="ti ti-refresh me-1"></i>Atualizar previsão agora</button></form>
                 </div>
             </div>
         </div>
         @foreach (['success' => 'success', 'error' => 'danger'] as $key => $class) @if (session($key))<div class="alert alert-{{ $class }}">{{ session($key) }}</div>@endif @endforeach
+        @if (session('clima_sync_solicitada_em'))
+            <div id="clima-sync-feedback" class="alert alert-info" role="status"
+                data-desde="{{ session('clima_sync_solicitada_em') }}"
+                data-status-url="{{ route('admin.inteligencia.sincronizacao.status') }}">
+                Aguardando a conclusão da sincronização climática…
+            </div>
+            <script>
+                (() => {
+                    const feedback = document.getElementById('clima-sync-feedback');
+                    if (!feedback) return;
+                    const desde = feedback.dataset.desde;
+                    const url = new URL(feedback.dataset.statusUrl, window.location.origin);
+                    url.searchParams.set('desde', desde);
+                    let tentativas = 0;
+
+                    const consultar = async () => {
+                        tentativas++;
+                        try {
+                            const response = await fetch(url, { headers: { Accept: 'application/json' } });
+                            if (!response.ok) throw new Error('Não foi possível consultar o status da sincronização.');
+                            const status = await response.json();
+                            if (status.atualizada) {
+                                feedback.className = 'alert alert-success';
+                                feedback.textContent = 'Previsão atualizada. Recarregando os dados…';
+                                window.setTimeout(() => window.location.reload(), 800);
+                                return;
+                            }
+                        } catch (error) {
+                            feedback.className = 'alert alert-warning';
+                            feedback.textContent = error.message;
+                            return;
+                        }
+
+                        if (tentativas >= 15) {
+                            feedback.className = 'alert alert-warning';
+                            feedback.textContent = 'A fila ainda não atualizou os dados. Verifique se o worker está ativo (`composer run dev` ou `php artisan queue:listen`) e consulte `php artisan queue:failed`.';
+                            return;
+                        }
+                        window.setTimeout(consultar, 2000);
+                    };
+
+                    window.setTimeout(consultar, 1500);
+                })();
+            </script>
+        @endif
         <div class="alert alert-info">Regras automáticas provisórias: pulverização com vento de 3 a 10 km/h e sem precipitação prevista no período; aração bloqueada se houver precipitação no dia anterior e aguardando três dias ensolarados (mínimo provisório de 4 h/dia) depois da chuva; calagem com vento até 8 km/h, umidade estimada nos 3–9 cm entre 0,12 e 0,30 m³/m³ e sem previsão de chuva intensa. Os limites provisórios consideram dia seco até 1 mm, estiagem após 7 dias ensolarados e período chuvoso após 3 dias com chuva; chuva intensa é estimada em 20 mm/dia, 10 mm/h ou trovoada. O modelo representa uma grade meteorológica próxima das coordenadas e não mede o talhão diretamente; confirme as condições no campo e siga a bula/receita. A sincronização automática roda de hora em hora quando o agendador Laravel está ativo. Última atualização geral: {{ $atualizadoEm ? \Illuminate\Support\Carbon::parse($atualizadoEm)->format('d/m/Y H:i') : 'ainda não sincronizada' }}.</div>
         @include('components.painel-inteligencia-clima')
     </div>

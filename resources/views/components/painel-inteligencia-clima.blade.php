@@ -2,7 +2,31 @@
     $classesClima = ['indicado' => 'success', 'atencao' => 'warning', 'nao_indicado' => 'danger', 'indisponivel' => 'secondary'];
     $rotulosClima = ['indicado' => 'Indicado', 'atencao' => 'Atenção', 'nao_indicado' => 'Não indicado', 'indisponivel' => 'Sem dados'];
     $operacoesClima = ['pulverizacao' => 'Pulverização', 'aracao' => 'Aração', 'calagem' => 'Calagem'];
+    $resumoHoje = ['indicado' => 0, 'restricao' => 0, 'indisponivel' => 0];
+    foreach ($locais as $localResumo) {
+        foreach (($localResumo['dias'][0] ?? []) as $chave => $avaliacaoResumo) {
+            if (!isset($operacoesClima[$chave]) || !is_array($avaliacaoResumo)) continue;
+            if ($avaliacaoResumo['status'] === 'indicado') $resumoHoje['indicado']++;
+            elseif (in_array($avaliacaoResumo['status'], ['atencao', 'nao_indicado'], true)) $resumoHoje['restricao']++;
+            elseif ($avaliacaoResumo['status'] === 'indisponivel') $resumoHoje['indisponivel']++;
+        }
+    }
 @endphp
+
+@if (count($locais))
+<section class="mb-4" aria-labelledby="climate-summary-title">
+    <div class="d-flex align-items-baseline justify-content-between gap-2 mb-2">
+        <h2 id="climate-summary-title" class="h3 mb-0">Resumo de hoje</h2>
+        <span class="text-secondary small">Uma avaliação por operação em cada talhão</span>
+    </div>
+    <div class="row row-cards">
+        <div class="col-6 col-xl-3"><div class="card card-sm"><div class="card-body"><div class="subheader">Talhões monitorados</div><div class="h1 mb-0">{{ count($locais) }}</div></div></div></div>
+        <div class="col-6 col-xl-3"><div class="card card-sm"><div class="card-body"><div class="subheader">Operações indicadas</div><div class="h1 mb-0 text-success">{{ $resumoHoje['indicado'] }}</div></div></div></div>
+        <div class="col-6 col-xl-3"><div class="card card-sm"><div class="card-body"><div class="subheader">Atenções e restrições</div><div class="h1 mb-0 text-warning">{{ $resumoHoje['restricao'] }}</div></div></div></div>
+        <div class="col-6 col-xl-3"><div class="card card-sm"><div class="card-body"><div class="subheader">Avaliações sem dados</div><div class="h1 mb-0 text-secondary">{{ $resumoHoje['indisponivel'] }}</div></div></div></div>
+    </div>
+</section>
+@endif
 
 @forelse ($locais as $local)
     @php
@@ -59,7 +83,7 @@
                     </div>
                 @endforeach
             </div>
-            <p class="small text-secondary mt-3 mb-0">Fonte: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>. *Umidade volumétrica estimada pelo modelo para 3–9 cm. Previsões e recomendações são estimativas de grade meteorológica e devem ser confirmadas no talhão.</p>
+            <p class="small text-secondary mt-3 mb-0">Dados meteorológicos: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>, licenciados sob <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> (dados agregados e interpretados pelo AgroNexo). *Umidade volumétrica estimada pelo modelo para 3–9 cm. Previsões e recomendações são estimativas de grade meteorológica e devem ser confirmadas no talhão.</p>
         </div>
     </section>
 @empty
