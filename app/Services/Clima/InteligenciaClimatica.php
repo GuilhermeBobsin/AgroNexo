@@ -19,11 +19,13 @@ class InteligenciaClimatica
 
         for ($offset = 0; $offset < config('clima.dias_previsao', 7); $offset++) {
             $data = today()->addDays($offset);
+            $horasDia = $porDia[$data->toDateString()] ?? collect();
             $dias[] = [
                 'data' => $data->copy(),
-                'pulverizacao' => $this->pulverizacao($data, $porDia[$data->toDateString()] ?? collect()),
+                'condicoes' => $this->resumoCondicoes($horasDia),
+                'pulverizacao' => $this->pulverizacao($data, $horasDia),
                 'aracao' => $this->aracao($data, $porDia),
-                'calagem' => $this->calagem($data, $porDia[$data->toDateString()] ?? collect()),
+                'calagem' => $this->calagem($data, $horasDia),
             ];
         }
 
@@ -253,6 +255,22 @@ class InteligenciaClimatica
     private function resultado(string $status, string $mensagem): array
     {
         return ['status' => $status, 'mensagem' => $mensagem];
+    }
+
+    private function resumoCondicoes(Collection $horas): array
+    {
+        $valores = fn (string $campo) => $horas->pluck($campo)->filter(fn ($valor) => $valor !== null)->map(fn ($valor) => (float) $valor);
+
+        return [
+            'vento_maximo' => $valores('velocidade_vento')->max(),
+            'rajada_maxima' => $valores('rajada_vento')->max(),
+            'precipitacao' => $valores('precipitacao')->sum(),
+            'chance_chuva_maxima' => $valores('chance_chuva')->max(),
+            'umidade_solo_media' => $valores('umidade_solo')->avg(),
+            'evapotranspiracao' => $valores('evapotranspiracao')->sum(),
+            'horas_sol' => $valores('duracao_sol')->sum() / 3600,
+            'disponivel' => $horas->isNotEmpty(),
+        ];
     }
 
     private function janelasSeguras(Collection $horas): array

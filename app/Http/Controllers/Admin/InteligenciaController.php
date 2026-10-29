@@ -15,10 +15,15 @@ class InteligenciaController extends Controller
     public function index(InteligenciaClimatica $inteligencia)
     {
         $propriedades = Propriedade::with('talhoes')->whereHas('talhoes')->orderBy('nome')->get();
+        $atualizacoes = PrevisaoClimatica::whereIn('talhao_id', $propriedades->flatMap(fn (Propriedade $p) => $p->talhoes)->pluck('id'))
+            ->selectRaw('talhao_id, MAX(atualizado_em) as ultima_atualizacao')
+            ->groupBy('talhao_id')
+            ->pluck('ultima_atualizacao', 'talhao_id');
         $locais = $propriedades->flatMap(fn (Propriedade $propriedade) => $propriedade->talhoes->map(fn (Talhao $talhao) => [
             'propriedade' => $propriedade,
             'talhao' => $talhao,
             'dias' => $inteligencia->semana($talhao),
+            'atualizado_em' => $atualizacoes->get($talhao->id),
         ]));
         $atualizadoEm = PrevisaoClimatica::max('atualizado_em');
 

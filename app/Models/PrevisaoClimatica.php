@@ -12,7 +12,7 @@ class PrevisaoClimatica extends Model
     protected $fillable = [
         'talhao_id', 'previsto_para', 'tipo_dado', 'temperatura', 'umidade', 'velocidade_vento',
         'rajada_vento', 'precipitacao', 'chance_chuva', 'duracao_sol', 'umidade_solo',
-        'codigo_tempo', 'fonte', 'atualizado_em',
+        'evapotranspiracao', 'codigo_tempo', 'fonte', 'atualizado_em',
     ];
 
     protected $casts = ['previsto_para' => 'datetime', 'atualizado_em' => 'datetime'];

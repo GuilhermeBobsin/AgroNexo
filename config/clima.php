@@ -1,6 +1,10 @@
 <?php
 
 return [
+    'open_meteo' => [
+        'base_url' => env('OPEN_METEO_BASE_URL', 'https://api.open-meteo.com/v1'),
+        'api_key' => env('OPEN_METEO_API_KEY'),
+    ],
     // Limites provisórios no servidor, sujeitos à validação agronômica e calibração por tipo de solo.
     'dias_previsao' => 7,
     'dias_historico' => 7,

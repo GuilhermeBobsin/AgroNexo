@@ -14,10 +14,15 @@ class InteligenciaController extends Controller
     {
         $propriedades = auth()->user()->propriedades()->with('talhoes')->whereHas('talhoes')->orderBy('nome')->get();
         $ids = $propriedades->modelKeys();
+        $atualizacoes = PrevisaoClimatica::whereIn('talhao_id', $propriedades->flatMap(fn (Propriedade $p) => $p->talhoes)->pluck('id'))
+            ->selectRaw('talhao_id, MAX(atualizado_em) as ultima_atualizacao')
+            ->groupBy('talhao_id')
+            ->pluck('ultima_atualizacao', 'talhao_id');
         $locais = $propriedades->flatMap(fn (Propriedade $propriedade) => $propriedade->talhoes->map(fn (Talhao $talhao) => [
             'propriedade' => $propriedade,
             'talhao' => $talhao,
             'dias' => $inteligencia->semana($talhao),
+            'atualizado_em' => $atualizacoes->get($talhao->id),
         ]));
         $atualizadoEm = PrevisaoClimatica::whereHas('talhao', fn ($q) => $q->whereIn('propriedade_id', $ids))->max('atualizado_em');
 
