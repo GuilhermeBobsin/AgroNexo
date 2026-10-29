@@ -7,6 +7,7 @@
 <main id="content" class="page-body"><div class="container-xl">
     <div class="page-header d-print-none mb-4"><div class="row align-items-center"><div class="col"><h2 class="page-title">Estoque</h2><div class="text-secondary mt-1">Acompanhe os produtos, quantidades e validades por propriedade.</div></div><div class="col-auto ms-auto"><a href="{{ route('admin.estoque.create') }}" class="btn btn-primary">+ Novo estoque</a></div></div></div>
     @if (session('success'))<div class="alert alert-success">{{ session('success') }}</div>@endif
+    @if (session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
     <div class="row row-cards mb-4">
         @foreach ([['Produtos em estoque', $resumo->total ?? 0, 'blue'], ['Abaixo do mínimo', $resumo->baixos ?? 0, 'orange'], ['Validade vencida', $resumo->vencidos ?? 0, 'red']] as [$titulo, $valor, $cor])<div class="col-sm-6 col-lg-3"><div class="card"><div class="card-body"><div class="d-flex align-items-center"><span class="avatar bg-{{ $cor }}-lt me-3">{{ $valor }}</span><div><div class="text-secondary">{{ $titulo }}</div><div class="h2 mb-0">{{ $valor }}</div></div></div></div></div></div>@endforeach
     </div>

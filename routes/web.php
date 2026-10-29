@@ -121,6 +121,7 @@ Route::middleware(['auth', 'usuario.ativo'])->group(function () {
         Route::get('/tarefas/{tarefa}', [TarefaController::class, 'show'])->name('tarefas.show');
         Route::get('/tarefas/{tarefa}/edit', [TarefaController::class, 'edit'])->name('tarefas.edit');
         Route::put('/tarefas/{tarefa}', [TarefaController::class, 'update'])->name('tarefas.update');
+        Route::patch('/tarefas/{tarefa}/cancelar', [TarefaController::class, 'cancelar'])->name('tarefas.cancelar');
         Route::delete('/tarefas/{tarefa}', [TarefaController::class, 'destroy'])->name('tarefas.destroy');
     });
 

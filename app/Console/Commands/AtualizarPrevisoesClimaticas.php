@@ -3,16 +3,15 @@
 namespace App\Console\Commands;
 
 use App\Models\Propriedade;
-use App\Services\Clima\OpenMeteoService;
+use App\Jobs\SincronizarPrevisaoPropriedade;
 use Illuminate\Console\Command;
-use Throwable;
 
 class AtualizarPrevisoesClimaticas extends Command
 {
     protected $signature = 'clima:atualizar-previsoes';
     protected $description = 'Atualiza as previsões meteorológicas dos talhões pela Open-Meteo';
 
-    public function handle(OpenMeteoService $clima): int
+    public function handle(): int
     {
         $falhas = 0;
         $propriedades = Propriedade::whereHas('talhoes')->with('talhoes')->get();
@@ -26,14 +25,8 @@ class AtualizarPrevisoesClimaticas extends Command
                 $this->error("{$propriedade->nome}: informe latitude e longitude para sincronizar o clima.");
                 continue;
             }
-            try {
-                $total = $clima->atualizarPropriedade($propriedade);
-                $this->info("{$propriedade->nome}: {$total} horários-talhão atualizados.");
-            } catch (Throwable $erro) {
-                $falhas++;
-                report($erro);
-                $this->error("{$propriedade->nome}: {$erro->getMessage()}");
-            }
+            SincronizarPrevisaoPropriedade::dispatch($propriedade->id);
+            $this->info("{$propriedade->nome}: sincronização enviada para a fila.");
         }
 
         return $falhas ? self::FAILURE : self::SUCCESS;

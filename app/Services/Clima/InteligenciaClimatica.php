@@ -15,17 +15,26 @@ class InteligenciaClimatica
         $inicio = today()->subDays(config('clima.dias_historico', 7));
         $fim = today()->addDays(config('clima.dias_previsao', 7));
         $porDia = $this->previsoes($talhao, $inicio, $fim);
+        $dadosRecentes = $this->dadosRecentes($porDia);
         $dias = [];
 
         for ($offset = 0; $offset < config('clima.dias_previsao', 7); $offset++) {
             $data = today()->addDays($offset);
             $horasDia = $porDia[$data->toDateString()] ?? collect();
-            $dias[] = [
-                'data' => $data->copy(),
-                'condicoes' => $this->resumoCondicoes($horasDia),
+            $avaliacoes = [
                 'pulverizacao' => $this->pulverizacao($data, $horasDia),
                 'aracao' => $this->aracao($data, $porDia),
                 'calagem' => $this->calagem($data, $horasDia),
+            ];
+            if (!$dadosRecentes) {
+                foreach ($avaliacoes as $operacao => $resultado) {
+                    $avaliacoes[$operacao] = $this->resultado('indisponivel', 'Dados climáticos desatualizados; aguarde sincronização bem-sucedida antes de usar esta orientação.');
+                }
+            }
+            $dias[] = [
+                'data' => $data->copy(),
+                'condicoes' => $this->resumoCondicoes($horasDia),
+                ...$avaliacoes,
             ];
         }
 
@@ -75,6 +84,9 @@ class InteligenciaClimatica
         $data = Carbon::parse($data, config('app.timezone'));
         $inicio = $data->copy()->subDays(config('clima.dias_historico', 7));
         $porDia = $this->previsoes($talhao, $inicio, $data->copy()->addDay());
+        if (!$this->dadosRecentes($porDia)) {
+            return $this->resultado('indisponivel', 'Dados climáticos ausentes ou desatualizados; aguarde sincronização bem-sucedida.');
+        }
 
         return match ($operacao) {
             'pulverizacao' => $this->pulverizacao($data, $porDia[$data->toDateString()] ?? collect(), $hora),
@@ -92,6 +104,17 @@ class InteligenciaClimatica
             ->groupBy(fn (PrevisaoClimatica $p) => $p->previsto_para->toDateString());
     }
 
+    private function dadosRecentes(Collection $porDia): bool
+    {
+        $ultimaAtualizacao = $porDia->flatten(1)
+            ->map(fn (PrevisaoClimatica $previsao) => $previsao->atualizado_em?->getTimestamp())
+            ->filter()
+            ->max();
+
+        return $ultimaAtualizacao !== null
+            && $ultimaAtualizacao >= now()->subHours(config('clima.idade_maxima_horas', 2))->getTimestamp();
+    }
+
     private function pulverizacao(Carbon $data, Collection $horas, ?string $horaPrevista = null): array
     {
         $regra = config('clima.pulverizacao');
@@ -104,10 +127,20 @@ class InteligenciaClimatica
                 return $p->previsto_para->format('H:i') === substr($horaPrevista, 0, 5);
             }
             return $hora >= $regra['hora_inicio'] && $hora < $regra['hora_fim'];
-        })->filter(fn (PrevisaoClimatica $p) => $p->velocidade_vento !== null);
+        });
 
         if ($horasCampo->isEmpty()) {
             return $this->resultado('indisponivel', 'Sem dados de vento para esse horário.');
+        }
+        if ($horaPrevista === null && $horasCampo->count() < $this->horasDiurnasEsperadas($data, $regra['hora_inicio'], $regra['hora_fim'])) {
+            return $this->resultado('indisponivel', 'A previsão não cobre todas as horas restantes da janela de pulverização.');
+        }
+        if ($horasCampo->contains(fn (PrevisaoClimatica $p) => $p->velocidade_vento === null || $p->precipitacao === null)) {
+            return $this->resultado('indisponivel', 'Sem dados completos de vento e precipitação para avaliar a pulverização com segurança.');
+        }
+        $chuvaNaJanela = $horasCampo->sum(fn (PrevisaoClimatica $p) => (float) $p->precipitacao);
+        if ($chuvaNaJanela > $regra['precipitacao_maxima_mm']) {
+            return $this->resultado('nao_indicado', 'Pulverização não indicada: há precipitação prevista durante o período avaliado. Consulte a bula do produto e confirme as condições no campo.');
         }
 
         $seguras = $horasCampo->filter(fn (PrevisaoClimatica $p) =>
@@ -144,6 +177,17 @@ class InteligenciaClimatica
         $solo = null;
 
         $diasAnalise = max($regra['dias_secos_alerta'], $regra['dias_chuvosos_alerta'], $regra['dias_sol_apos_chuva']);
+        $chuvaOntem = $porDia->get($data->copy()->subDay()->toDateString(), collect());
+        if ($chuvaOntem->isEmpty()) {
+            return $this->resultado('indisponivel', 'Sem histórico meteorológico suficiente do dia anterior para avaliar a aração.');
+        }
+        if ($chuvaOntem->count() < 24 || $chuvaOntem->contains(fn (PrevisaoClimatica $p) => $p->precipitacao === null)) {
+            return $this->resultado('indisponivel', 'O histórico de precipitação do dia anterior está incompleto; não é possível confirmar a condição para aração.');
+        }
+        $precipitacaoOntem = $chuvaOntem->sum(fn (PrevisaoClimatica $p) => (float) ($p->precipitacao ?? 0));
+        if ($precipitacaoOntem > $regra['chuva_relevante_mm']) {
+            return $this->resultado('nao_indicado', 'Aração não indicada: houve chuva relevante ontem. Verifique a umidade e a trafegabilidade do solo antes de reprogramar.');
+        }
         for ($offset = 1; $offset <= $diasAnalise; $offset++) {
             $dia = $data->copy()->subDays($offset)->toDateString();
             $horas = $porDia->get($dia, collect());
@@ -152,6 +196,9 @@ class InteligenciaClimatica
                     return $this->resultado('indisponivel', 'Sem histórico meteorológico suficiente para confirmar os três dias de sol após a chuva.');
                 }
                 break;
+            }
+            if ($horas->count() < 24 || $horas->contains(fn (PrevisaoClimatica $p) => $p->precipitacao === null || $p->duracao_sol === null)) {
+                return $this->resultado('indisponivel', 'O histórico diário de chuva/sol está incompleto para avaliar a aração com segurança.');
             }
             $chuva = $horas->sum(fn (PrevisaoClimatica $p) => (float) ($p->precipitacao ?? 0));
             $sol = $horas->sum(fn (PrevisaoClimatica $p) => (float) ($p->duracao_sol ?? 0));
@@ -197,8 +244,14 @@ class InteligenciaClimatica
         }
 
         $horasHoje = $porDia->get($data->toDateString(), collect());
+        if ($horasHoje->count() < 24 || $horasHoje->contains(fn (PrevisaoClimatica $p) => $p->precipitacao === null)) {
+            return $this->resultado('indisponivel', 'A previsão de chuva do dia programado está incompleta para avaliar a aração.');
+        }
         $chuvaHoje = $horasHoje
             ->sum(fn (PrevisaoClimatica $p) => (float) ($p->precipitacao ?? 0));
+        if ($chuvaHoje > $regra['chuva_relevante_mm']) {
+            return $this->resultado('nao_indicado', 'Aração não indicada: há precipitação prevista no dia programado.');
+        }
         if ($chuvaHoje > $regra['precipitacao_dia_seco_mm'] && $diasChuvosos >= $regra['dias_chuvosos_alerta'] - 1) {
             return $this->resultado('nao_indicado', 'Aração não indicada: o período chuvoso deve continuar no dia programado.');
         }
@@ -219,6 +272,13 @@ class InteligenciaClimatica
         $horas = $horas->filter(fn (PrevisaoClimatica $p) => !$p->previsto_para->isPast());
         if ($horasDia->isEmpty()) {
             return $this->resultado('indisponivel', 'Sem previsão horária para avaliar a calagem.');
+        }
+        if ($horasDia->count() < $this->horasDiurnasEsperadas($data, 6, 18)) {
+            return $this->resultado('indisponivel', 'A previsão não cobre todas as horas restantes do período diurno para avaliar a calagem.');
+        }
+        if ($horasDia->contains(fn (PrevisaoClimatica $p) => $p->velocidade_vento === null || $p->umidade_solo === null)
+            || $horas->contains(fn (PrevisaoClimatica $p) => $p->precipitacao === null || $p->codigo_tempo === null)) {
+            return $this->resultado('indisponivel', 'Faltam dados de vento, chuva ou umidade do solo para avaliar a calagem com segurança.');
         }
 
         $ventos = $horasDia->pluck('velocidade_vento')->filter(fn ($v) => $v !== null)->map(fn ($v) => (float) $v);
@@ -271,6 +331,13 @@ class InteligenciaClimatica
             'horas_sol' => $valores('duracao_sol')->sum() / 3600,
             'disponivel' => $horas->isNotEmpty(),
         ];
+    }
+
+    private function horasDiurnasEsperadas(Carbon $data, int $inicio, int $fim): int
+    {
+        $primeiraHora = $data->isToday() ? max($inicio, now()->hour + 1) : $inicio;
+
+        return max(0, $fim - $primeiraHora);
     }
 
     private function janelasSeguras(Collection $horas): array
