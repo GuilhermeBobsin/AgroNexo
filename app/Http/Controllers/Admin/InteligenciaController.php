@@ -53,7 +53,7 @@ class InteligenciaController extends Controller
         $codigo = Artisan::call('clima:atualizar-previsoes');
         $saida = trim(Artisan::output());
         return back()->with($codigo === 0 ? 'success' : 'error', ($codigo === 0
-            ? 'Previsões atualizadas.'
-            : 'A atualização terminou com falhas.') . ($saida !== '' ? ' ' . $saida : ''));
+            ? 'Sincronização climática solicitada; os dados serão atualizados após o processamento da fila.'
+            : 'Não foi possível solicitar a sincronização climática.') . ($saida !== '' ? ' ' . $saida : ''));
     }
 }
