@@ -21,8 +21,16 @@ class VerificaPerfil
             abort(403, 'Seu acesso está inativo. Entre em contato com um administrador.');
         }
 
-        if (! $user || ! in_array($user->perfil, $perfis, true)) {
-            $perfilAtual = $user?->perfil ?? 'operador';
+        if (! $user) {
+            abort(401);
+        }
+
+        if (! in_array($user->perfil, ['admin', 'agronomo', 'operador'], true)) {
+            abort(403, 'O perfil da conta não é válido. Contate um administrador.');
+        }
+
+        if (! in_array($user->perfil, $perfis, true)) {
+            $perfilAtual = $user->perfil;
 
             return redirect()
                 ->route('dashboard.' . $perfilAtual)

@@ -20,6 +20,11 @@ class TalhaoController extends Controller
 
     public function create(Propriedade $propriedade)
     {
+        if ($propriedade->latitude === null || $propriedade->longitude === null) {
+            return redirect()->route('admin.propriedades.edit', $propriedade)
+                ->withErrors(['coordenadas' => 'Informe latitude e longitude da propriedade antes de desenhar os talhões no mapa.']);
+        }
+
         $culturas = Cultura::orderBy('nome')->get();
 
         return view('admin.talhoes.create', compact('propriedade', 'culturas'));
@@ -30,7 +35,11 @@ class TalhaoController extends Controller
         $talhao = $propriedade->talhoes()->create($this->validarDados($request));
 
         if ($request->wantsJson()) {
-            return response()->json(['message' => 'Talhão criado com sucesso.', 'id' => $talhao->id], 201);
+            return response()->json([
+                'message' => 'Talhão criado com sucesso.',
+                'id' => $talhao->id,
+                'redirect' => route('admin.propriedades.talhoes.show', [$propriedade, $talhao]),
+            ], 201);
         }
 
         return redirect()->route('admin.propriedades.talhoes.show', [$propriedade, $talhao])
@@ -47,6 +56,11 @@ class TalhaoController extends Controller
     public function edit(Propriedade $propriedade, Talhao $talhao)
     {
         $talhao = $propriedade->talhoes()->findOrFail($talhao->id);
+        if ($propriedade->latitude === null || $propriedade->longitude === null) {
+            return redirect()->route('admin.propriedades.edit', $propriedade)
+                ->withErrors(['coordenadas' => 'Informe latitude e longitude da propriedade antes de editar o limite do talhão.']);
+        }
+
         $culturas = Cultura::orderBy('nome')->get();
 
         return view('admin.talhoes.edit', compact('propriedade', 'talhao', 'culturas'));
@@ -58,7 +72,11 @@ class TalhaoController extends Controller
         $talhao->update($this->validarDados($request));
 
         if ($request->wantsJson()) {
-            return response()->json(['message' => 'Talhão atualizado com sucesso.', 'id' => $talhao->id]);
+            return response()->json([
+                'message' => 'Talhão atualizado com sucesso.',
+                'id' => $talhao->id,
+                'redirect' => route('admin.propriedades.talhoes.show', [$propriedade, $talhao]),
+            ]);
         }
 
         return redirect()->route('admin.propriedades.talhoes.show', [$propriedade, $talhao])

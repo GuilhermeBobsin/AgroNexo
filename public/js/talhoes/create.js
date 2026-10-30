@@ -515,7 +515,7 @@ form.addEventListener('submit', async function (event) {
 
         setTimeout(() => {
 
-            window.location.href = form.dataset.redirectUrl;
+            window.location.href = data.redirect || form.dataset.redirectUrl;
 
         }, 700);
 
@@ -573,17 +573,21 @@ function mostrarErrosValidacao(errors) {
     }
 
 
-    if (errors.limite) {
+    const erroLimite = Object.entries(errors).find(([campo]) => campo === 'limite' || campo.startsWith('limite.'));
+    if (erroLimite) {
 
         mapElement.classList.add('border-danger');
 
         errorLimite.textContent =
-            errors.limite[0];
+            erroLimite[1][0];
 
         showError(
-            errors.limite[0]
+            erroLimite[1][0] || 'Verifique os pontos do limite desenhado.'
         );
     }
+
+    const primeiroErro = Object.values(errors).flat()[0];
+    if (!erroLimite && primeiroErro) showError(primeiroErro);
 }
 
 

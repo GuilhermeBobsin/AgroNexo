@@ -9,6 +9,7 @@ use App\Models\Talhao;
 use App\Services\Clima\InteligenciaClimatica;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Carbon;
 
 class InteligenciaController extends Controller
 {
@@ -50,10 +51,29 @@ class InteligenciaController extends Controller
 
     public function sincronizar()
     {
+        $solicitadaEm = now();
         $codigo = Artisan::call('clima:atualizar-previsoes');
         $saida = trim(Artisan::output());
-        return back()->with($codigo === 0 ? 'success' : 'error', ($codigo === 0
-            ? 'Sincronização climática solicitada; os dados serão atualizados após o processamento da fila.'
+        $resposta = back()->with($codigo === 0 ? 'success' : 'error', ($codigo === 0
+            ? 'Sincronização climática enviada para a fila. Os dados desta tela mudam após o worker processar os jobs. No ambiente local, mantenha `composer run dev` ou `php artisan queue:listen` em execução.'
             : 'Não foi possível solicitar a sincronização climática.') . ($saida !== '' ? ' ' . $saida : ''));
+
+        if ($codigo === 0) {
+            $resposta->with('clima_sync_solicitada_em', $solicitadaEm->toIso8601String());
+        }
+
+        return $resposta;
+    }
+
+    public function status(Request $request)
+    {
+        $dados = $request->validate(['desde' => ['required', 'date']]);
+        $desde = Carbon::parse($dados['desde']);
+        $ultimaAtualizacao = PrevisaoClimatica::where('atualizado_em', '>=', $desde)->max('atualizado_em');
+
+        return response()->json([
+            'atualizada' => $ultimaAtualizacao !== null,
+            'ultima_atualizacao' => $ultimaAtualizacao,
+        ]);
     }
 }

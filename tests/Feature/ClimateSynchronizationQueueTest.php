@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Jobs\SincronizarPrevisaoPropriedade;
+use App\Models\PrevisaoClimatica;
 use App\Models\Propriedade;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -37,8 +38,29 @@ class ClimateSynchronizationQueueTest extends TestCase
 
         $this->actingAs($admin)->post(route('admin.inteligencia.sincronizar'))
             ->assertRedirect()
-            ->assertSessionHas('success');
+            ->assertSessionHas('success')
+            ->assertSessionHas('clima_sync_solicitada_em');
 
         Bus::assertDispatched(SincronizarPrevisaoPropriedade::class);
+    }
+
+    public function test_admin_can_poll_until_a_new_climate_forecast_is_persisted(): void
+    {
+        $admin = User::factory()->create(['perfil' => 'admin', 'status' => 'ativo']);
+        $propriedade = Propriedade::create([
+            'nome' => 'Fazenda status', 'localizacao' => 'RS', 'latitude' => -29, 'longitude' => -53,
+        ]);
+        $talhao = $propriedade->talhoes()->create(['nome' => 'Talhão 1', 'area' => 8]);
+        PrevisaoClimatica::create([
+            'talhao_id' => $talhao->id,
+            'previsto_para' => now()->addHour(),
+            'tipo_dado' => 'previsao',
+            'atualizado_em' => now(),
+        ]);
+
+        $this->actingAs($admin)
+            ->getJson(route('admin.inteligencia.sincronizacao.status', ['desde' => now()->subMinute()->toIso8601String()]))
+            ->assertOk()
+            ->assertJsonPath('atualizada', true);
     }
 }

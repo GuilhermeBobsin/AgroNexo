@@ -6,7 +6,9 @@ use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -48,9 +50,24 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
-        Auth::logout();
+        DB::transaction(function () use ($user): void {
+            if ($user->perfil === 'admin') {
+                $administradoresAtivos = $user->newQuery()
+                    ->where('perfil', 'admin')
+                    ->where('status', 'ativo')
+                    ->lockForUpdate()
+                    ->get();
+                if ($administradoresAtivos->count() <= 1) {
+                    throw ValidationException::withMessages([
+                        'userDeletion.password' => 'A conta é o último administrador ativo e não pode ser excluída.',
+                    ]);
+                }
+            }
 
-        $user->delete();
+            // A sessão pode atualizar o remember_token no logout; faça isso antes da exclusão.
+            Auth::logout();
+            $user->delete();
+        });
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();

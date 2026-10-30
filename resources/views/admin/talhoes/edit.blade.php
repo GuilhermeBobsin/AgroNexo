@@ -141,7 +141,6 @@
 
                                         <input
                                             type="number"
-                                            name="area"
                                             id="input-area"
                                             class="form-control"
                                             placeholder="Automática"

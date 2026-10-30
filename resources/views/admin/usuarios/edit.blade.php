@@ -29,7 +29,7 @@
                                 <div class="col-md-6 mb-3">
                                     <label class="form-label" for="perfil">Perfil</label>
                                     <select id="perfil" name="perfil" class="form-select">
-                                        @foreach (['operador' => 'Operador', 'agronomo' => 'Agrônomo', 'admin' => 'Administrador'] as $value => $label)
+                                        @foreach (array_filter(['operador' => 'Operador', 'agronomo' => 'Agrônomo', 'admin' => $user->perfil === 'admin' ? 'Administrador' : null]) as $value => $label)
                                             <option value="{{ $value }}" @selected($user->perfil === $value)>{{ $label }}</option>
                                         @endforeach
                                     </select>
@@ -46,7 +46,7 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Propriedades permitidas</label>
-                                <p class="form-hint">Administradores têm acesso global. Para os demais perfis, marque as propriedades acessíveis.</p>
+                                <p class="form-hint">Administradores existentes têm acesso global. A tela não pode promover outra conta a administrador; essa função é restrita ao setup inicial no servidor.</p>
                                 @forelse ($propriedades as $propriedade)
                                     <label class="form-check mb-2">
                                         <input class="form-check-input" type="checkbox" name="propriedade_ids[]" value="{{ $propriedade->id }}" @checked(in_array($propriedade->id, $propriedadesSelecionadas))>

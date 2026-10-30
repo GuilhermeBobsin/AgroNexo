@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
 {
@@ -32,7 +33,8 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:8',
-            'perfil' => 'required|in:operador,agronomo,admin',
+            // Administradores são provisionados pelo setup único no terminal, nunca por cadastro web.
+            'perfil' => 'required|in:operador,agronomo',
             'propriedade_ids' => 'nullable|array',
             'propriedade_ids.*' => 'integer|exists:propriedades,id',
         ]);
@@ -65,33 +67,31 @@ class UserController extends Controller
         $validated = $request->validate([
             'name' => 'required|string|max:255',
             'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->id)],
-            'perfil' => 'required|in:operador,agronomo,admin',
+            'perfil' => ['required', Rule::in($user->perfil === 'admin'
+                ? ['operador', 'agronomo', 'admin']
+                : ['operador', 'agronomo'])],
             'status' => 'required|in:ativo,inativo',
             'password' => 'nullable|string|min:8|confirmed',
             'propriedade_ids' => 'nullable|array',
             'propriedade_ids.*' => 'integer|exists:propriedades,id',
         ]);
-        if ($user->is(auth()->user()) && ($validated['status'] === 'inativo' || $validated['perfil'] !== 'admin')) {
-            $message = 'Não é possível desativar ou remover seu próprio perfil de administrador.';
-            if ($request->wantsJson()) {
-                return response()->json(['message' => $message, 'errors' => ['status' => [$message]]], 422);
-            }
-            return back()->withInput()->withErrors(['status' => $message]);
-        }
-        if ($user->perfil === 'admin' && ($validated['status'] !== 'ativo' || $validated['perfil'] !== 'admin') && User::where('perfil', 'admin')->where('status', 'ativo')->count() <= 1) {
-            $message = 'Mantenha ao menos um administrador ativo no sistema.';
-            if ($request->wantsJson()) {
-                return response()->json(['message' => $message, 'errors' => ['perfil' => [$message]]], 422);
-            }
-            return back()->withInput()->withErrors(['perfil' => $message]);
-        }
         $password = $validated['password'] ?? null;
         $propriedadeIds = $validated['propriedade_ids'] ?? [];
         unset($validated['password']);
         unset($validated['propriedade_ids']);
         if ($password) $validated['password'] = Hash::make($password);
-        $user->update($validated);
-        $this->syncPropriedades($user, $propriedadeIds);
+        DB::transaction(function () use ($request, $user, $validated, $propriedadeIds): void {
+            $administradoresAtivos = User::where('perfil', 'admin')->where('status', 'ativo')->lockForUpdate()->get();
+            if ($user->is($request->user()) && ($validated['status'] === 'inativo' || $validated['perfil'] !== 'admin')) {
+                throw ValidationException::withMessages(['status' => 'Não é possível desativar ou remover seu próprio perfil de administrador.']);
+            }
+            if ($user->perfil === 'admin' && ($validated['status'] !== 'ativo' || $validated['perfil'] !== 'admin') && $administradoresAtivos->count() <= 1) {
+                throw ValidationException::withMessages(['perfil' => 'Mantenha ao menos um administrador ativo no sistema.']);
+            }
+
+            $user->update($validated);
+            $this->syncPropriedades($user, $propriedadeIds);
+        });
 
         if ($request->wantsJson()) {
             return response()->json([
@@ -119,28 +119,27 @@ class UserController extends Controller
 
     public function destroy(Request $request, User $user)
     {
-        if ($user->is(auth()->user())) {
-            if ($request->wantsJson()) {
-                return response()->json(['message' => 'Não é possível excluir o usuário conectado.'], 422);
-            }
-            return back()->with('error', 'Não é possível excluir o usuário conectado.');
+        try {
+            DB::transaction(function () use ($user, $request): void {
+                $administradoresAtivos = User::where('perfil', 'admin')->where('status', 'ativo')->lockForUpdate()->get();
+                if ($user->is($request->user())) {
+                    throw ValidationException::withMessages(['user' => 'Não é possível excluir o usuário conectado.']);
+                }
+                if ($user->perfil === 'admin' && $user->status === 'ativo' && $administradoresAtivos->count() <= 1) {
+                    throw ValidationException::withMessages(['user' => 'Mantenha ao menos um administrador ativo no sistema.']);
+                }
+                if ($user->tarefas()->exists() || $user->aplicacoes()->exists() || $user->recomendacoes()->exists()) {
+                    throw ValidationException::withMessages(['user' => 'Este usuário possui tarefas, aplicações ou recomendações no histórico e não pode ser excluído. Desative o acesso pela edição.']);
+                }
+                $user->propriedades()->detach();
+                $user->delete();
+            });
+        } catch (ValidationException $exception) {
+            $message = collect($exception->errors())->flatten()->first() ?? 'Não foi possível excluir o usuário.';
+            return $request->wantsJson()
+                ? response()->json(['message' => $message, 'errors' => $exception->errors()], 422)
+                : back()->with('error', $message);
         }
-        if ($user->perfil === 'admin' && $user->status === 'ativo' && User::where('perfil', 'admin')->where('status', 'ativo')->count() <= 1) {
-            if ($request->wantsJson()) {
-                return response()->json(['message' => 'Mantenha ao menos um administrador ativo no sistema.'], 422);
-            }
-            return back()->with('error', 'Mantenha ao menos um administrador ativo no sistema.');
-        }
-        if ($user->tarefas()->exists() || $user->aplicacoes()->exists() || $user->recomendacoes()->exists()) {
-            if ($request->wantsJson()) {
-                return response()->json(['message' => 'Este usuário possui tarefas, aplicações ou recomendações no histórico e não pode ser excluído. Desative o acesso pela edição.'], 422);
-            }
-            return back()->with('error', 'Este usuário possui tarefas, aplicações ou recomendações no histórico e não pode ser excluído. Desative o acesso pela edição.');
-        }
-        DB::transaction(function () use ($user) {
-            $user->propriedades()->detach();
-            $user->delete();
-        });
         if ($request->wantsJson()) {
             return response()->json(['message' => 'Usuário excluído com sucesso.']);
         }

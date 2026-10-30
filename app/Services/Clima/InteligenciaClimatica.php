@@ -21,10 +21,12 @@ class InteligenciaClimatica
         for ($offset = 0; $offset < config('clima.dias_previsao', 7); $offset++) {
             $data = today()->addDays($offset);
             $horasDia = $porDia[$data->toDateString()] ?? collect();
+            $periodoDiurnoEncerrado = $data->isToday()
+                && now()->hour >= config('clima.pulverizacao.hora_fim', 18);
             $avaliacoes = [
-                'pulverizacao' => $this->pulverizacao($data, $horasDia),
+                'pulverizacao' => $this->pulverizacao($data, $horasDia, null, $periodoDiurnoEncerrado),
                 'aracao' => $this->aracao($data, $porDia),
-                'calagem' => $this->calagem($data, $horasDia),
+                'calagem' => $this->calagem($data, $horasDia, null, $periodoDiurnoEncerrado),
             ];
             if (!$dadosRecentes) {
                 foreach ($avaliacoes as $operacao => $resultado) {
@@ -91,7 +93,7 @@ class InteligenciaClimatica
         return match ($operacao) {
             'pulverizacao' => $this->pulverizacao($data, $porDia[$data->toDateString()] ?? collect(), $hora),
             'aracao' => $this->aracao($data, $porDia),
-            'calagem' => $this->calagem($data, $porDia[$data->toDateString()] ?? collect()),
+            'calagem' => $this->calagem($data, $porDia[$data->toDateString()] ?? collect(), $hora),
         };
     }
 
@@ -115,12 +117,12 @@ class InteligenciaClimatica
             && $ultimaAtualizacao >= now()->subHours(config('clima.idade_maxima_horas', 2))->getTimestamp();
     }
 
-    private function pulverizacao(Carbon $data, Collection $horas, ?string $horaPrevista = null): array
+    private function pulverizacao(Carbon $data, Collection $horas, ?string $horaPrevista = null, bool $incluirHorasPassadas = false): array
     {
         $regra = config('clima.pulverizacao');
-        $horasCampo = $horas->filter(function (PrevisaoClimatica $p) use ($regra, $horaPrevista) {
+        $horasCampo = $horas->filter(function (PrevisaoClimatica $p) use ($regra, $horaPrevista, $incluirHorasPassadas) {
             $hora = (int) $p->previsto_para->format('G');
-            if ($p->previsto_para->isPast()) {
+            if (!$incluirHorasPassadas && $p->previsto_para->isPast()) {
                 return false;
             }
             if ($horaPrevista !== null) {
@@ -130,191 +132,247 @@ class InteligenciaClimatica
         });
 
         if ($horasCampo->isEmpty()) {
-            return $this->resultado('indisponivel', 'Sem dados de vento para esse horário.');
-        }
-        if ($horaPrevista === null && $horasCampo->count() < $this->horasDiurnasEsperadas($data, $regra['hora_inicio'], $regra['hora_fim'])) {
-            return $this->resultado('indisponivel', 'A previsão não cobre todas as horas restantes da janela de pulverização.');
-        }
-        if ($horasCampo->contains(fn (PrevisaoClimatica $p) => $p->velocidade_vento === null || $p->precipitacao === null)) {
-            return $this->resultado('indisponivel', 'Sem dados completos de vento e precipitação para avaliar a pulverização com segurança.');
-        }
-        $chuvaNaJanela = $horasCampo->sum(fn (PrevisaoClimatica $p) => (float) $p->precipitacao);
-        if ($chuvaNaJanela > $regra['precipitacao_maxima_mm']) {
-            return $this->resultado('nao_indicado', 'Pulverização não indicada: há precipitação prevista durante o período avaliado. Consulte a bula do produto e confirme as condições no campo.');
-        }
-
-        $seguras = $horasCampo->filter(fn (PrevisaoClimatica $p) =>
-            (float) $p->velocidade_vento >= $regra['vento_minimo_kmh']
-            && (float) $p->velocidade_vento <= $regra['vento_maximo_kmh']);
-
-        if ($seguras->isEmpty()) {
-            $minimo = (float) $horasCampo->min('velocidade_vento');
-            $maximo = (float) $horasCampo->max('velocidade_vento');
-            $causa = $minimo < $regra['vento_minimo_kmh']
-                ? 'vento abaixo de 3 km/h pode favorecer inversão térmica'
-                : 'vento acima de 10 km/h aumenta o risco de deriva';
-            return $this->resultado('nao_indicado', "Pulverização não indicada: {$causa}. Vento previsto entre {$minimo} e {$maximo} km/h.");
+            return $this->resultado('indisponivel', 'Sem previsão horária disponível para avaliar a pulverização.');
         }
 
         if ($horaPrevista !== null) {
-            $vento = (float) $seguras->first()->velocidade_vento;
-            return $this->resultado('indicado', "Pulverização indicada no horário previsto; vento de {$vento} km/h, dentro da faixa de 3 a 10 km/h.");
+            return $this->avaliarPulverizacaoHora($horasCampo->first(), $horas, $regra);
         }
 
-        $janelas = $this->janelasSeguras($seguras);
-        return $this->resultado('indicado', 'Pulverização indicada nas janelas: '.implode(', ', $janelas).'.');
+        $avaliacoes = $horasCampo->map(fn (PrevisaoClimatica $hora) => [
+            'hora' => $hora,
+            'resultado' => $this->avaliarPulverizacaoHora($hora, $horas, $regra),
+        ]);
+        $favoraveis = $avaliacoes->filter(fn (array $item) => $item['resultado']['status'] === 'indicado');
+        $alertas = $avaliacoes->flatMap(fn (array $item) => $item['resultado']['alertas'] ?? [])->unique()->values()->all();
+
+        if ($favoraveis->isNotEmpty()) {
+            $janelas = $this->janelasSeguras($favoraveis->pluck('hora'));
+            $misto = $favoraveis->count() < $avaliacoes->count();
+            $mensagem = 'Janelas favoráveis para pulverização: '.implode(', ', $janelas).'.';
+            if ($incluirHorasPassadas) {
+                $mensagem = 'Resumo retrospectivo de hoje. '.$mensagem.' Essas janelas já passaram; confirme as condições atuais antes de programar uma operação.';
+            }
+            if ($misto) {
+                $mensagem .= ' Fora dessas janelas, as condições variam; confira os alertas e evite os horários desfavoráveis.';
+                $alertas[] = 'Há horários desfavoráveis ou de atenção fora das janelas destacadas.';
+            }
+
+            return $this->resultado('indicado', $mensagem, array_values(array_unique($alertas)));
+        }
+
+        $status = $avaliacoes->contains(fn (array $item) => $item['resultado']['status'] === 'nao_indicado')
+            ? 'nao_indicado'
+            : ($avaliacoes->contains(fn (array $item) => $item['resultado']['status'] === 'atencao') ? 'atencao' : 'indisponivel');
+
+        return $this->resultado($status, 'Não há uma janela favorável identificada na previsão consultada. Revise os alertas e confirme as condições locais antes de decidir.', array_values(array_unique($alertas)));
+    }
+
+    private function avaliarPulverizacaoHora(PrevisaoClimatica $hora, Collection $horasDia, array $regra): array
+    {
+        if ($hora->velocidade_vento === null || $hora->umidade === null || $hora->temperatura === null) {
+            return $this->resultado('indisponivel', 'Faltam dados horários de vento, umidade relativa ou temperatura para esta avaliação.');
+        }
+
+        $vento = (float) $hora->velocidade_vento;
+        $umidade = (float) $hora->umidade;
+        $temperatura = (float) $hora->temperatura;
+        $alertas = [];
+        $statusVento = 'indicado';
+        if ($vento < $regra['vento_minimo_favoravel_kmh']) {
+            $statusVento = 'atencao';
+            $alertas[] = 'Vento abaixo de 3 km/h: atenção a inversão térmica e suspensão de gotas.';
+        } elseif ($vento <= $regra['vento_maximo_favoravel_kmh']) {
+            $alertas[] = 'Vento dentro da faixa favorável de 3 a 6,5 km/h.';
+        } elseif ($vento <= $regra['vento_maximo_atencao_kmh']) {
+            $statusVento = 'atencao';
+            $alertas[] = 'Vento entre 6,5 e 9,5 km/h: atenção à deriva e à bula do produto.';
+        } else {
+            $statusVento = 'nao_indicado';
+            $alertas[] = 'Vento acima de 9,5 km/h: risco elevado de deriva.';
+        }
+
+        $statusUmidade = 'indicado';
+        if ($umidade < $regra['umidade_relativa_minima']) {
+            $statusUmidade = 'nao_indicado';
+            $alertas[] = 'Umidade relativa abaixo de 55%: a gota pode evaporar mais rapidamente.';
+        } else {
+            $alertas[] = 'Umidade relativa igual ou superior a 55%.';
+        }
+
+        $statusTemperatura = 'indicado';
+        if ($temperatura > $regra['temperatura_maxima']) {
+            $statusTemperatura = 'nao_indicado';
+            $alertas[] = 'Temperatura acima de 30 °C: aumenta o risco de evaporação e volatilização.';
+        }
+
+        $inicioChuva = $hora->previsto_para;
+        $fimChuva = $inicioChuva->copy()->addHours($regra['chuva_apos_aplicacao_horas']);
+        $horasChuva = $horasDia->filter(fn (PrevisaoClimatica $p) =>
+            $p->previsto_para->gte($inicioChuva) && $p->previsto_para->lte($fimChuva));
+        $choveNaJanela = $horasChuva->contains(fn (PrevisaoClimatica $p) =>
+            (float) ($p->precipitacao ?? 0) > 0
+            || (float) ($p->chance_chuva ?? 0) >= $regra['chuva_probabilidade_alerta']);
+        $chuvaSemDados = $horasChuva->contains(fn (PrevisaoClimatica $p) => $p->precipitacao === null);
+        if ($choveNaJanela) {
+            $alertas[] = 'Há chuva prevista durante ou nas horas seguintes à aplicação; consulte o intervalo sem chuva indicado na bula.';
+        }
+        if ($chuvaSemDados) {
+            $alertas[] = 'A previsão de precipitação está incompleta para parte do intervalo analisado.';
+        }
+
+        $status = $this->combinarStatus([$statusVento, $statusUmidade, $statusTemperatura]);
+        if (($choveNaJanela || $chuvaSemDados) && $status === 'indicado') {
+            $status = 'atencao';
+        }
+        $mensagem = sprintf('Às %s: vento %.1f km/h, umidade relativa %.0f%% e temperatura %.1f °C.',
+            $hora->previsto_para->format('H:i'), $vento, $umidade, $temperatura);
+
+        return $this->resultado($status, $mensagem, $alertas);
     }
 
     private function aracao(Carbon $data, Collection $porDia): array
     {
         $regra = config('clima.aracao');
-        $diasSecos = 0;
-        $diasChuvosos = 0;
-        $diasSolares = 0;
-        $sequenciaSecaAberta = true;
-        $sequenciaChuvosaAberta = true;
-        $sequenciaEnsolaradaAberta = true;
-        $solo = null;
-
-        $diasAnalise = max($regra['dias_secos_alerta'], $regra['dias_chuvosos_alerta'], $regra['dias_sol_apos_chuva']);
-        $chuvaOntem = $porDia->get($data->copy()->subDay()->toDateString(), collect());
-        if ($chuvaOntem->isEmpty()) {
-            return $this->resultado('indisponivel', 'Sem histórico meteorológico suficiente do dia anterior para avaliar a aração.');
-        }
-        if ($chuvaOntem->count() < 24 || $chuvaOntem->contains(fn (PrevisaoClimatica $p) => $p->precipitacao === null)) {
-            return $this->resultado('indisponivel', 'O histórico de precipitação do dia anterior está incompleto; não é possível confirmar a condição para aração.');
-        }
-        $precipitacaoOntem = $chuvaOntem->sum(fn (PrevisaoClimatica $p) => (float) ($p->precipitacao ?? 0));
-        if ($precipitacaoOntem > $regra['chuva_relevante_mm']) {
-            return $this->resultado('nao_indicado', 'Aração não indicada: houve chuva relevante ontem. Verifique a umidade e a trafegabilidade do solo antes de reprogramar.');
-        }
-        for ($offset = 1; $offset <= $diasAnalise; $offset++) {
-            $dia = $data->copy()->subDays($offset)->toDateString();
-            $horas = $porDia->get($dia, collect());
-            if ($horas->isEmpty()) {
-                if ($offset <= $regra['dias_sol_apos_chuva']) {
-                    return $this->resultado('indisponivel', 'Sem histórico meteorológico suficiente para confirmar os três dias de sol após a chuva.');
-                }
-                break;
-            }
-            if ($horas->count() < 24 || $horas->contains(fn (PrevisaoClimatica $p) => $p->precipitacao === null || $p->duracao_sol === null)) {
-                return $this->resultado('indisponivel', 'O histórico diário de chuva/sol está incompleto para avaliar a aração com segurança.');
-            }
-            $chuva = $horas->sum(fn (PrevisaoClimatica $p) => (float) ($p->precipitacao ?? 0));
-            $sol = $horas->sum(fn (PrevisaoClimatica $p) => (float) ($p->duracao_sol ?? 0));
-            if ($offset === 1) {
-                $solo = $horas->last()?->umidade_solo;
-            }
-            $diaSeco = $chuva <= $regra['precipitacao_dia_seco_mm'];
-            $diaChuvoso = !$diaSeco;
-            $diaEnsolarado = $diaSeco && $sol >= $regra['sol_minimo_segundos_dia'];
-
-            if ($sequenciaSecaAberta) {
-                if ($diaSeco) {
-                    $diasSecos++;
-                } else {
-                    $sequenciaSecaAberta = false;
-                }
-            }
-            if ($sequenciaChuvosaAberta) {
-                if ($diaChuvoso) {
-                    $diasChuvosos++;
-                } else {
-                    $sequenciaChuvosaAberta = false;
-                }
-            }
-            if ($sequenciaEnsolaradaAberta) {
-                if ($diaEnsolarado) {
-                    $diasSolares++;
-                } else {
-                    $sequenciaEnsolaradaAberta = false;
-                }
-            }
+        $horasDia = ($porDia->get($data->toDateString(), collect()))
+            ->filter(fn (PrevisaoClimatica $p) => !$p->previsto_para->isPast());
+        $umidades = $horasDia->pluck('umidade_solo')->filter(fn ($v) => $v !== null)->map(fn ($v) => (float) $v);
+        if ($umidades->isEmpty()) {
+            return $this->resultado('indisponivel', 'A Open-Meteo não forneceu umidade estimada para o dia. Verifique o solo diretamente no talhão.');
         }
 
-        if ($diasChuvosos >= $regra['dias_chuvosos_alerta']) {
-            return $this->resultado('nao_indicado', "Aração não indicada: há {$diasChuvosos} dias consecutivos com chuva; aguarde a drenagem do solo.");
-        }
-        if ($diasSecos >= $regra['dias_secos_alerta'] && $diasSolares >= $regra['dias_secos_alerta']
-            && ($solo === null || (float) $solo < $regra['umidade_solo_muito_seco'])) {
-            return $this->resultado('nao_indicado', 'Aração não indicada: há uma sequência prolongada de dias ensolarados e a umidade estimada sugere solo muito seco.');
-        }
-        if ($diasSolares < $regra['dias_sol_apos_chuva']) {
-            return $this->resultado('atencao', "Aguarde {$regra['dias_sol_apos_chuva']} dias de sol após a chuva antes de aração. Dias ensolarados consecutivos: {$diasSolares}.");
-        }
-
-        $horasHoje = $porDia->get($data->toDateString(), collect());
-        if ($horasHoje->count() < 24 || $horasHoje->contains(fn (PrevisaoClimatica $p) => $p->precipitacao === null)) {
-            return $this->resultado('indisponivel', 'A previsão de chuva do dia programado está incompleta para avaliar a aração.');
-        }
-        $chuvaHoje = $horasHoje
-            ->sum(fn (PrevisaoClimatica $p) => (float) ($p->precipitacao ?? 0));
-        if ($chuvaHoje > $regra['chuva_relevante_mm']) {
-            return $this->resultado('nao_indicado', 'Aração não indicada: há precipitação prevista no dia programado.');
-        }
-        if ($chuvaHoje > $regra['precipitacao_dia_seco_mm'] && $diasChuvosos >= $regra['dias_chuvosos_alerta'] - 1) {
-            return $this->resultado('nao_indicado', 'Aração não indicada: o período chuvoso deve continuar no dia programado.');
-        }
-        if ($chuvaHoje >= $regra['chuva_forte_dia_mm']) {
-            return $this->resultado('nao_indicado', 'Aração não indicada: há previsão de chuva forte no dia programado.');
+        $umidade = $umidades->avg();
+        $alertas = [];
+        $status = 'indicado';
+        if ($umidade < $regra['umidade_solo_friavel_minima']) {
+            $status = 'atencao';
+            $alertas[] = 'Estimativa de solo seco: pode haver torrões, maior esforço de tração e desgaste dos implementos.';
+        } elseif ($umidade > $regra['umidade_solo_friavel_maxima']) {
+            $status = 'atencao';
+            $alertas[] = 'Estimativa de solo úmido: confirme trafegabilidade e risco de compactação antes de entrar com máquinas.';
+        } else {
+            $alertas[] = 'A estimativa superficial está dentro da faixa provisória usada como referência de friabilidade.';
         }
 
-        return $this->resultado('indicado', 'Aração indicada: há pelo menos três dias ensolarados e sem chuva desde a última chuva relevante.');
+        if ($umidades->count() < 4) {
+            $status = $this->combinarStatus([$status, 'atencao']);
+            $alertas[] = 'Há poucas amostras horárias de umidade para representar o dia.';
+        }
+
+        $chuvaHoje = $horasDia->sum(fn (PrevisaoClimatica $p) => (float) ($p->precipitacao ?? 0));
+        $chanceChuva = $horasDia->max('chance_chuva');
+        if ($chuvaHoje > 0 || (float) ($chanceChuva ?? 0) >= $regra['chuva_probabilidade_alerta']) {
+            $alertas[] = 'Há chuva ou probabilidade de chuva na previsão; reavalie a umidade e o tráfego no momento da operação.';
+        }
+
+        $mensagem = sprintf('Umidade volumétrica estimada pelo modelo (3–9 cm): %.3f m³/m³. A faixa de friabilidade depende do tipo e da estrutura do solo; faça o teste do torrão no campo.', $umidade);
+
+        return $this->resultado($status, $mensagem, $alertas);
     }
 
-    private function calagem(Carbon $data, Collection $horas): array
+    private function calagem(Carbon $data, Collection $horas, ?string $horaPrevista = null, bool $incluirHorasPassadas = false): array
     {
         $regra = config('clima.calagem');
         $horasDia = $horas->filter(fn (PrevisaoClimatica $p) =>
-            !$p->previsto_para->isPast()
+            ($incluirHorasPassadas || !$p->previsto_para->isPast())
             && (int) $p->previsto_para->format('G') >= 6
-            && (int) $p->previsto_para->format('G') < 18);
-        $horas = $horas->filter(fn (PrevisaoClimatica $p) => !$p->previsto_para->isPast());
+            && (int) $p->previsto_para->format('G') < 18
+            && ($horaPrevista === null || $p->previsto_para->format('H:i') === substr($horaPrevista, 0, 5)));
         if ($horasDia->isEmpty()) {
             return $this->resultado('indisponivel', 'Sem previsão horária para avaliar a calagem.');
         }
-        if ($horasDia->count() < $this->horasDiurnasEsperadas($data, 6, 18)) {
-            return $this->resultado('indisponivel', 'A previsão não cobre todas as horas restantes do período diurno para avaliar a calagem.');
-        }
-        if ($horasDia->contains(fn (PrevisaoClimatica $p) => $p->velocidade_vento === null || $p->umidade_solo === null)
-            || $horas->contains(fn (PrevisaoClimatica $p) => $p->precipitacao === null || $p->codigo_tempo === null)) {
-            return $this->resultado('indisponivel', 'Faltam dados de vento, chuva ou umidade do solo para avaliar a calagem com segurança.');
+        $comVento = $horasDia->filter(fn (PrevisaoClimatica $p) => $p->velocidade_vento !== null);
+        if ($comVento->isEmpty()) {
+            return $this->resultado('indisponivel', 'Sem dados de vento para avaliar a distribuição do calcário.');
         }
 
-        $ventos = $horasDia->pluck('velocidade_vento')->filter(fn ($v) => $v !== null)->map(fn ($v) => (float) $v);
-        if ($ventos->isEmpty()) {
-            return $this->resultado('indisponivel', 'Sem dados de vento para avaliar a calagem.');
+        $classificacoes = $comVento->map(function (PrevisaoClimatica $p) use ($regra) {
+            $vento = (float) $p->velocidade_vento;
+            $status = match (true) {
+                $vento < $regra['vento_maximo_favoravel_kmh'] => 'indicado',
+                $vento <= $regra['vento_maximo_atencao_kmh'] => 'atencao',
+                $vento <= $regra['vento_maximo_desfavoravel_kmh'] => 'nao_indicado',
+                default => 'nao_indicado',
+            };
+
+            return ['hora' => $p, 'status' => $status, 'vento' => $vento];
+        });
+        $favoraveis = $classificacoes->where('status', 'indicado');
+        $alertas = [];
+        $dadosFaltantes = $classificacoes->count() < $horasDia->count();
+        if ($dadosFaltantes) {
+            $alertas[] = 'Parte da previsão não contém velocidade do vento.';
         }
-        $ventoMax = $ventos->max();
-        if ($ventoMax > $regra['vento_maximo_kmh']) {
-            return $this->resultado('nao_indicado', "Calagem não indicada: vento previsto de até {$ventoMax} km/h pode causar deriva; limite operacional adotado: {$regra['vento_maximo_kmh']} km/h.");
+        foreach ($classificacoes as $classificacao) {
+            if ($classificacao['status'] !== 'indicado') {
+                $alertas[] = $classificacao['hora']->previsto_para->format('H:i').': '.$this->mensagemVentoCalagem($classificacao['vento'], $regra);
+            }
         }
 
-        $chuvaDia = $horas->sum(fn (PrevisaoClimatica $p) => (float) ($p->precipitacao ?? 0));
-        $chuvaHoraMax = $horas->max('precipitacao');
-        $trovoada = $horas->contains(fn (PrevisaoClimatica $p) => in_array((int) $p->codigo_tempo, [95, 96, 99], true));
-        if ($chuvaDia >= $regra['chuva_forte_dia_mm'] || (float) $chuvaHoraMax >= $regra['chuva_forte_hora_mm'] || $trovoada) {
-            return $this->resultado('nao_indicado', 'Calagem não indicada: há previsão de chuva intensa ou trovoada, com risco de enxurrada e perda do calcário.');
+        $chuva = $horasDia->filter(fn (PrevisaoClimatica $p) =>
+            (float) ($p->precipitacao ?? 0) > 0
+            || (float) ($p->chance_chuva ?? 0) >= $regra['chuva_probabilidade_alerta']
+            || in_array((int) $p->codigo_tempo, [95, 96, 99], true));
+        if ($chuva->isNotEmpty()) {
+            $alertas[] = 'Há precipitação, chance elevada de chuva ou trovoada na previsão; avalie o risco de perda e a forma de aplicação.';
         }
 
-        $umidades = $horasDia->pluck('umidade_solo')->filter(fn ($v) => $v !== null)->map(fn ($v) => (float) $v);
-        if ($umidades->isEmpty()) {
-            return $this->resultado('indisponivel', 'A API não forneceu umidade estimada do solo; confirme a umidade no talhão.');
-        }
-        $umidade = $umidades->avg();
-        if ($umidade < $regra['umidade_solo_minima']) {
-            return $this->resultado('atencao', 'Calagem adiada: o modelo estima solo seco; confirme a condição no talhão e aguarde umidade moderada.');
-        }
-        if ($umidade > $regra['umidade_solo_maxima']) {
-            return $this->resultado('atencao', 'Calagem adiada: o modelo estima solo muito úmido; confirme a condição e evite aplicação antes de enxurradas.');
+        if ($horaPrevista !== null) {
+            $avaliacao = $classificacoes->first();
+            $alertas[] = $this->mensagemVentoCalagem($avaliacao['vento'], $regra);
+            if ($chuva->isNotEmpty()) {
+                return $this->resultado($this->combinarStatus([$avaliacao['status'], 'atencao']), sprintf('Às %s, vento previsto de %.1f km/h.', $avaliacao['hora']->previsto_para->format('H:i'), $avaliacao['vento']), $alertas);
+            }
+
+            return $this->resultado($avaliacao['status'], sprintf('Às %s, vento previsto de %.1f km/h.', $avaliacao['hora']->previsto_para->format('H:i'), $avaliacao['vento']), $alertas);
         }
 
-        return $this->resultado('indicado', 'Calagem indicada: vento fraco, umidade estimada do solo moderada e sem previsão de chuva intensa.');
+        if ($favoraveis->isNotEmpty()) {
+            $janelas = $this->janelasSeguras($favoraveis->pluck('hora'));
+            $misto = $favoraveis->count() < $classificacoes->count() || $chuva->isNotEmpty() || $dadosFaltantes;
+            if ($misto) {
+                $alertas[] = 'As condições variam durante o dia; priorize as janelas destacadas e confirme o vento no local.';
+            }
+
+            $mensagem = 'Janelas com vento favorável para calagem: '.implode(', ', $janelas).'.';
+            if ($incluirHorasPassadas) {
+                $mensagem = 'Resumo retrospectivo de hoje. '.$mensagem.' Essas janelas já passaram; confirme as condições atuais antes de programar uma operação.';
+            }
+
+            return $this->resultado('indicado', $mensagem, $alertas);
+        }
+
+        $ventoMax = (float) $classificacoes->max('vento');
+        $status = $this->combinarStatus($classificacoes->pluck('status')->all());
+        $mensagem = $ventoMax > $regra['vento_maximo_desfavoravel_kmh']
+            ? sprintf('Vento acima de 30 km/h (máximo previsto %.1f km/h): risco de desperdício elevado. A decisão operacional continua com o responsável.', $ventoMax)
+            : sprintf('Não há janela de vento favorável identificada; máximo previsto %.1f km/h.', $ventoMax);
+
+        return $this->resultado($status, $mensagem, $alertas);
     }
 
-    private function resultado(string $status, string $mensagem): array
+    private function mensagemVentoCalagem(float $vento, array $regra): string
     {
-        return ['status' => $status, 'mensagem' => $mensagem];
+        return match (true) {
+            $vento < $regra['vento_maximo_favoravel_kmh'] => 'Abaixo de 10 km/h: faixa favorável para distribuição uniforme.',
+            $vento <= $regra['vento_maximo_atencao_kmh'] => 'De 10 a 15 km/h: atenção para desvio leve do calcário.',
+            $vento <= $regra['vento_maximo_desfavoravel_kmh'] => 'Acima de 15 até 30 km/h: desfavorável por risco de deriva.',
+            default => 'Acima de 30 km/h: risco de desperdício elevado (condição classificada como proibitiva).',
+        };
+    }
+
+    private function combinarStatus(array $statuses): string
+    {
+        if (in_array('nao_indicado', $statuses, true)) return 'nao_indicado';
+        if (in_array('atencao', $statuses, true)) return 'atencao';
+        if (in_array('indisponivel', $statuses, true)) return 'indisponivel';
+
+        return 'indicado';
+    }
+
+    private function resultado(string $status, string $mensagem, array $alertas = []): array
+    {
+        return ['status' => $status, 'mensagem' => $mensagem, 'alertas' => array_values(array_unique($alertas))];
     }
 
     private function resumoCondicoes(Collection $horas): array
@@ -326,6 +384,8 @@ class InteligenciaClimatica
             'rajada_maxima' => $valores('rajada_vento')->max(),
             'precipitacao' => $valores('precipitacao')->sum(),
             'chance_chuva_maxima' => $valores('chance_chuva')->max(),
+            'temperatura_maxima' => $valores('temperatura')->max(),
+            'umidade_relativa_minima' => $valores('umidade')->min(),
             'umidade_solo_media' => $valores('umidade_solo')->avg(),
             'evapotranspiracao' => $valores('evapotranspiracao')->sum(),
             'horas_sol' => $valores('duracao_sol')->sum() / 3600,

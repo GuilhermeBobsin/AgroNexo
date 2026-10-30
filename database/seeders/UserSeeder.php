@@ -11,25 +11,19 @@ class UserSeeder extends Seeder
 {
     public function run(): void
     {
-        User::create([
-            'name' => 'Administrador',
-            'email' => 'admin@agronexo.com',
-            'password' => Hash::make('123123123'),
-            'perfil' => 'admin',
-            'status' => 'ativo',
-        ]);
+        if (!app()->environment(['local', 'testing'])) {
+            return;
+        }
 
-        User::create([
+        User::updateOrCreate(['email' => 'agronomo@agronexo.com'], [
             'name' => 'João da Silva',
-            'email' => 'agronomo@agronexo.com',
             'password' => Hash::make('123123123'),
             'perfil' => 'agronomo',
             'status' => 'ativo',
         ]);
 
-        User::create([
+        User::updateOrCreate(['email' => 'operador@agronexo.com'], [
             'name' => 'Pedro dos Santos',
-            'email' => 'operador@agronexo.com',
             'password' => Hash::make('123123123'),
             'perfil' => 'operador',
             'status' => 'ativo',
