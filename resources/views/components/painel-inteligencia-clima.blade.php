@@ -1,7 +1,7 @@
 {{-- components/painel-inteligencia-clima.blade.php --}}
 @php
     $classesClima = ['indicado' => 'success', 'atencao' => 'warning', 'nao_indicado' => 'danger', 'indisponivel' => 'secondary'];
-    $rotulosClima = ['indicado' => 'Indicado', 'atencao' => 'Atenção', 'nao_indicado' => 'Não indicado', 'indisponivel' => 'Sem dados'];
+    $rotulosClima = ['indicado' => 'Favorável', 'atencao' => 'Atenção', 'nao_indicado' => 'Desfavorável', 'indisponivel' => 'Sem dados'];
     $operacoesClima = ['pulverizacao' => 'Pulverização', 'aracao' => 'Aração', 'calagem' => 'Calagem'];
     $resumoHoje = ['indicado' => 0, 'restricao' => 0, 'indisponivel' => 0];
     foreach ($locais as $localResumo) {
@@ -52,7 +52,7 @@
                             </svg>
                         </span>
                         <div>
-                            <div class="subheader">Operações indicadas</div>
+                            <div class="subheader">Operações favoráveis</div>
                             <div class="h1 mb-0 text-success">{{ $resumoHoje['indicado'] }}</div>
                         </div>
                     </div>
@@ -71,7 +71,7 @@
                             </svg>
                         </span>
                         <div>
-                            <div class="subheader">Atenções e restrições</div>
+                            <div class="subheader">Operações com alertas</div>
                             <div class="h1 mb-0 text-warning">{{ $resumoHoje['restricao'] }}</div>
                         </div>
                     </div>
@@ -152,6 +152,8 @@
                                     <div class="climate-metrics mb-3" aria-label="Resumo meteorológico do dia">
                                         <div><span>Vento máx.</span><strong>{{ $condicoes['vento_maximo'] !== null ? number_format($condicoes['vento_maximo'], 1, ',', '.') . ' km/h' : '—' }}</strong></div>
                                         <div><span>Rajada máx.</span><strong>{{ $condicoes['rajada_maxima'] !== null ? number_format($condicoes['rajada_maxima'], 1, ',', '.') . ' km/h' : '—' }}</strong></div>
+                                        <div><span>Temperatura máx.</span><strong>{{ $condicoes['temperatura_maxima'] !== null ? number_format($condicoes['temperatura_maxima'], 1, ',', '.') . ' °C' : '—' }}</strong></div>
+                                        <div><span>Umidade relativa mín.</span><strong>{{ $condicoes['umidade_relativa_minima'] !== null ? number_format($condicoes['umidade_relativa_minima'], 0, ',', '.') . '%' : '—' }}</strong></div>
                                         <div><span>Chuva</span><strong>{{ number_format($condicoes['precipitacao'], 1, ',', '.') }} mm</strong></div>
                                         <div><span>Chance máx.</span><strong>{{ $condicoes['chance_chuva_maxima'] !== null ? number_format($condicoes['chance_chuva_maxima'], 0, ',', '.') . '%' : '—' }}</strong></div>
                                         <div><span>Umidade solo (3–9 cm)*</span><strong>{{ $condicoes['umidade_solo_media'] !== null ? number_format($condicoes['umidade_solo_media'] * 100, 0, ',', '.') . '%' : '—' }}</strong></div>
@@ -190,6 +192,13 @@
                                                 </span>
                                             </div>
                                             <p class="text-secondary small mb-0">{{ $avaliacao['mensagem'] }}</p>
+                                            @if (!empty($avaliacao['alertas']))
+                                                <ul class="small mt-2 mb-0 ps-3">
+                                                    @foreach ($avaliacao['alertas'] as $alerta)
+                                                        <li>{{ $alerta }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            @endif
                                         </div>
                                     @endforeach
                                 </div>
@@ -198,7 +207,7 @@
                     </div>
                 @endforeach
             </div>
-            <p class="small text-secondary mt-3 mb-0">Dados meteorológicos: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>, licenciados sob <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> (dados agregados e interpretados pelo AgroNexo). *Umidade volumétrica estimada pelo modelo para 3–9 cm. Previsões e recomendações são estimativas de grade meteorológica e devem ser confirmadas no talhão.</p>
+            <p class="small text-secondary mt-3 mb-0">Dados meteorológicos: <a href="https://open-meteo.com/" target="_blank" rel="noopener">Open-Meteo</a>, licenciados sob <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a> (dados agregados e interpretados pelo AgroNexo). *Umidade volumétrica estimada pelo modelo para 3–9 cm. As avaliações são orientativas e não bloqueiam a decisão operacional. Confirme os dados no talhão e siga a bula/receita do produto; limites de umidade do solo são provisórios e dependem do tipo de solo.</p>
         </div>
     </section>
 @empty
@@ -220,7 +229,7 @@
     .climate-location > .card-header { padding: 1rem 1.25rem; }
     .climate-day { border-color: var(--tblr-border-color); }
     .climate-day > .card-header { background: var(--tblr-bg-surface-secondary); }
-    .climate-metrics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .65rem; }
+    .climate-metrics { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .65rem; }
     .climate-metrics > div { display: flex; flex-direction: column; gap: .1rem; padding: .55rem .65rem; border-radius: .375rem; background: var(--tblr-bg-surface-secondary); min-width: 0; }
     .climate-metrics span { color: var(--tblr-secondary); font-size: .72rem; }
     .climate-metrics strong { font-size: .9rem; overflow-wrap: anywhere; }

@@ -8,6 +8,7 @@
         let consultaClima;
         let versaoConsulta = 0;
         const estilos = { indicado: 'success', atencao: 'warning', nao_indicado: 'danger', indisponivel: 'secondary' };
+        const rotulos = { indicado: 'Favorável', atencao: 'Atenção', nao_indicado: 'Desfavorável', indisponivel: 'Sem dados suficientes' };
         const atualizarClima = async () => {
             const [tipoCampo, talhaoCampo, data, hora] = controles.map((el) => el?.value ?? '');
             const tipo = tipoCampo || painelClima.dataset.tipoDefault;
@@ -36,7 +37,21 @@
                     if (versao !== versaoConsulta) return;
                     const caixa = document.createElement('div');
                     caixa.className = 'alert alert-' + (estilos[dados.status] || 'secondary');
-                    caixa.textContent = dados.mensagem;
+                    const titulo = document.createElement('strong');
+                    titulo.textContent = rotulos[dados.status] || 'Orientação climática';
+                    const texto = document.createElement('div');
+                    texto.textContent = dados.mensagem;
+                    caixa.append(titulo, texto);
+                    (dados.alertas || []).forEach((alerta) => {
+                        const item = document.createElement('div');
+                        item.className = 'small mt-1';
+                        item.textContent = '• ' + alerta;
+                        caixa.append(item);
+                    });
+                    const nota = document.createElement('div');
+                    nota.className = 'small mt-2';
+                    nota.textContent = 'Orientação de apoio: não bloqueia a tarefa. Confirme as condições no local e siga a bula/receita.';
+                    caixa.append(nota);
                     painelClima.replaceChildren(caixa);
                 } catch (erro) {
                     if (versao !== versaoConsulta) return;
