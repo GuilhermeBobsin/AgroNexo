@@ -44,7 +44,11 @@
                     <div class="col-md-6 col-lg-3">
                         <div class="card h-100 card-usuario" id="usuario-{{ $usuario->id }}">
                             <div class="card-body p-4 text-center">
-                                <span class="avatar avatar-xl mb-3 bg-{{ $corPerfil }}-lt" id="avatar-{{ $usuario->id }}">{{ mb_strtoupper(mb_substr($usuario->name, 0, 1)) }}</span>
+                                @if ($usuario->profile_photo_path)
+                                    <span class="avatar avatar-xl mb-3" id="avatar-{{ $usuario->id }}" style="background-image: url('{{ \Illuminate\Support\Facades\Storage::disk('public')->url($usuario->profile_photo_path) }}')" role="img" aria-label="Foto de {{ $usuario->name }}"></span>
+                                @else
+                                    <span class="avatar avatar-xl mb-3 bg-{{ $corPerfil }}-lt" id="avatar-{{ $usuario->id }}" aria-hidden="true">{{ mb_strtoupper(mb_substr($usuario->name, 0, 1)) }}</span>
+                                @endif
                                 <h3 class="m-0 mb-1" id="nome-{{ $usuario->id }}">{{ $usuario->name }}</h3>
                                 <div class="text-secondary text-truncate" id="email-{{ $usuario->id }}">{{ $usuario->email }}</div>
                                 <div class="mt-3 d-flex flex-column align-items-center gap-1">
