@@ -1,55 +1,32 @@
-<section class="space-y-6">
-    <header>
-        <h2 class="text-lg font-medium text-gray-900">
-            {{ __('Delete Account') }}
-        </h2>
-
-        <p class="mt-1 text-sm text-gray-600">
-            {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Before deleting your account, please download any data or information that you wish to retain.') }}
-        </p>
-    </header>
-
-    <x-danger-button
-        x-data=""
-        x-on:click.prevent="$dispatch('open-modal', 'confirm-user-deletion')"
-    >{{ __('Delete Account') }}</x-danger-button>
-
-    <x-modal name="confirm-user-deletion" :show="$errors->userDeletion->isNotEmpty()" focusable>
-        <form method="post" action="{{ route('profile.destroy') }}" class="p-6">
+<section class="card border-danger-lt" aria-labelledby="profile-delete-title">
+    <div class="card-header">
+        <div>
+            <h2 id="profile-delete-title" class="card-title text-danger">Excluir conta</h2>
+            <div class="card-subtitle">A exclusão encerra seu acesso ao AgroNexo.</div>
+        </div>
+    </div>
+    <div class="card-body">
+        <p class="text-secondary mb-3">Para preservar o histórico operacional, contas vinculadas a tarefas, aplicações ou recomendações não podem ser excluídas. Nesses casos, peça ao administrador para desativar seu acesso.</p>
+        @if ($errors->userDeletion->any())
+            <div class="alert alert-danger" role="alert">
+                @foreach ($errors->userDeletion->all() as $mensagem)
+                    <div>{{ $mensagem }}</div>
+                @endforeach
+            </div>
+        @endif
+        <form method="post" action="{{ route('profile.destroy') }}" onsubmit="return confirm('Confirma a exclusão permanente da sua conta?')">
             @csrf
             @method('delete')
-
-            <h2 class="text-lg font-medium text-gray-900">
-                {{ __('Are you sure you want to delete your account?') }}
-            </h2>
-
-            <p class="mt-1 text-sm text-gray-600">
-                {{ __('Once your account is deleted, all of its resources and data will be permanently deleted. Please enter your password to confirm you would like to permanently delete your account.') }}
-            </p>
-
-            <div class="mt-6">
-                <x-input-label for="password" value="{{ __('Password') }}" class="sr-only" />
-
-                <x-text-input
-                    id="password"
-                    name="password"
-                    type="password"
-                    class="mt-1 block w-3/4"
-                    placeholder="{{ __('Password') }}"
-                />
-
-                <x-input-error :messages="$errors->userDeletion->get('password')" class="mt-2" />
-            </div>
-
-            <div class="mt-6 flex justify-end">
-                <x-secondary-button x-on:click="$dispatch('close')">
-                    {{ __('Cancel') }}
-                </x-secondary-button>
-
-                <x-danger-button class="ms-3">
-                    {{ __('Delete Account') }}
-                </x-danger-button>
+            <div class="row align-items-end g-3">
+                <div class="col-md-7">
+                    <label for="delete-account-password" class="form-label">Confirme sua senha</label>
+                    <input id="delete-account-password" name="password" type="password" class="form-control @error('password', 'userDeletion') is-invalid @enderror" autocomplete="current-password" required>
+                    @error('password', 'userDeletion')<div class="invalid-feedback">{{ $message }}</div>@enderror
+                </div>
+                <div class="col-md-5 d-grid d-md-flex justify-content-md-end">
+                    <button type="submit" class="btn btn-outline-danger">Excluir minha conta</button>
+                </div>
             </div>
         </form>
-    </x-modal>
+    </div>
 </section>

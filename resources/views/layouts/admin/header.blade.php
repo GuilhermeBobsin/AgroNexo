@@ -85,7 +85,7 @@
                     </a>
                 </div>
                 @include('layouts.partials.notificacoes-header')
-            <div class="nav-item dropdown d-none d-md-flex me-3">
+                <div class="nav-item dropdown d-none d-md-flex me-3">
                     <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show app menu"
                         data-bs-auto-close="outside" aria-expanded="false">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
@@ -207,11 +207,21 @@
                 </div>
             </div>
             <div class="nav-item dropdown">
-                <a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Open user menu">
-                    <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"> </span>
+                <a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Abrir menu do usuário">
+                    @if (Auth::user()->profile_photo_path)
+                    <img
+                        src="{{ \Illuminate\Support\Facades\Storage::disk('public')->url(Auth::user()->profile_photo_path) }}"
+                        class="avatar avatar-sm"
+                        alt="Foto de {{ Auth::user()->name }}"
+                        style="object-fit: cover;">
+                    @else
+                    <span class="avatar avatar-sm bg-primary-lt text-primary" aria-hidden="true">
+                        {{ mb_strtoupper(mb_substr(Auth::user()->name, 0, 1)) }}
+                    </span>
+                    @endif
                     <div class="d-none d-xl-block ps-2">
                         <div>{{ Auth::user()->name }}</div>
-                        <div class="mt-1 small text-secondary">{{ Auth::user()->perfil }}</div>
+                        <div class="mt-1 small text-secondary">Administrador</div>
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
@@ -225,7 +235,7 @@
             </div>
         </div>
     </div>
-@include('layouts.partials.tema-header-script')
+    @include('layouts.partials.tema-header-script')
 </header>
 <header class="navbar-expand-md">
     <div class="collapse navbar-collapse" id="navbar-menu" style="visibility: visible !important;">
