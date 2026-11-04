@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Aplicacao;
 use App\Models\Talhao;
 use App\Models\Tarefa;
+use App\Models\Recomendacao;
 
 class DashboardController extends Controller
 {
@@ -35,6 +36,10 @@ class DashboardController extends Controller
                 ->where('status', 'realizada')
                 ->whereDate('data_aplicacao', '>=', $inicioDoMes->toDateString())
                 ->count(),
+            'recomendacoes_pendentes' => Recomendacao::where('agronomo_id', $usuario->id)
+                ->whereIn('propriedade_id', $propriedadeIds)->where('status', 'pendente')->count(),
+            'tarefas_atrasadas' => (clone $tarefas)->whereIn('status', ['pendente', 'em_andamento'])
+                ->whereDate('data_prevista', '<', today())->count(),
         ];
 
         $proximasTarefas = Tarefa::with(['propriedade', 'talhao', 'responsavel'])
@@ -52,12 +57,17 @@ class DashboardController extends Controller
             ->limit(6)
             ->get();
 
+        $recomendacoesPendentes = Recomendacao::with(['propriedade', 'talhao'])
+            ->where('agronomo_id', $usuario->id)->whereIn('propriedade_id', $propriedadeIds)
+            ->where('status', 'pendente')->latest()->limit(5)->get();
+
         return view('agronomo.dashboard', compact(
             'usuario',
             'propriedades',
             'indicadores',
             'proximasTarefas',
             'aplicacoesRecentes'
+            , 'recomendacoesPendentes'
         ));
     }
 }

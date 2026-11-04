@@ -56,7 +56,7 @@ class RoleWorkflowsTest extends TestCase
             ->get(route('agronomo.tarefas.show', $tarefaExterna))
             ->assertNotFound();
         $this->actingAs($agronomo)->get(route('agronomo.dashboard'))
-            ->assertOk()->assertSee('acompanhamento técnico')->assertDontSee('Nova tarefa');
+            ->assertOk()->assertSee('Acompanhe as atividades')->assertDontSee('Nova tarefa');
     }
 
     public function test_operator_can_advance_an_assigned_task_and_cannot_update_another_operators_task(): void

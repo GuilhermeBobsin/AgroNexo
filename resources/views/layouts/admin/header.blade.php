@@ -139,54 +139,6 @@
                                     <div class="col-4">
                                         <a href="#"
                                             class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/app-store.svg" class="w-6 h-6 mx-auto mb-2"
-                                                width="24" height="24" alt="">
-                                            <span class="h5">Apple App Store</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/apple-podcast.svg" class="w-6 h-6 mx-auto mb-2"
-                                                width="24" height="24" alt="">
-                                            <span class="h5">Apple Podcast</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/apple.svg" class="w-6 h-6 mx-auto mb-2" width="24"
-                                                height="24" alt="">
-                                            <span class="h5">Apple</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/behance.svg" class="w-6 h-6 mx-auto mb-2"
-                                                width="24" height="24" alt="">
-                                            <span class="h5">Behance</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/discord.svg" class="w-6 h-6 mx-auto mb-2"
-                                                width="24" height="24" alt="">
-                                            <span class="h5">Discord</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/dribbble.svg" class="w-6 h-6 mx-auto mb-2"
-                                                width="24" height="24" alt="">
-                                            <span class="h5">Dribbble</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
                                             <img src="./static/brands/dropbox.svg" class="w-6 h-6 mx-auto mb-2"
                                                 width="24" height="24" alt="">
                                             <span class="h5">Dropbox</span>

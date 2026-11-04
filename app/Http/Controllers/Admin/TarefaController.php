@@ -54,7 +54,7 @@ class TarefaController extends Controller
         }
 
         $tarefa = Tarefa::create($validated);
-        $tarefa->responsavel->notify(new AtualizacaoOperacional(
+        $tarefa->responsavel?->notify(new AtualizacaoOperacional(
             'Nova tarefa atribuída',
             $tarefa->titulo . ' · ' . $tarefa->propriedade->nome,
             route('operador.tarefas.show', $tarefa),

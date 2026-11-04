@@ -2,7 +2,7 @@
 
 @section('content')
 <main id="content" class="page-body"><div class="container-xl">
-    <div class="page-header mb-4"><div><h2 class="page-title">Nova tarefa</h2><div class="text-secondary mt-1">Atribua uma atividade a um operador.</div></div></div>
+    <div class="page-header mb-4"><div><h2 class="page-title">Nova tarefa</h2><div class="text-secondary mt-1">Atribua uma atividade a um operador da propriedade.</div></div></div>
     @if ($propriedades->isEmpty() || $usuarios->isEmpty())<div class="alert alert-warning">É necessário ter ao menos uma propriedade e um operador cadastrado para criar uma tarefa.</div>@endif
     <div class="row"><div class="col-lg-9 col-xl-8"><form id="form-tarefa" method="POST" action="{{ route('admin.tarefas.store') }}" data-ajax-form>@csrf
         <div class="card"><div class="card-body">
