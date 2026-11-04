@@ -96,7 +96,7 @@ class PropriedadeController extends Controller
             'agronomo_ids' => ['nullable', 'array'],
             'agronomo_ids.*' => [
                 'integer',
-                Rule::exists('users', 'id')->where('perfil', 'agronomo')->where('status', 'ativo'),
+                Rule::in(User::where('perfil', 'agronomo')->where('status', 'ativo')->pluck('id')->all()),
             ],
         ]);
 

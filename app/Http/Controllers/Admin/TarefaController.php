@@ -75,7 +75,7 @@ class TarefaController extends Controller
     private function validationRules(Request $request): array
     {
         $rules = [
-            'propriedade_id' => 'required|exists:propriedades,id',
+            'propriedade_id' => ['required', Rule::in(auth()->user()->propriedades()->wherePivot('papel', 'dono')->pluck('propriedades.id')->all())],
             'talhao_id' => ['nullable', Rule::exists('talhoes', 'id')->where('propriedade_id', $request->input('propriedade_id'))],
             'tipo' => 'required|in:aplicacao,aracao,calagem,irrigacao,manutencao,outro',
             'titulo' => 'required|string|max:255',

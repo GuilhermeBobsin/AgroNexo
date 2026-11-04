@@ -4,9 +4,11 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Scopes\OwnedPropertyScope;
 
 class MovimentacaoEstoque extends Model
 {
+    protected static function booted(): void { static::addGlobalScope(new OwnedPropertyScope()); }
     protected $table = 'movimentacoes_estoque';
 
     protected $fillable = [

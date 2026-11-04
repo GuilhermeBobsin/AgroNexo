@@ -22,7 +22,7 @@ class CulturaController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'nome' => 'required|string|max:255|unique:culturas,nome',
+            'nome' => ['required', 'string', 'max:255', Rule::unique('culturas', 'nome')->where('admin_id', auth()->id())],
         ]);
 
         Cultura::create($validated);
@@ -37,7 +37,7 @@ class CulturaController extends Controller
     public function update(Request $request, Cultura $cultura)
     {
         $validated = $request->validate([
-            'nome' => ['required', 'string', 'max:255', Rule::unique('culturas', 'nome')->ignore($cultura->id)],
+            'nome' => ['required', 'string', 'max:255', Rule::unique('culturas', 'nome')->where('admin_id', auth()->id())->ignore($cultura->id)],
         ]);
 
         $cultura->update($validated);

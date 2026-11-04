@@ -25,7 +25,7 @@ class ProdutoController extends Controller
 
         $produtos = $query->paginate(15)->withQueryString();
         $totalProdutos = Produto::count();
-        $comEstoque = DB::table('produto_propriedade')->distinct('produto_id')->count('produto_id');
+        $comEstoque = DB::table('produto_propriedade')->whereIn('propriedade_id', auth()->user()->propriedades()->wherePivot('papel', 'dono')->pluck('propriedades.id'))->distinct('produto_id')->count('produto_id');
 
         return view('admin.produtos.index', compact('produtos', 'totalProdutos', 'comEstoque'));
     }
@@ -48,7 +48,14 @@ class ProdutoController extends Controller
 
     public function store(Request $request)
     {
-        $produto = Produto::create($request->validate($this->regras()));
+        $produto = DB::transaction(function () use ($request) {
+            $produto = Produto::create($request->validate($this->regras()));
+            $propriedades = auth()->user()->propriedades()->wherePivot('papel', 'dono')->pluck('propriedades.id');
+            foreach ($propriedades as $propriedadeId) {
+                $produto->propriedades()->attach($propriedadeId, ['estoque_atual' => 0, 'estoque_minimo' => 0]);
+            }
+            return $produto;
+        });
 
         if ($request->wantsJson()) {
             return response()->json([

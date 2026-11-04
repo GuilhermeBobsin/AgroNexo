@@ -17,7 +17,7 @@ class DashboardController extends Controller
     public function index(Request $request)
     {
         $validated = $request->validate([
-            'propriedade_id' => ['nullable', 'integer', 'exists:propriedades,id'],
+            'propriedade_id' => ['nullable', 'integer', Rule::in(auth()->user()->propriedades()->wherePivot('papel', 'dono')->pluck('propriedades.id')->all())],
             'responsavel_id' => ['nullable', 'integer', Rule::exists('users', 'id')->where('perfil', 'operador')],
             'data_inicio' => ['nullable', 'date'],
             'data_fim' => ['nullable', 'date', 'after_or_equal:data_inicio'],

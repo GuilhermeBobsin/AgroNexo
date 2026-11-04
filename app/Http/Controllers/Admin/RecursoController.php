@@ -8,6 +8,7 @@ use App\Models\Recurso;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Tarefa;
+use Illuminate\Validation\Rule;
 
 class RecursoController extends Controller
 {
@@ -29,7 +30,7 @@ class RecursoController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'propriedade_id' => 'required|exists:propriedades,id',
+            'propriedade_id' => ['required', Rule::in(auth()->user()->propriedades()->wherePivot('papel', 'dono')->pluck('propriedades.id')->all())],
             'nome' => 'required|string|max:255',
             'tipo' => 'required|in:trator,implemento,pulverizador,colheitadeira,outro',
             'status' => 'required|in:disponivel,em_uso,manutencao'
@@ -64,7 +65,7 @@ class RecursoController extends Controller
     public function update(Request $request, Recurso $recurso)
     {
         $validated = $request->validate([
-            'propriedade_id' => 'required|exists:propriedades,id',
+            'propriedade_id' => ['required', Rule::in(auth()->user()->propriedades()->wherePivot('papel', 'dono')->pluck('propriedades.id')->all())],
             'nome' => 'required|string|max:255',
             'tipo' => 'required|in:trator,implemento,pulverizador,colheitadeira,outro',
             'status' => 'required|in:disponivel,em_uso,manutencao',
