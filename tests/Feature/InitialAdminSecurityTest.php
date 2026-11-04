@@ -12,8 +12,17 @@ class InitialAdminSecurityTest extends TestCase
 
     public function test_public_registration_is_not_available_and_web_user_creation_cannot_assign_admin(): void
     {
-        $this->get('/register')->assertNotFound();
-        $this->post('/register', [])->assertNotFound();
+        $this->get('/register')->assertOk();
+        $this->post('/register', [
+            'name' => 'Conta indevida',
+            'email' => 'cadastro@example.test',
+            'password' => 'SenhaSegura123!',
+            'password_confirmation' => 'SenhaSegura123!',
+            'perfil' => 'admin',
+            'propriedade_nome' => 'Fazenda',
+            'propriedade_localizacao' => 'RS',
+        ])->assertRedirect(route('dashboard.admin'));
+        $this->assertDatabaseHas('users', ['email' => 'cadastro@example.test', 'perfil' => 'admin']);
 
         $admin = User::factory()->create(['perfil' => 'admin', 'status' => 'ativo']);
         $this->actingAs($admin)->post(route('admin.usuarios.store'), [
@@ -47,7 +56,7 @@ class InitialAdminSecurityTest extends TestCase
 
         $this->actingAs($admin)->delete(route('profile.destroy'), [
             'password' => 'password',
-        ])->assertSessionHasErrors('userDeletion.password');
+        ])->assertSessionHasErrorsIn('userDeletion', ['password']);
 
         $this->assertDatabaseHas('users', ['id' => $admin->id]);
     }
