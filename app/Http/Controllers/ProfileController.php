@@ -9,7 +9,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -68,7 +67,7 @@ class ProfileController extends Controller
 
         $user = $request->user();
 
-        DB::transaction(function () use ($user): void {
+        $erroExclusao = DB::transaction(function () use ($user): ?string {
             if ($user->perfil === 'admin') {
                 $administradoresAtivos = $user->newQuery()
                     ->where('perfil', 'admin')
@@ -76,23 +75,27 @@ class ProfileController extends Controller
                     ->lockForUpdate()
                     ->get();
                 if ($administradoresAtivos->count() <= 1) {
-                    throw ValidationException::withMessages([
-                        'password' => 'A conta é o último administrador ativo e não pode ser excluída.',
-                    ])->errorBag('userDeletion');
+                    return 'A conta é o último administrador ativo e não pode ser excluída.';
                 }
             }
 
             if ($user->tarefas()->exists() || $user->aplicacoes()->exists() || $user->recomendacoes()->exists()) {
-                throw ValidationException::withMessages([
-                    'password' => 'Esta conta possui registros operacionais no histórico. Peça a um administrador para desativar o acesso em vez de excluir a conta.',
-                ])->errorBag('userDeletion');
+                return 'Esta conta possui registros operacionais no histórico. Peça a um administrador para desativar o acesso em vez de excluir a conta.';
             }
 
             // A sessão pode atualizar o remember_token no logout; faça isso antes da exclusão.
             $user->propriedades()->detach();
             Auth::logout();
             $user->delete();
+
+            return null;
         });
+
+        if ($erroExclusao !== null) {
+            return Redirect::route('profile.edit')->withErrors([
+                'password' => $erroExclusao,
+            ], 'userDeletion');
+        }
 
         if ($user->profile_photo_path) {
             Storage::disk('public')->delete($user->profile_photo_path);
