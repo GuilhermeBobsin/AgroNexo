@@ -9,6 +9,8 @@ use App\Models\Aplicacao;
 use App\Models\Produto;
 use App\Models\MovimentacaoEstoque;
 use App\Models\Recomendacao;
+use App\Models\User;
+use App\Notifications\AtualizacaoOperacional;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Services\Clima\InteligenciaClimatica;
@@ -154,6 +156,24 @@ class TarefaController extends Controller
                 ]);
             }
         });
+
+        if (in_array($validated['status'], ['concluida', 'cancelada'], true)) {
+            $tarefa->loadMissing(['propriedade', 'recomendacao.agronomo']);
+            $titulo = $validated['status'] === 'concluida' ? 'Tarefa concluída' : 'Tarefa cancelada';
+            $mensagem = $tarefa->titulo.' · '.$tarefa->propriedade->nome;
+            if ($validated['status'] === 'cancelada') {
+                $mensagem .= ' · '.$validated['motivo_cancelamento'];
+            }
+            User::where('perfil', 'admin')->where('status', 'ativo')->each(fn (User $admin) =>
+                $admin->notify(new AtualizacaoOperacional($titulo, $mensagem, route('admin.tarefas.show', $tarefa), 'list-check'))
+            );
+            $tarefa->recomendacao?->agronomo?->notify(new AtualizacaoOperacional(
+                $titulo,
+                $mensagem,
+                route('agronomo.tarefas.show', $tarefa),
+                $validated['status'] === 'concluida' ? 'circle-check' : 'x'
+            ));
+        }
 
         if ($request->wantsJson()) {
             return response()->json(['message' => $tarefa->tipo === 'aplicacao' && $validated['status'] === 'concluida' ? 'Aplicação registrada e estoque atualizado.' : 'Status atualizado com sucesso.', 'status' => $validated['status']]);
