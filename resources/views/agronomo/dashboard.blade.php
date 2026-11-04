@@ -10,7 +10,7 @@
                 <div class="text-secondary mt-1">Acompanhe as atividades e aplicações das propriedades vinculadas a você.</div>
             </div><div class="col-auto"><a class="btn btn-primary" href="{{ route('agronomo.recomendacoes.create') }}">Nova recomendação técnica</a></div></div>
         </div>
-        <div class="alert alert-info mb-4">Seu perfil é de acompanhamento técnico: o administrador planeja as tarefas e o operador registra a execução e as aplicações realizadas.</div>
+        <div class="alert alert-info mb-4">Acompanhe as tarefas das propriedades vinculadas, envie recomendações técnicas ao administrador e consulte os registros de execução feitos pela equipe operacional.</div>
 
         @if ($propriedades->isEmpty())
             <div class="alert alert-info" role="status">
@@ -28,7 +28,7 @@
                     <div class="card card-sm"><div class="card-body"><div class="subheader">Tarefas em aberto</div><div class="h1 mb-0">{{ $indicadores['tarefas_pendentes'] + $indicadores['tarefas_em_andamento'] }}</div><div class="text-secondary mt-1">{{ $indicadores['tarefas_pendentes'] }} pendentes · {{ $indicadores['tarefas_em_andamento'] }} em andamento</div></div></div>
                 </div>
                 <div class="col-sm-6 col-lg-3">
-                    <div class="card card-sm"><div class="card-body"><div class="subheader">Neste mês</div><div class="h1 mb-0">{{ $indicadores['aplicacoes_mes'] }}</div><div class="text-secondary mt-1">aplicações · {{ $indicadores['tarefas_concluidas_mes'] }} tarefas concluídas</div></div></div>
+                    <div class="card card-sm"><div class="card-body"><div class="subheader">Recomendações pendentes</div><div class="h1 mb-0">{{ $indicadores['recomendacoes_pendentes'] }}</div><div class="text-secondary mt-1">{{ $indicadores['tarefas_atrasadas'] }} tarefas atrasadas</div></div></div>
                 </div>
             </div>
 
@@ -48,7 +48,7 @@
                                         <tr>
                                             <td><div class="fw-medium">{{ $tarefa->titulo }}</div><div class="text-secondary small">{{ ucfirst(str_replace('_', ' ', $tarefa->tipo)) }}</div></td>
                                             <td>{{ $tarefa->propriedade->nome }}<div class="text-secondary small">{{ $tarefa->talhao->nome ?? 'Sem talhão' }}</div></td>
-                                            <td>{{ $tarefa->responsavel->name }}</td>
+                                            <td>{{ $tarefa->responsavel?->name ?? 'Não atribuído' }}</td>
                                             <td>{{ $tarefa->data_prevista->format('d/m/Y') }}{{ $tarefa->hora_prevista ? ' · '.substr($tarefa->hora_prevista, 0, 5) : '' }}</td>
                                             <td><span class="badge bg-{{ $statusColor }}-lt">{{ $statusLabel }}</span></td>
                                         </tr>
@@ -86,6 +86,17 @@
                     </section>
                 </div>
             </div>
+
+            <section class="card mt-4" aria-labelledby="recomendacoes-pendentes-title">
+                <div class="card-header"><h2 class="card-title" id="recomendacoes-pendentes-title">Recomendações aguardando análise</h2><div class="card-actions"><a href="{{ route('agronomo.recomendacoes.index', ['status' => 'pendente']) }}">Ver todas</a></div></div>
+                <div class="table-responsive"><table class="table table-vcenter card-table"><thead><tr><th>Recomendação</th><th>Propriedade / talhão</th><th>Prioridade</th><th>Enviada</th><th></th></tr></thead><tbody>
+                    @forelse ($recomendacoesPendentes as $recomendacao)
+                        <tr><td>{{ $recomendacao->titulo }}<div class="small text-secondary">{{ ucfirst(str_replace('_', ' ', $recomendacao->tipo)) }}</div></td><td>{{ $recomendacao->propriedade->nome }}<div class="small text-secondary">{{ $recomendacao->talhao?->nome ?? 'Propriedade toda' }}</div></td><td>{{ ucfirst($recomendacao->prioridade) }}</td><td>{{ $recomendacao->created_at->format('d/m/Y') }}</td><td><a class="btn btn-sm" href="{{ route('agronomo.recomendacoes.show', $recomendacao) }}">Acompanhar</a></td></tr>
+                    @empty
+                        <tr><td colspan="5" class="text-center text-secondary py-4">Nenhuma recomendação aguardando análise.</td></tr>
+                    @endforelse
+                </tbody></table></div>
+            </section>
 
             <section class="mt-4" aria-labelledby="propriedades-title">
                 <h2 class="h3 mb-3" id="propriedades-title">Propriedades acompanhadas</h2>

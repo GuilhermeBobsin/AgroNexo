@@ -2,7 +2,7 @@
 
 @section('content')
 <main id="content" class="page-body"><div class="container-xl">
-    <div class="page-header mb-4"><div><h2 class="page-title">Editar tarefa</h2><div class="text-secondary mt-1">Atualize a atividade antes que o operador a inicie.</div></div></div>
+    <div class="page-header mb-4"><div><h2 class="page-title">Editar tarefa</h2><div class="text-secondary mt-1">Atualize a atividade e o operador responsável antes do início.</div></div></div>
     <div class="row"><div class="col-lg-9 col-xl-8"><form id="form-tarefa" method="POST" action="{{ route('admin.tarefas.update', $tarefa) }}" data-ajax-form>@csrf @method('PUT')
         <div class="card"><div class="card-body">
             <div class="mb-3"><label for="propriedade_id" class="form-label">Propriedade</label><select id="propriedade_id" name="propriedade_id" class="form-select" required><option value="">Selecione</option>@foreach ($propriedades as $propriedade)<option value="{{ $propriedade->id }}" @selected(old('propriedade_id', $tarefa->propriedade_id) == $propriedade->id)>{{ $propriedade->nome }}</option>@endforeach</select><div class="invalid-feedback" id="error-propriedade_id"></div></div>
