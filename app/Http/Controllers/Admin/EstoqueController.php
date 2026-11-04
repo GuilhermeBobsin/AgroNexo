@@ -21,6 +21,11 @@ class EstoqueController extends Controller
         return DB::table('produto_propriedade as estoque')
             ->join('produtos', 'produtos.id', '=', 'estoque.produto_id')
             ->join('propriedades', 'propriedades.id', '=', 'estoque.propriedade_id')
+            ->join('propriedade_usuario as dono', function ($join) {
+                $join->on('dono.propriedade_id', '=', 'estoque.propriedade_id')
+                    ->where('dono.usuario_id', '=', auth()->id())
+                    ->where('dono.papel', '=', 'dono');
+            })
             ->select(
                 'estoque.id', 'estoque.produto_id', 'estoque.propriedade_id',
                 'estoque.estoque_atual', 'estoque.estoque_minimo', 'estoque.data_validade',
@@ -29,6 +34,17 @@ class EstoqueController extends Controller
                 'produtos.grupo_modo_acao', 'produtos.preco',
                 'propriedades.nome as propriedade_nome'
             );
+    }
+
+    private function ownedPropertyIds(): array
+    {
+        return auth()->user()->propriedades()->wherePivot('papel', 'dono')->pluck('propriedades.id')->all();
+    }
+
+    private function assertOwnedStock(int $estoque): void
+    {
+        abort_unless(DB::table('produto_propriedade')->where('id', $estoque)
+            ->whereIn('propriedade_id', $this->ownedPropertyIds())->exists(), 404);
     }
 
     public function index(Request $request)
@@ -50,7 +66,7 @@ class EstoqueController extends Controller
 
         $estoques = $query->paginate(15)->withQueryString();
         $propriedades = Propriedade::orderBy('nome')->get(['id', 'nome']);
-        $resumo = DB::table('produto_propriedade')
+        $resumo = DB::table('produto_propriedade')->whereIn('propriedade_id', $this->ownedPropertyIds())
             ->selectRaw('count(*) as total')
             ->selectRaw('sum(case when estoque_atual <= estoque_minimo then 1 else 0 end) as baixos')
             ->selectRaw('sum(case when data_validade < ? then 1 else 0 end) as vencidos', [today()->toDateString()])
@@ -71,12 +87,14 @@ class EstoqueController extends Controller
     {
         return [
             'produto_id' => [
-                'required', 'integer', 'exists:produtos,id',
+                'required', 'integer', Rule::exists('produto_propriedade', 'produto_id')
+                    ->whereIn('propriedade_id', $this->ownedPropertyIds())
+                    ->where('propriedade_id', $request->input('propriedade_id')),
                 Rule::unique('produto_propriedade', 'produto_id')
                     ->where('propriedade_id', $request->input('propriedade_id'))
                     ->ignore($estoqueId),
             ],
-            'propriedade_id' => 'required|integer|exists:propriedades,id',
+            'propriedade_id' => ['required', 'integer', Rule::in($this->ownedPropertyIds())],
             'estoque_atual' => 'required|numeric|decimal:0,3|min:0|max:999999999.999',
             'estoque_minimo' => 'required|numeric|decimal:0,3|min:0|max:999999999.999',
             'data_validade' => 'nullable|date',
@@ -132,6 +150,7 @@ class EstoqueController extends Controller
 
     public function edit(int $estoque)
     {
+        $this->assertOwnedStock($estoque);
         $registro = DB::table('produto_propriedade')->where('id', $estoque)->firstOrFail();
         $produtos = Produto::orderBy('nome')->get(['id', 'nome', 'unidade']);
         $propriedades = Propriedade::orderBy('nome')->get(['id', 'nome']);
@@ -141,6 +160,7 @@ class EstoqueController extends Controller
 
     public function update(Request $request, int $estoque)
     {
+        $this->assertOwnedStock($estoque);
         $validated = $request->validate($this->regras($request, $estoque));
         DB::transaction(function () use ($request, $validated, $estoque) {
             $registro = DB::table('produto_propriedade')->where('id', $estoque)->lockForUpdate()->firstOrFail();
@@ -179,6 +199,7 @@ class EstoqueController extends Controller
 
     public function destroy(Request $request, int $estoque)
     {
+        $this->assertOwnedStock($estoque);
         $message = DB::transaction(function () use ($estoque) {
             $registro = DB::table('produto_propriedade')->where('id', $estoque)->lockForUpdate()->first();
             abort_unless($registro, 404);

@@ -112,7 +112,7 @@ class TalhaoController extends Controller
 
         $validated = $request->validate([
             'nome' => ['required', 'string', 'max:255'],
-            'cultura_id' => ['nullable', 'integer', Rule::exists('culturas', 'id')],
+            'cultura_id' => ['nullable', 'integer', Rule::exists('culturas', 'id')->where('admin_id', auth()->id())],
             'limite' => ['required', 'array', 'min:3'],
             'limite.*' => ['required', 'array', 'size:2'],
             'limite.*.0' => ['required', 'numeric', 'between:-90,90'],

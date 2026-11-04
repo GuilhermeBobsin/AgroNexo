@@ -35,8 +35,8 @@ class UserController extends Controller
             'password' => 'required|string|min:8',
             // Administradores são provisionados pelo setup único no terminal, nunca por cadastro web.
             'perfil' => 'required|in:operador,agronomo',
-            'propriedade_ids' => 'nullable|array',
-            'propriedade_ids.*' => 'integer|exists:propriedades,id',
+            'propriedade_ids' => 'required|array|min:1',
+            'propriedade_ids.*' => ['integer', Rule::in(auth()->user()->propriedades()->wherePivot('papel', 'dono')->pluck('propriedades.id')->all())],
         ]);
 
         $propriedadeIds = $validated['propriedade_ids'] ?? [];
@@ -72,8 +72,8 @@ class UserController extends Controller
                 : ['operador', 'agronomo'])],
             'status' => 'required|in:ativo,inativo',
             'password' => 'nullable|string|min:8|confirmed',
-            'propriedade_ids' => 'nullable|array',
-            'propriedade_ids.*' => 'integer|exists:propriedades,id',
+            'propriedade_ids' => 'required|array|min:1',
+            'propriedade_ids.*' => ['integer', Rule::in(auth()->user()->propriedades()->wherePivot('papel', 'dono')->pluck('propriedades.id')->all())],
         ]);
         $password = $validated['password'] ?? null;
         $propriedadeIds = $validated['propriedade_ids'] ?? [];
@@ -113,6 +113,9 @@ class UserController extends Controller
 
     private function syncPropriedades(User $user, array $ids): void
     {
+        if ($user->perfil === 'admin') {
+            return; // Ownership is established by signup and must never be replaced by collaborator roles.
+        }
         $papel = $user->perfil === 'agronomo' ? 'agronomo' : 'colaborador';
         $user->propriedades()->sync(collect($ids)->mapWithKeys(fn ($id) => [$id => ['papel' => $papel]])->all());
     }
