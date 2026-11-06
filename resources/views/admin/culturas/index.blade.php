@@ -198,7 +198,7 @@
 <div class="modal modal-blur fade" id="modal-nova-cultura" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <<form id="form-nova-cultura" method="POST" action="{{ route('admin.culturas.store') }}" data-ajax-form>
+            <form id="form-nova-cultura" method="POST" action="{{ route('admin.culturas.store') }}" data-ajax-form>
                 @csrf
                 <div class="modal-header">
                     <h5 class="modal-title">Nova cultura</h5>

@@ -19,12 +19,16 @@ class TalhaoCrudWorkflowTest extends TestCase
         $propriedade = Propriedade::create([
             'nome' => 'Fazenda Talhões', 'localizacao' => 'PR', 'latitude' => -24.0, 'longitude' => -51.0,
         ]);
+        $propriedade->usuarios()->attach($admin->id, ['papel' => 'dono']);
         $outraPropriedade = Propriedade::create([
             'nome' => 'Outra Fazenda', 'localizacao' => 'PR', 'latitude' => -24.1, 'longitude' => -51.1,
         ]);
+        $outroAdmin = User::factory()->create(['perfil' => 'admin', 'status' => 'ativo']);
+        $outraPropriedade->usuarios()->attach($outroAdmin->id, ['papel' => 'dono']);
+        $this->actingAs($admin);
         $cultura = Cultura::create(['nome' => 'Soja']);
 
-        $this->actingAs($admin)->get(route('admin.propriedades.talhoes.create', $propriedade))->assertOk();
+        $this->get(route('admin.propriedades.talhoes.create', $propriedade))->assertOk();
 
         $limiteInicial = [
             [-24.0000, -51.0000], [-24.0000, -50.9990], [-24.0010, -50.9990], [-24.0010, -51.0000],
@@ -62,9 +66,12 @@ class TalhaoCrudWorkflowTest extends TestCase
         $propriedade = Propriedade::create([
             'nome' => 'Fazenda Original', 'localizacao' => 'PR', 'latitude' => -24, 'longitude' => -51,
         ]);
+        $propriedade->usuarios()->attach($admin->id, ['papel' => 'dono']);
         $outraPropriedade = Propriedade::create([
             'nome' => 'Fazenda Alheia', 'localizacao' => 'PR', 'latitude' => -24, 'longitude' => -51,
         ]);
+        $outroAdmin = User::factory()->create(['perfil' => 'admin', 'status' => 'ativo']);
+        $outraPropriedade->usuarios()->attach($outroAdmin->id, ['papel' => 'dono']);
         $talhao = $propriedade->talhoes()->create([
             'nome' => 'Talhão 1', 'area' => 1, 'limite' => [[-24, -51], [-24, -50.999], [-24.001, -51]],
         ]);
@@ -78,6 +85,7 @@ class TalhaoCrudWorkflowTest extends TestCase
     {
         $admin = User::factory()->create(['perfil' => 'admin', 'status' => 'ativo']);
         $propriedade = Propriedade::create(['nome' => 'Sem coordenadas', 'localizacao' => 'PR']);
+        $propriedade->usuarios()->attach($admin->id, ['papel' => 'dono']);
 
         $this->actingAs($admin)
             ->get(route('admin.propriedades.talhoes.create', $propriedade))

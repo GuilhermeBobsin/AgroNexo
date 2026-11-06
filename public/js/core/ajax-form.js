@@ -3,9 +3,16 @@ import { showSuccess, showError } from './toast.js';
 function initAjaxForm(form) {
     const btn = form.querySelector('[type="submit"]');
     const csrfToken = document.querySelector('meta[name="csrf-token"]')?.content;
+    let submitting = false;
+    let succeeded = false;
+    let toastPromise = null;
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        if (submitting) return;
+        submitting = true;
+        succeeded = false;
+        toastPromise = null;
 
         form.querySelectorAll('.is-invalid').forEach((el) => el.classList.remove('is-invalid'));
         form.querySelectorAll('.invalid-feedback').forEach((el) => (el.textContent = ''));
@@ -46,15 +53,27 @@ function initAjaxForm(form) {
                 return;
             }
 
-            const toastPromise = showSuccess(data.message || 'Alterações salvas com sucesso.');
+            toastPromise = showSuccess(data.message || 'Alterações salvas com sucesso.');
             form.dispatchEvent(new CustomEvent('ajax-success', { detail: { ...data, toastPromise } }));
+            succeeded = true;
         } catch (err) {
             console.error(err);
             showError('Erro de conexão', 'Não foi possível se conectar ao servidor.');
         } finally {
-            if (btn) {
-                btn.disabled = false;
-                btn.textContent = textoOriginal;
+            const liberarBotao = () => {
+                submitting = false;
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = textoOriginal;
+                }
+            };
+
+            if (succeeded && toastPromise) {
+                // Keep the form locked while the success notification is visible;
+                // its callback may navigate or refresh the page after the toast.
+                toastPromise.finally(liberarBotao);
+            } else {
+                liberarBotao();
             }
         }
     });

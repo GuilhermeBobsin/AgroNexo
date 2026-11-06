@@ -11,39 +11,44 @@ class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_producer_can_register_as_admin_and_create_their_property(): void
+    public function test_producer_can_register_as_admin_with_only_email_and_password(): void
     {
-        $this->get('/register')->assertOk()->assertSee('Cadastre sua conta e fazenda');
+        $this->get('/register')->assertOk()->assertSee('Crie sua conta')->assertDontSee('Nome da fazenda')->assertDontSee('Município e estado');
 
         $this->post('/register', [
-            'name' => 'Produtor Teste',
             'email' => 'produtor@example.test',
             'password' => 'SenhaSegura123!',
-            'password_confirmation' => 'SenhaSegura123!',
-            'propriedade_nome' => 'Fazenda Exemplo',
-            'propriedade_localizacao' => 'Cascavel, PR',
         ])->assertRedirect(route('dashboard.admin'));
 
         $user = User::where('email', 'produtor@example.test')->firstOrFail();
         $this->assertSame('admin', $user->perfil);
         $this->assertAuthenticatedAs($user);
-        $this->assertDatabaseHas('propriedades', ['nome' => 'Fazenda Exemplo', 'localizacao' => 'Cascavel, PR']);
-        $this->assertDatabaseHas('propriedade_usuario', ['usuario_id' => $user->id, 'papel' => 'dono']);
+        $this->assertSame('Produtor', $user->name);
+        $this->assertDatabaseCount('propriedades', 0);
+        $this->assertDatabaseMissing('propriedade_usuario', ['usuario_id' => $user->id]);
     }
 
-    public function test_registration_is_transactional_and_requires_property_and_strong_password(): void
+    public function test_registration_requires_valid_email_and_strong_password(): void
     {
         $this->post('/register', [
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+            'email' => '',
             'password' => 'password',
-            'password_confirmation' => 'password',
-            'propriedade_nome' => '',
-            'propriedade_localizacao' => '',
-        ])->assertSessionHasErrors(['password', 'propriedade_nome', 'propriedade_localizacao']);
+        ])->assertSessionHasErrors(['email', 'password']);
 
         $this->assertGuest();
         $this->assertDatabaseMissing('users', ['email' => 'test@example.com']);
+    }
+
+    public function test_new_admin_can_log_in_after_signing_up_without_a_property(): void
+    {
+        $credentials = ['email' => 'novo-admin@example.test', 'password' => 'SenhaSegura123!'];
+
+        $this->post('/register', $credentials)->assertRedirect(route('dashboard.admin'));
+        $this->post('/logout')->assertRedirect('/');
+
+        $this->post('/login', $credentials)->assertRedirect(route('dashboard', absolute: false));
+        $this->assertAuthenticated();
+        $this->get(route('dashboard.admin'))->assertOk();
     }
 
     public function test_database_defaults_new_users_to_an_active_operator(): void

@@ -26,6 +26,13 @@
         @if (session('error'))<div class="alert alert-danger">{{ session('error') }}</div>@endif
         @if ($errors->any())<div class="alert alert-danger">{{ $errors->first() }}</div>@endif
 
+        @if ($propriedades->isEmpty())
+            <div class="alert alert-primary d-flex align-items-center justify-content-between gap-3 mb-4">
+                <div><strong>Comece cadastrando sua propriedade.</strong><div class="small mt-1">Ela ficará visível apenas para sua conta e permitirá cadastrar talhões, equipe e estoque.</div></div>
+                <a class="btn btn-primary flex-shrink-0" href="{{ route('admin.propriedades.create') }}">Cadastrar propriedade</a>
+            </div>
+        @endif
+
         <section class="card dashboard-welcome mb-4" aria-label="Resumo da conta">
             <div class="card-body p-4 p-lg-5">
                 <div class="row align-items-center g-4">

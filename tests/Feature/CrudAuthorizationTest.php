@@ -17,6 +17,7 @@ class CrudAuthorizationTest extends TestCase
         $propriedade = Propriedade::create([
             'nome' => 'Fazenda Base', 'localizacao' => 'RS', 'latitude' => -29, 'longitude' => -53,
         ]);
+        $propriedade->usuarios()->attach($admin->id, ['papel' => 'dono']);
 
         $routes = [
             'admin.propriedades.index' => [],
