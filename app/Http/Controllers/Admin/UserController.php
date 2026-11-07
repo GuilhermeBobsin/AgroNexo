@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Propriedade;
+use App\Models\Scopes\OwnedPropertyScope;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
@@ -29,18 +30,60 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $ownedPropertyIds = auth()->user()->propriedades()->wherePivot('papel', 'dono')->pluck('propriedades.id')->all();
+
+        if (empty($ownedPropertyIds)) {
+            throw ValidationException::withMessages([
+                'propriedade_ids' => 'Você precisa cadastrar ao menos uma propriedade antes de cadastrar usuários vinculados.',
+            ]);
+        }
+
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
+            'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:8',
-            // Administradores são provisionados pelo setup único no terminal, nunca por cadastro web.
+            // Administradores são provisionados pelo setup único no terminal ou registro de produtor, nunca por cadastro de equipe.
             'perfil' => 'required|in:operador,agronomo',
             'propriedade_ids' => 'required|array|min:1',
-            'propriedade_ids.*' => ['integer', Rule::in(auth()->user()->propriedades()->wherePivot('papel', 'dono')->pluck('propriedades.id')->all())],
+            'propriedade_ids.*' => ['integer', Rule::in($ownedPropertyIds)],
         ]);
 
         $propriedadeIds = $validated['propriedade_ids'] ?? [];
         unset($validated['propriedade_ids']);
+
+        $existingUser = User::withoutGlobalScope(OwnedPropertyScope::class)
+            ->where('email', $validated['email'])
+            ->first();
+
+        if ($existingUser) {
+            if ($existingUser->perfil === 'admin') {
+                throw ValidationException::withMessages([
+                    'email' => 'Este e-mail pertence a um administrador do sistema e não pode ser vinculado como colaborador.',
+                ]);
+            }
+
+            $alreadyLinked = $existingUser->propriedades()
+                ->whereIn('propriedades.id', $ownedPropertyIds)
+                ->exists();
+
+            if ($alreadyLinked) {
+                throw ValidationException::withMessages([
+                    'email' => 'Este usuário já está cadastrado e vinculado às suas propriedades.',
+                ]);
+            }
+
+            $this->syncPropriedades($existingUser, $propriedadeIds);
+
+            if ($request->wantsJson()) {
+                return response()->json([
+                    'message' => 'Usuário existente vinculado com sucesso às suas propriedades.',
+                    'redirect' => route('admin.usuarios.index'),
+                ], 200);
+            }
+
+            return redirect()->route('admin.usuarios.index')->with('success', 'Usuário existente vinculado com sucesso às suas propriedades.');
+        }
+
         $validated['password'] = Hash::make($validated['password']);
         $user = User::create($validated);
         $this->syncPropriedades($user, $propriedadeIds);
@@ -81,7 +124,7 @@ class UserController extends Controller
         unset($validated['propriedade_ids']);
         if ($password) $validated['password'] = Hash::make($password);
         DB::transaction(function () use ($request, $user, $validated, $propriedadeIds): void {
-            $administradoresAtivos = User::where('perfil', 'admin')->where('status', 'ativo')->lockForUpdate()->get();
+            $administradoresAtivos = User::withoutGlobalScope(OwnedPropertyScope::class)->where('perfil', 'admin')->where('status', 'ativo')->lockForUpdate()->get();
             if ($user->is($request->user()) && ($validated['status'] === 'inativo' || $validated['perfil'] !== 'admin')) {
                 throw ValidationException::withMessages(['status' => 'Não é possível desativar ou remover seu próprio perfil de administrador.']);
             }
@@ -117,14 +160,24 @@ class UserController extends Controller
             return; // Ownership is established by signup and must never be replaced by collaborator roles.
         }
         $papel = $user->perfil === 'agronomo' ? 'agronomo' : 'colaborador';
-        $user->propriedades()->sync(collect($ids)->mapWithKeys(fn ($id) => [$id => ['papel' => $papel]])->all());
+        $ownedPropertyIds = auth()->user()->propriedades()->wherePivot('papel', 'dono')->pluck('propriedades.id')->all();
+
+        // Desvincula apenas das propriedades deste administrador que não foram selecionadas
+        $toDetach = array_diff($ownedPropertyIds, $ids);
+        if (!empty($toDetach)) {
+            $user->propriedades()->detach($toDetach);
+        }
+
+        // Vincula/atualiza apenas para as propriedades selecionadas deste administrador
+        $syncData = collect($ids)->intersect($ownedPropertyIds)->mapWithKeys(fn ($id) => [$id => ['papel' => $papel]])->all();
+        $user->propriedades()->syncWithoutDetaching($syncData);
     }
 
     public function destroy(Request $request, User $user)
     {
         try {
             DB::transaction(function () use ($user, $request): void {
-                $administradoresAtivos = User::where('perfil', 'admin')->where('status', 'ativo')->lockForUpdate()->get();
+                $administradoresAtivos = User::withoutGlobalScope(OwnedPropertyScope::class)->where('perfil', 'admin')->where('status', 'ativo')->lockForUpdate()->get();
                 if ($user->is($request->user())) {
                     throw ValidationException::withMessages(['user' => 'Não é possível excluir o usuário conectado.']);
                 }
@@ -134,8 +187,15 @@ class UserController extends Controller
                 if ($user->tarefas()->exists() || $user->aplicacoes()->exists() || $user->recomendacoes()->exists()) {
                     throw ValidationException::withMessages(['user' => 'Este usuário possui tarefas, aplicações ou recomendações no histórico e não pode ser excluído. Desative o acesso pela edição.']);
                 }
-                $user->propriedades()->detach();
-                $user->delete();
+                $ownedPropertyIds = auth()->user()->propriedades()->wherePivot('papel', 'dono')->pluck('propriedades.id')->all();
+                $outrasPropriedades = $user->propriedades()->whereNotIn('propriedades.id', $ownedPropertyIds)->exists();
+
+                if ($outrasPropriedades) {
+                    $user->propriedades()->detach($ownedPropertyIds);
+                } else {
+                    $user->propriedades()->detach();
+                    $user->delete();
+                }
             });
         } catch (ValidationException $exception) {
             $message = collect($exception->errors())->flatten()->first() ?? 'Não foi possível excluir o usuário.';
