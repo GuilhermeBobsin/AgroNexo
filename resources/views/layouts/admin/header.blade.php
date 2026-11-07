@@ -5,7 +5,7 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-            <a href="{{ url('/admin/dashboard') }}"
+            <a href="{{ route('admin.dashboard') }}"
                 class="d-flex align-items-center text-decoration-none"
                 aria-label="AgroNexo">
 
@@ -196,7 +196,7 @@
                 <div class="row flex-column flex-md-row flex-fill align-items-center">
                     <div class="col">
                         <ul class="navbar-nav">
-                            <li class="nav-item {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
+                            <li class="nav-item {{ request()->routeIs(['admin.dashboard', 'dashboard.admin']) ? 'active' : '' }}">
                                 <a class="nav-link" href="{{ route('admin.dashboard') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"

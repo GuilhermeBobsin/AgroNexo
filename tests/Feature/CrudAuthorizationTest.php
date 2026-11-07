@@ -68,6 +68,6 @@ class CrudAuthorizationTest extends TestCase
         $this->actingAs($agronomo)->get(route('admin.produtos.index'))->assertRedirect(route('dashboard.agronomo'));
         $this->actingAs($operador)->get(route('admin.estoque.index'))->assertRedirect(route('dashboard.operador'));
         $this->actingAs($operador)->get(route('agronomo.recomendacoes.index'))->assertRedirect(route('dashboard.operador'));
-        $this->actingAs($admin)->get(route('operador.tarefas.index'))->assertRedirect(route('dashboard.admin'));
+        $this->actingAs($admin)->get(route('operador.tarefas.index'))->assertRedirect(route('admin.dashboard'));
     }
 }

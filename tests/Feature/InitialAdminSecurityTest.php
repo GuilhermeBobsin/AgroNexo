@@ -21,7 +21,7 @@ class InitialAdminSecurityTest extends TestCase
             'perfil' => 'admin',
             'propriedade_nome' => 'Fazenda',
             'propriedade_localizacao' => 'RS',
-        ])->assertRedirect(route('dashboard.admin'));
+        ])->assertRedirect(route('admin.dashboard'));
         $this->assertDatabaseHas('users', ['email' => 'cadastro@example.test', 'perfil' => 'admin']);
 
         $admin = User::factory()->create(['perfil' => 'admin', 'status' => 'ativo']);
