@@ -31,8 +31,8 @@ class TalhaoCrudTest extends TestCase
     public function test_admin_can_create_and_update_talhao_geometry_using_the_schema_fields(): void
     {
         [$admin, $propriedade] = $this->adminAndProperty();
-        $cultura = Cultura::create(['nome' => 'Soja']);
         $this->actingAs($admin);
+        $cultura = Cultura::create(['nome' => 'Soja']);
         $limite = [[-29.0, -53.0], [-29.0, -53.1], [-29.1, -53.1]];
 
         $this->post(route('admin.propriedades.talhoes.store', $propriedade), [
@@ -57,6 +57,8 @@ class TalhaoCrudTest extends TestCase
     {
         [$admin, $propriedade] = $this->adminAndProperty();
         $outraPropriedade = Propriedade::create(['nome' => 'Outra', 'localizacao' => 'RS', 'latitude' => -29, 'longitude' => -53]);
+        $outroAdmin = User::factory()->create(['perfil' => 'admin', 'status' => 'ativo']);
+        $outraPropriedade->usuarios()->attach($outroAdmin->id, ['papel' => 'dono']);
         $talhao = $this->createTalhao($outraPropriedade);
         $this->actingAs($admin);
 
@@ -69,6 +71,7 @@ class TalhaoCrudTest extends TestCase
         [$admin, $propriedade] = $this->adminAndProperty();
         $talhao = $this->createTalhao($propriedade);
         $operador = User::factory()->create(['perfil' => 'operador', 'status' => 'ativo']);
+        $propriedade->usuarios()->attach($operador->id, ['papel' => 'colaborador']);
         $talhao->tarefas()->create([
             'propriedade_id' => $propriedade->id,
             'tipo' => 'outro',
@@ -88,6 +91,7 @@ class TalhaoCrudTest extends TestCase
         $propriedade = Propriedade::create([
             'nome' => 'Fazenda de teste', 'localizacao' => 'RS', 'latitude' => -29, 'longitude' => -53,
         ]);
+        $propriedade->usuarios()->attach($admin->id, ['papel' => 'dono']);
 
         return [$admin, $propriedade];
     }

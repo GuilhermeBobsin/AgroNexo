@@ -34,6 +34,7 @@ const errorArea = document.getElementById('error-area');
 const errorLimite = document.getElementById('error-limite');
 
 let poligonoTalhao = null;
+let submetendo = false;
 
 const limiteInicial = (() => {
     try {
@@ -433,6 +434,8 @@ form.addEventListener('submit', async function (event) {
 
     event.preventDefault();
 
+    if (submetendo) return;
+
     limparErros();
 
     if (!inputLimite.value) {
@@ -447,6 +450,8 @@ form.addEventListener('submit', async function (event) {
 
     const formData = new FormData(form);
 
+    submetendo = true;
+    let salvoComSucesso = false;
 
     btnSalvar.disabled = true;
 
@@ -512,6 +517,8 @@ form.addEventListener('submit', async function (event) {
             'Talhão criado com sucesso.'
         );
 
+        salvoComSucesso = true;
+
 
         setTimeout(() => {
 
@@ -532,9 +539,11 @@ form.addEventListener('submit', async function (event) {
 
     } finally {
 
-        btnSalvar.innerHTML = textoOriginal;
-
-        atualizarBotao();
+        if (!salvoComSucesso) {
+            submetendo = false;
+            btnSalvar.innerHTML = textoOriginal;
+            atualizarBotao();
+        }
     }
 
 });

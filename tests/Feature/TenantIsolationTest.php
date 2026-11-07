@@ -13,26 +13,45 @@ class TenantIsolationTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_admin_can_load_a_new_session_without_recursing_through_the_user_scope(): void
+    {
+        $this->post('/register', [
+            'email' => 'sessao@example.test',
+            'password' => 'SenhaSegura123!',
+        ])->assertRedirect(route('dashboard.admin'));
+
+        // Simulate the next HTTP request, where the guard must rehydrate its user from session.
+        app('auth')->forgetGuards();
+
+        $this->get(route('dashboard.admin'))->assertOk();
+    }
+
     public function test_each_producer_admin_only_sees_and_manages_their_own_farm_data(): void
     {
         $this->post('/register', [
-            'name' => 'Produtor A', 'email' => 'a@example.test',
-            'password' => 'SenhaSegura123!', 'password_confirmation' => 'SenhaSegura123!',
-            'propriedade_nome' => 'Fazenda A', 'propriedade_localizacao' => 'PR',
+            'email' => 'a@example.test',
+            'password' => 'SenhaSegura123!',
         ])->assertRedirect(route('dashboard.admin'));
         $adminA = User::where('email', 'a@example.test')->firstOrFail();
+        $this->post(route('admin.propriedades.store'), [
+            'nome' => 'Fazenda A', 'localizacao' => 'PR', 'latitude' => -25.4, 'longitude' => -49.2,
+        ])->assertRedirect();
         $fazendaA = $adminA->propriedades()->firstOrFail();
+        $this->postJson(route('admin.culturas.store'), ['nome' => 'Milho'])->assertCreated();
+        $this->assertDatabaseHas('culturas', ['nome' => 'Milho', 'admin_id' => $adminA->id]);
         $produtoA = Produto::create(['nome' => 'Produto privado A', 'unidade' => 'L']);
         $produtoA->propriedades()->attach($fazendaA->id);
         $culturaA = Cultura::create(['nome' => 'Cultura exclusiva A']);
 
         auth()->logout();
         $this->post('/register', [
-            'name' => 'Produtor B', 'email' => 'b@example.test',
-            'password' => 'SenhaSegura123!', 'password_confirmation' => 'SenhaSegura123!',
-            'propriedade_nome' => 'Fazenda B', 'propriedade_localizacao' => 'SC',
+            'email' => 'b@example.test',
+            'password' => 'SenhaSegura123!',
         ])->assertRedirect(route('dashboard.admin'));
         $adminB = User::where('email', 'b@example.test')->firstOrFail();
+        $this->post(route('admin.propriedades.store'), [
+            'nome' => 'Fazenda B', 'localizacao' => 'SC', 'latitude' => -27.5, 'longitude' => -48.5,
+        ])->assertRedirect();
         $fazendaB = $adminB->propriedades()->firstOrFail();
         $produtoB = Produto::create(['nome' => 'Produto privado B', 'unidade' => 'kg']);
         $produtoB->propriedades()->attach($fazendaB->id);

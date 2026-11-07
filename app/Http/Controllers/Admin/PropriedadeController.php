@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Propriedade;
 use App\Models\Talhao;
 use App\Models\User;
+use App\Models\Scopes\OwnedPropertyScope;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -84,7 +85,11 @@ class PropriedadeController extends Controller
             'talhoes.cultura',
             'usuarios',
         ]);
-        $agronomos = User::where('perfil', 'agronomo')->where('status', 'ativo')->orderBy('name')->get(['id', 'name', 'email']);
+        $agronomos = User::withoutGlobalScope(OwnedPropertyScope::class)
+            ->where('perfil', 'agronomo')
+            ->where('status', 'ativo')
+            ->orderBy('name')
+            ->get(['id', 'name', 'email']);
         $agronomosSelecionados = $propriedade->usuarios->where('perfil', 'agronomo')->modelKeys();
 
         return view('admin.propriedades.show', compact('propriedade', 'agronomos', 'agronomosSelecionados'));
@@ -96,7 +101,7 @@ class PropriedadeController extends Controller
             'agronomo_ids' => ['nullable', 'array'],
             'agronomo_ids.*' => [
                 'integer',
-                Rule::in(User::where('perfil', 'agronomo')->where('status', 'ativo')->pluck('id')->all()),
+                Rule::in(User::withoutGlobalScope(OwnedPropertyScope::class)->where('perfil', 'agronomo')->where('status', 'ativo')->pluck('id')->all()),
             ],
         ]);
 

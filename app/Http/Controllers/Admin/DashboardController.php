@@ -3,87 +3,77 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Alerta;
 use App\Models\Aplicacao;
 use App\Models\Propriedade;
-use App\Models\Recomendacao;
 use App\Models\Tarefa;
 use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Validation\Rule;
 
 class DashboardController extends Controller
 {
     public function index(Request $request)
     {
-        $validated = $request->validate([
-            'propriedade_id' => ['nullable', 'integer', Rule::in(auth()->user()->propriedades()->wherePivot('papel', 'dono')->pluck('propriedades.id')->all())],
-            'responsavel_id' => ['nullable', 'integer', Rule::exists('users', 'id')->where('perfil', 'operador')],
-            'data_inicio' => ['nullable', 'date'],
-            'data_fim' => ['nullable', 'date', 'after_or_equal:data_inicio'],
-        ]);
+        $propriedades = Propriedade::orderBy('nome')->get();
+        $operadores = User::where('perfil', 'operador')->orderBy('name')->get();
 
-        $tarefasQuery = Tarefa::query();
-        $aplicacoesQuery = Aplicacao::query();
-        if (!empty($validated['propriedade_id'])) {
-            $tarefasQuery->where('propriedade_id', $validated['propriedade_id']);
-            $aplicacoesQuery->whereHas('talhao', fn ($query) => $query->where('propriedade_id', $validated['propriedade_id']));
-        }
-        if (!empty($validated['responsavel_id'])) {
-            $tarefasQuery->where('responsavel_id', $validated['responsavel_id']);
-            $aplicacoesQuery->where('usuario_id', $validated['responsavel_id']);
-        }
-        if (!empty($validated['data_inicio'])) {
-            $tarefasQuery->whereDate('data_prevista', '>=', $validated['data_inicio']);
-            $aplicacoesQuery->whereDate('data_aplicacao', '>=', $validated['data_inicio']);
-        }
-        if (!empty($validated['data_fim'])) {
-            $tarefasQuery->whereDate('data_prevista', '<=', $validated['data_fim']);
-            $aplicacoesQuery->whereDate('data_aplicacao', '<=', $validated['data_fim']);
-        }
+        $propriedadeId = $request->input('propriedade_id');
+        $responsavelId = $request->input('responsavel_id');
+        $dataInicio = $request->input('data_inicio');
+        $dataFim = $request->input('data_fim');
+
+        $tarefasQuery = Tarefa::query()
+            ->when($propriedadeId, fn ($q, $v) => $q->where('propriedade_id', $v))
+            ->when($responsavelId, fn ($q, $v) => $q->where('responsavel_id', $v))
+            ->when($dataInicio, fn ($q, $v) => $q->whereDate('data_prevista', '>=', $v))
+            ->when($dataFim, fn ($q, $v) => $q->whereDate('data_prevista', '<=', $v));
 
         $indicadores = [
             'tarefas' => (clone $tarefasQuery)->count(),
             'pendentes' => (clone $tarefasQuery)->where('status', 'pendente')->count(),
             'em_andamento' => (clone $tarefasQuery)->where('status', 'em_andamento')->count(),
             'concluidas' => (clone $tarefasQuery)->where('status', 'concluida')->count(),
-            'aplicacoes' => (clone $aplicacoesQuery)->where('status', 'realizada')->count(),
+            'aplicacoes' => (clone $tarefasQuery)->where('tipo', 'aplicacao')->where('status', 'concluida')->count(),
         ];
-        $recomendacoesPendentes = Recomendacao::where('status', 'pendente')->count();
 
-        $tarefas = (clone $tarefasQuery)->with(['propriedade', 'talhao', 'responsavel'])
+        $tarefas = (clone $tarefasQuery)
             ->whereIn('status', ['pendente', 'em_andamento'])
-            ->orderBy('data_prevista')->orderBy('hora_prevista')->limit(8)->get();
-        $aplicacoes = (clone $aplicacoesQuery)->with(['talhao.propriedade', 'produto', 'usuario'])
-            ->latest('data_aplicacao')->latest('id')->limit(6)->get();
-        $propriedades = Propriedade::orderBy('nome')->get(['id', 'nome']);
-        $operadores = User::where('perfil', 'operador')->where('status', 'ativo')->orderBy('name')->get(['id', 'name']);
-        $tarefasPorPropriedade = (clone $tarefasQuery)
-            ->select('propriedade_id')
-            ->selectRaw("COUNT(*) as total, SUM(CASE WHEN status = 'pendente' THEN 1 ELSE 0 END) as pendentes, SUM(CASE WHEN status = 'em_andamento' THEN 1 ELSE 0 END) as em_andamento, SUM(CASE WHEN status = 'concluida' THEN 1 ELSE 0 END) as concluidas")
-            ->groupBy('propriedade_id')->get()->keyBy('propriedade_id');
-        $aplicacoesPorPropriedade = DB::table('aplicacoes')
-            ->join('talhoes', 'talhoes.id', '=', 'aplicacoes.talhao_id')
-            ->select('talhoes.propriedade_id')
-            ->selectRaw("COUNT(*) as total")
-            ->where('aplicacoes.status', 'realizada')
-            ->when(!empty($validated['propriedade_id']), fn ($query) => $query->where('talhoes.propriedade_id', $validated['propriedade_id']))
-            ->when(!empty($validated['responsavel_id']), fn ($query) => $query->where('aplicacoes.usuario_id', $validated['responsavel_id']))
-            ->when(!empty($validated['data_inicio']), fn ($query) => $query->whereDate('aplicacoes.data_aplicacao', '>=', $validated['data_inicio']))
-            ->when(!empty($validated['data_fim']), fn ($query) => $query->whereDate('aplicacoes.data_aplicacao', '<=', $validated['data_fim']))
-            ->groupBy('talhoes.propriedade_id')->get()->keyBy('propriedade_id');
-        $resumoPropriedades = $propriedades->map(function ($propriedade) use ($tarefasPorPropriedade, $aplicacoesPorPropriedade) {
-            $tarefas = $tarefasPorPropriedade->get($propriedade->id);
+            ->with(['propriedade', 'talhao', 'responsavel'])
+            ->orderBy('data_prevista')
+            ->limit(8)
+            ->get();
+
+        $aplicacoesQuery = Aplicacao::query()
+            ->when($propriedadeId, fn ($q, $v) => $q->whereHas('talhao', fn ($t) => $t->where('propriedade_id', $v)))
+            ->when($responsavelId, fn ($q, $v) => $q->where('usuario_id', $v))
+            ->when($dataInicio, fn ($q, $v) => $q->whereDate('data_aplicacao', '>=', $v))
+            ->when($dataFim, fn ($q, $v) => $q->whereDate('data_aplicacao', '<=', $v));
+
+        $aplicacoes = (clone $aplicacoesQuery)
+            ->with(['produto', 'talhao.propriedade', 'usuario'])
+            ->latest('data_aplicacao')
+            ->limit(8)
+            ->get();
+
+        $resumoPropriedades = Propriedade::orderBy('nome')->get()->map(function (Propriedade $propriedade) {
+            $base = Tarefa::where('propriedade_id', $propriedade->id);
+
             $propriedade->resumo = [
-                'tarefas' => (int) ($tarefas->total ?? 0),
-                'pendentes' => (int) ($tarefas->pendentes ?? 0),
-                'em_andamento' => (int) ($tarefas->em_andamento ?? 0),
-                'concluidas' => (int) ($tarefas->concluidas ?? 0),
-                'aplicacoes' => (int) ($aplicacoesPorPropriedade->get($propriedade->id)->total ?? 0),
+                'tarefas' => (clone $base)->count(),
+                'pendentes' => (clone $base)->where('status', 'pendente')->count(),
+                'em_andamento' => (clone $base)->where('status', 'em_andamento')->count(),
+                'concluidas' => (clone $base)->where('status', 'concluida')->count(),
+                'aplicacoes' => (clone $base)->where('tipo', 'aplicacao')->where('status', 'concluida')->count(),
             ];
+
             return $propriedade;
         });
 
-        return view('admin.dashboard', compact('indicadores', 'recomendacoesPendentes', 'tarefas', 'aplicacoes', 'propriedades', 'operadores', 'resumoPropriedades'));
+        $recomendacoesPendentes = Alerta::where('status', 'ativo')->count();
+
+        return view('admin.dashboard', compact(
+            'propriedades', 'operadores', 'indicadores', 'tarefas',
+            'aplicacoes', 'resumoPropriedades', 'recomendacoesPendentes'
+        ));
     }
 }

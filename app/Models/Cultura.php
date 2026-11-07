@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\Scopes\OwnedPropertyScope;
 use Illuminate\Support\Facades\Auth;
 
 class Cultura extends Model

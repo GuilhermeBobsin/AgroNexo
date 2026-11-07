@@ -19,6 +19,9 @@ class RoleWorkflowsTest extends TestCase
         $agronomo = User::factory()->create(['perfil' => 'agronomo', 'status' => 'ativo']);
         $operador = User::factory()->create(['perfil' => 'operador', 'status' => 'ativo']);
         $propriedade = Propriedade::create(['nome' => 'Fazenda Norte', 'localizacao' => 'RS']);
+        $propriedade->usuarios()->attach($admin->id, ['papel' => 'dono']);
+        // Team members created by this admin are already connected to one of their properties.
+        $propriedade->usuarios()->attach($agronomo->id, ['papel' => 'colaborador']);
         $propriedade->usuarios()->attach($operador->id, ['papel' => 'colaborador']);
 
         $response = $this->actingAs($admin)->put(route('admin.propriedades.agronomos.update', $propriedade), [
@@ -209,6 +212,7 @@ class RoleWorkflowsTest extends TestCase
         $admin = User::factory()->create(['perfil' => 'admin', 'status' => 'ativo']);
         $operador = User::factory()->create(['perfil' => 'operador', 'status' => 'ativo']);
         $propriedade = Propriedade::create(['nome' => 'Fazenda Cancelamento Admin', 'localizacao' => 'RS']);
+        $propriedade->usuarios()->attach($admin->id, ['papel' => 'dono']);
         $propriedade->usuarios()->attach($operador->id, ['papel' => 'colaborador']);
         $tarefa = $this->criarTarefa($propriedade, $operador, 'Manutenção planejada');
 
@@ -226,6 +230,7 @@ class RoleWorkflowsTest extends TestCase
         $admin = User::factory()->create(['perfil' => 'admin', 'status' => 'ativo']);
         $operador = User::factory()->create(['perfil' => 'operador', 'status' => 'ativo']);
         $propriedade = Propriedade::create(['nome' => 'Fazenda Estado', 'localizacao' => 'RS']);
+        $propriedade->usuarios()->attach($admin->id, ['papel' => 'dono']);
         $propriedade->usuarios()->attach($operador->id, ['papel' => 'colaborador']);
 
         $this->actingAs($admin)->post(route('admin.recursos.store'), [
@@ -295,6 +300,7 @@ class RoleWorkflowsTest extends TestCase
         $admin = User::factory()->create(['perfil' => 'admin', 'status' => 'ativo']);
         $operador = User::factory()->create(['perfil' => 'operador', 'status' => 'ativo']);
         $propriedade = Propriedade::create(['nome' => 'Fazenda Painel', 'localizacao' => 'RS']);
+        $propriedade->usuarios()->attach($admin->id, ['papel' => 'dono']);
         $propriedade->usuarios()->attach($operador->id, ['papel' => 'colaborador']);
         $this->criarTarefa($propriedade, $operador, 'Tarefa do painel');
 
@@ -303,7 +309,7 @@ class RoleWorkflowsTest extends TestCase
             'responsavel_id' => $operador->id,
             'data_inicio' => today()->toDateString(),
             'data_fim' => today()->toDateString(),
-        ]))->assertOk()->assertSee('Painel administrativo')->assertSee('Tarefa do painel')->assertSee('Resumo por propriedade');
+        ]))->assertOk()->assertSee('Dashboard')->assertSee('Tarefa do painel')->assertSee('Resumo por propriedade');
         $this->actingAs($operador)->get(route('dashboard.operador'))
             ->assertOk()->assertSee('Minhas tarefas')->assertSee('Tarefa do painel');
     }

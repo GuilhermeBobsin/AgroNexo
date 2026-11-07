@@ -169,6 +169,7 @@ class RecomendacaoWorkflowTest extends TestCase
         $admin = User::factory()->create(['perfil' => 'admin', 'status' => 'ativo']);
         $operador = User::factory()->create(['perfil' => 'operador', 'status' => 'ativo']);
         $propriedade = Propriedade::create(['nome' => 'Fazenda Recomendações', 'localizacao' => 'RS']);
+        $propriedade->usuarios()->attach($admin->id, ['papel' => 'dono']);
         $propriedade->usuarios()->attach($agronomo->id, ['papel' => 'agronomo']);
         $propriedade->usuarios()->attach($operador->id, ['papel' => 'colaborador']);
 

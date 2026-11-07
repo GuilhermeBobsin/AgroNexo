@@ -13,7 +13,13 @@ class OwnedPropertyScope implements Scope
 {
     public function apply(Builder $builder, Model $model): void
     {
-        $user = Auth::user();
+        // Never call Auth::user() here: when Laravel is loading the session user,
+        // that call would query User again and re-enter this global scope forever.
+        $guard = Auth::guard();
+        $user = method_exists($guard, 'hasUser') && $guard->hasUser()
+            ? $guard->getUser()
+            : null;
+
         if (!$user || $user->perfil !== 'admin') {
             return;
         }
@@ -25,15 +31,25 @@ class OwnedPropertyScope implements Scope
         if ($table === 'propriedades') {
             $builder->whereIn($model->qualifyColumn('id'), $propertyIds);
         } elseif ($table === 'aplicacoes') {
-            $builder->whereHas('talhao', fn (Builder $query) => $query->whereIn('propriedade_id', $propertyIds));
+            $builder->whereIn($model->qualifyColumn('talhao_id'), DB::table('talhoes')
+                ->whereIn('propriedade_id', $propertyIds)->select('id'));
         } elseif ($table === 'movimentacoes_estoque') {
-            $builder->whereHas('estoque', fn (Builder $query) => $query->whereIn('propriedade_id', $propertyIds));
+            $builder->whereIn($model->qualifyColumn('produto_propriedade_id'), DB::table('produto_propriedade')
+                ->whereIn('propriedade_id', $propertyIds)->select('id'));
         } elseif ($table === 'users') {
-            $builder->whereHas('propriedades', fn (Builder $query) => $query
-                ->whereIn('propriedades.id', $propertyIds));
+            // Use a plain pivot subquery. Eloquent whereHas('propriedades') recursively
+            // applies both the User and Propriedade global scopes and can exhaust memory.
+            $userIds = DB::table('propriedade_usuario')
+                ->whereIn('propriedade_id', $propertyIds)->select('usuario_id');
+            $builder->where(function (Builder $query) use ($model, $user, $userIds) {
+                // A newly registered admin may not have created a property yet,
+                // but must still be able to load their own account record.
+                $query->where($model->qualifyColumn('id'), $user->getAuthIdentifier())
+                    ->orWhereIn($model->qualifyColumn('id'), $userIds);
+            });
         } elseif ($table === 'produtos') {
-            $builder->whereHas('propriedades', fn (Builder $query) => $query
-                ->whereIn('propriedades.id', $propertyIds));
+            $builder->whereIn($model->qualifyColumn('id'), DB::table('produto_propriedade')
+                ->whereIn('propriedade_id', $propertyIds)->select('produto_id'));
         } else {
             $builder->whereIn($model->qualifyColumn('propriedade_id'), $propertyIds);
         }

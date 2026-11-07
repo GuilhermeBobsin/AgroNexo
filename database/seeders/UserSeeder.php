@@ -28,5 +28,12 @@ class UserSeeder extends Seeder
             'perfil' => 'operador',
             'status' => 'ativo',
         ]);
+
+        User::updateOrCreate(['email' => 'admin@agronexo.com'], [
+            'name' => 'Guilherme Bobsin',
+            'password' => Hash::make('123123123'),
+            'perfil' => 'admin',
+            'status' => 'ativo',
+        ]);
     }
 }

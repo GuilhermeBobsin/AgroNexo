@@ -6,11 +6,18 @@
     <form class="card card-md" method="POST" action="{{ route('register') }}">
         @csrf
         <div class="card-body">
-            <h2 class="card-title text-center mb-4">Cadastre sua conta e fazenda</h2>
-            <p class="text-secondary">Você será o administrador da propriedade criada neste cadastro.</p>
-            @foreach (['name' => ['Seu nome', 'text'], 'email' => ['E-mail', 'email'], 'propriedade_nome' => ['Nome da fazenda/propriedade', 'text'], 'propriedade_localizacao' => ['Município e estado', 'text'], 'password' => ['Senha (mínimo 12 caracteres)', 'password'], 'password_confirmation' => ['Confirme a senha', 'password']] as $campo => [$rotulo, $tipo])
-                <div class="mb-3"><label class="form-label" for="{{ $campo }}">{{ $rotulo }}</label><input class="form-control @error($campo) is-invalid @enderror" id="{{ $campo }}" name="{{ $campo }}" type="{{ $tipo }}" value="{{ $tipo === 'password' ? '' : old($campo) }}" autocomplete="{{ $campo === 'email' ? 'email' : ($tipo === 'password' ? 'new-password' : 'name') }}" required>@error($campo)<div class="invalid-feedback">{{ $message }}</div>@enderror</div>
-            @endforeach
+            <h2 class="card-title text-center mb-4">Crie sua conta</h2>
+            <p class="text-secondary">Sua conta terá acesso de administrador. Depois, cadastre sua propriedade no sistema.</p>
+            <div class="mb-3">
+                <label class="form-label" for="email">E-mail</label>
+                <input class="form-control @error('email') is-invalid @enderror" id="email" name="email" type="email" value="{{ old('email') }}" autocomplete="email" required autofocus>
+                @error('email')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="password">Senha (mínimo 12 caracteres)</label>
+                <input class="form-control @error('password') is-invalid @enderror" id="password" name="password" type="password" autocomplete="new-password" required>
+                @error('password')<div class="invalid-feedback">{{ $message }}</div>@enderror
+            </div>
             <button class="btn btn-primary w-100" type="submit">Criar conta</button>
         </div>
     </form>
