@@ -11,6 +11,18 @@
                     <div class="text-secondary mt-1">Cadastre um acesso ao AgroNexo e defina o que ele pode ver.</div>
                 </div>
 
+                @if ($propriedades->isEmpty())
+                    <div class="alert alert-warning mb-4">
+                        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                            <div>
+                                <h4 class="alert-title mb-1">Nenhuma propriedade cadastrada</h4>
+                                <div class="text-secondary">Para vincular operadores ou agrônomos, você precisa cadastrar ao menos uma propriedade no sistema.</div>
+                            </div>
+                            <a href="{{ route('admin.propriedades.create') }}" class="btn btn-warning">Cadastrar primeira propriedade</a>
+                        </div>
+                    </div>
+                @endif
+
                 <form id="form-criar-usuario" action="{{ route('admin.usuarios.store') }}" method="POST"
                     data-ajax-form data-redirect="{{ route('admin.usuarios.index') }}">
                     @csrf
@@ -90,7 +102,11 @@
                                                 <span class="form-check-label">{{ $propriedade->nome }}</span>
                                             </label>
                                         @empty
-                                            <div class="text-secondary">Cadastre uma propriedade para conceder acesso.</div>
+                                            <div class="alert alert-warning mb-0">
+                                                <div class="fw-semibold mb-1">Nenhuma propriedade encontrada</div>
+                                                <div class="text-secondary small mb-2">Cadastre uma propriedade para habilitar o vínculo de acesso.</div>
+                                                <a href="{{ route('admin.propriedades.create') }}" class="btn btn-sm btn-warning">Cadastrar propriedade</a>
+                                            </div>
                                         @endforelse
                                     </div>
 
@@ -99,12 +115,17 @@
                             </div>
 
                             <div class="form-footer">
-                                <button type="submit" id="btn-salvar-usuario" class="btn btn-primary w-100">
+                                <button type="submit" id="btn-salvar-usuario" class="btn btn-primary w-100" @disabled($propriedades->isEmpty())>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1 me-1">
                                         <path d="M5 12l5 5l10 -10"></path>
                                     </svg>
                                     Criar conta
                                 </button>
+                                @if ($propriedades->isEmpty())
+                                    <div class="form-hint text-center text-danger mt-2">
+                                        Cadastre uma propriedade para habilitar a criação de colaboradores.
+                                    </div>
+                                @endif
                             </div>
                         </div>
 

@@ -30,6 +30,18 @@
 
     <div class="page-body">
         <div class="container-xl">
+            @if ($propriedades->isEmpty())
+                <div class="alert alert-info mb-4">
+                    <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                        <div>
+                            <h4 class="alert-title mb-1">Cadastre sua primeira propriedade</h4>
+                            <div class="text-secondary">Para vincular operadores e agrônomos à sua equipe, é necessário ter ao menos uma propriedade cadastrada.</div>
+                        </div>
+                        <a href="{{ route('admin.propriedades.create') }}" class="btn btn-primary btn-sm">Cadastrar propriedade</a>
+                    </div>
+                </div>
+            @endif
+
             <div class="row row-cards">
                 @foreach ($usuarios as $usuario)
                     @php
