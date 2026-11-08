@@ -31,33 +31,27 @@
 
         {{-- Banner de Recomendações Pendentes (quando houver) --}}
         @if ($recomendacoesPendentes > 0)
-            <div class="card bg-warning-subtle border-warning-subtle shadow-sm mb-4">
-                <div class="card-body py-3">
-                    <div class="row align-items-center">
-                        <div class="col-auto">
-                            <span class="avatar bg-warning text-warning-fg rounded-circle shadow-sm">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                                    <path d="M12 9v4" />
-                                    <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
-                                    <path d="M12 16h.01" />
-                                </svg>
-                            </span>
-                        </div>
-                        <div class="col">
-                            <h4 class="card-title text-warning-emphasis mb-1">
-                                Recomendações Técnicas Pendentes
-                            </h4>
+            <div class="alert alert-warning alert-dismissible shadow-sm mb-4" role="alert">
+                <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+                    <div class="d-flex align-items-center">
+                        <span class="avatar avatar-sm bg-warning text-warning-fg me-3 rounded-circle shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                <path d="M12 9v4" />
+                                <path d="M10.363 3.591l-8.106 13.534a1.914 1.914 0 0 0 1.636 2.871h16.214a1.914 1.914 0 0 0 1.636 -2.87l-8.106 -13.536a1.914 1.914 0 0 0 -3.274 0z" />
+                                <path d="M12 16h.01" />
+                            </svg>
+                        </span>
+                        <div>
+                            <div class="fw-bold mb-1">Recomendações Técnicas Pendentes</div>
                             <div class="text-secondary small">
                                 Existem <strong>{{ $recomendacoesPendentes }}</strong> alerta(s) agronômico(s) ou recomendação(ões) ativa(s) aguardando sua revisão e decisão.
                             </div>
                         </div>
-                        <div class="col-auto mt-2 mt-md-0">
-                            <a href="{{ route('admin.recomendacoes.index', ['status' => 'pendente']) }}" class="btn btn-warning shadow-sm">
-                                Revisar recomendações
-                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon ms-1"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg>
-                            </a>
-                        </div>
                     </div>
+                    <a href="{{ route('admin.recomendacoes.index', ['status' => 'pendente']) }}" class="btn btn-warning btn-sm shadow-sm">
+                        Revisar recomendações
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon ms-1"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg>
+                    </a>
                 </div>
             </div>
         @endif
@@ -66,7 +60,7 @@
         <div class="page-header d-print-none mb-4">
             <div class="row align-items-center justify-content-between g-3">
                 <div class="col-12 col-md">
-                    <div class="d-flex align-items-center gap-2 mb-1">
+                    <div class="d-flex align-items-center gap-2 mb-1 flex-wrap">
                         <span class="badge bg-green-lt text-uppercase fw-bold letter-spacing-1">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1"><path d="M12 3c-1.2 0 -2.4 .6 -3 1.7c-2.4 -.3 -4.5 1.5 -4.8 3.9c-1.5 .8 -2.2 2.6 -1.8 4.3c.5 2 2.2 3.4 4.3 3.4c.5 2.1 2.2 3.7 4.3 3.7s3.8 -1.6 4.3 -3.7c2.1 0 3.8 -1.4 4.3 -3.4c.4 -1.7 -.3 -3.5 -1.8 -4.3c-.3 -2.4 -2.4 -4.2 -4.8 -3.9c-.6 -1.1 -1.8 -1.7 -3 -1.7z"/><path d="M12 12l0 9"/></svg>
                             Gestão Agrícola Integrada
@@ -77,11 +71,11 @@
                             {{ now()->translatedFormat('l, d \d\e F \d\e Y') }}
                         </span>
                     </div>
-                    <h1 class="page-title text-dark fs-2 mb-1">
+                    <h1 class="page-title fs-2 mb-1">
                         Dashboard do Produtor
                     </h1>
                     <p class="text-secondary mb-0">
-                        Olá, <strong>{{ auth()->user()->name }}</strong>. Acompanhe a operação, o status das tarefas e o manejo de suas propriedades.
+                        Olá, <strong>{{ auth()->user()->name }}</strong>. Acompanhe a operação, o status das tarefas e o manejo de suas propriedades rurais.
                     </p>
                 </div>
                 <div class="col-12 col-md-auto">
@@ -99,12 +93,12 @@
             </div>
         </div>
 
-        {{-- Filtros Avançados & Rápidos --}}
+        {{-- Filtros Operacionais --}}
         @php
             $temFiltroAtivo = request()->filled('propriedade_id') || request()->filled('responsavel_id') || request()->filled('data_inicio') || request()->filled('data_fim');
         @endphp
-        <div class="card mb-4 border-0 shadow-sm">
-            <div class="card-header bg-transparent py-2 d-flex justify-content-between align-items-center">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header py-2 d-flex justify-content-between align-items-center">
                 <div class="d-flex align-items-center gap-2">
                     <span class="avatar avatar-xs bg-primary-lt rounded-circle">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M4 6h16"/><path d="M7 12h10"/><path d="M10 18h4"/></svg>
@@ -115,7 +109,7 @@
                     @endif
                 </div>
                 @if ($temFiltroAtivo)
-                    <a href="{{ route('admin.dashboard') }}" class="btn btn-link btn-sm text-decoration-none text-muted p-0">
+                    <a href="{{ route('admin.dashboard') }}" class="btn btn-link btn-sm text-decoration-none text-secondary p-0">
                         <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1"><path d="M18 6l-12 12"/><path d="M6 6l12 12"/></svg>
                         Limpar todos
                     </a>
@@ -125,7 +119,7 @@
                 <div class="row g-2 align-items-end">
                     <div class="col-12 col-md-6 col-lg-3">
                         <label class="form-label small text-secondary mb-1" for="propriedade_id">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1 text-muted"><path d="M3 21l18 0"/><path d="M5 21v-14l8 -4l6 3v15"/><path d="M9 21v-8h4v8"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1 text-secondary"><path d="M3 21l18 0"/><path d="M5 21v-14l8 -4l6 3v15"/><path d="M9 21v-8h4v8"/></svg>
                             Propriedade
                         </label>
                         <select class="form-select form-select-sm" name="propriedade_id" id="propriedade_id">
@@ -140,7 +134,7 @@
 
                     <div class="col-12 col-md-6 col-lg-3">
                         <label class="form-label small text-secondary mb-1" for="responsavel_id">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1 text-muted"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"/><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1 text-secondary"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"/><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/></svg>
                             Operador responsável
                         </label>
                         <select class="form-select form-select-sm" name="responsavel_id" id="responsavel_id">
@@ -155,7 +149,7 @@
 
                     <div class="col-6 col-lg-2">
                         <label class="form-label small text-secondary mb-1" for="data_inicio">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1 text-muted"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1 text-secondary"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>
                             De
                         </label>
                         <input class="form-control form-control-sm" type="date" name="data_inicio" id="data_inicio" value="{{ request('data_inicio') }}">
@@ -163,7 +157,7 @@
 
                     <div class="col-6 col-lg-2">
                         <label class="form-label small text-secondary mb-1" for="data_fim">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1 text-muted"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1 text-secondary"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>
                             Até
                         </label>
                         <input class="form-control form-control-sm" type="date" name="data_fim" id="data_fim" value="{{ request('data_fim') }}">
@@ -193,7 +187,7 @@
 
             {{-- Total de Tarefas --}}
             <div class="col-sm-6 col-xl">
-                <div class="card border-0 shadow-sm border-start border-3 border-primary">
+                <div class="card card-hover-effect shadow-sm border-start border-3 border-primary">
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <div class="text-secondary small fw-semibold text-uppercase">Tarefas no Período</div>
@@ -205,7 +199,7 @@
                                 </svg>
                             </span>
                         </div>
-                        <div class="h1 fw-bold mb-1 text-dark">{{ number_format($indicadores['tarefas'], 0, ',', '.') }}</div>
+                        <div class="h1 fw-bold mb-1">{{ number_format($indicadores['tarefas'], 0, ',', '.') }}</div>
                         <div class="text-secondary small">
                             Total programado
                         </div>
@@ -215,7 +209,7 @@
 
             {{-- Pendentes --}}
             <div class="col-sm-6 col-xl">
-                <div class="card border-0 shadow-sm border-start border-3 border-warning">
+                <div class="card card-hover-effect shadow-sm border-start border-3 border-warning">
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <div class="text-secondary small fw-semibold text-uppercase">Pendentes</div>
@@ -226,7 +220,7 @@
                                 </svg>
                             </span>
                         </div>
-                        <div class="h1 fw-bold mb-1 text-yellow">{{ number_format($indicadores['pendentes'], 0, ',', '.') }}</div>
+                        <div class="h1 fw-bold mb-1 text-warning">{{ number_format($indicadores['pendentes'], 0, ',', '.') }}</div>
                         <div class="d-flex align-items-center text-secondary small">
                             <span class="badge bg-yellow-lt me-1">{{ $pctPendentes }}%</span> do total
                         </div>
@@ -236,7 +230,7 @@
 
             {{-- Em Andamento --}}
             <div class="col-sm-6 col-xl">
-                <div class="card border-0 shadow-sm border-start border-3 border-info">
+                <div class="card card-hover-effect shadow-sm border-start border-3 border-info">
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <div class="text-secondary small fw-semibold text-uppercase">Em Andamento</div>
@@ -257,7 +251,7 @@
 
             {{-- Concluídas --}}
             <div class="col-sm-6 col-xl">
-                <div class="card border-0 shadow-sm border-start border-3 border-success">
+                <div class="card card-hover-effect shadow-sm border-start border-3 border-success">
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <div class="text-secondary small fw-semibold text-uppercase">Concluídas</div>
@@ -278,7 +272,7 @@
 
             {{-- Aplicações Realizadas --}}
             <div class="col-sm-6 col-xl">
-                <div class="card border-0 shadow-sm border-start border-3 border-purple">
+                <div class="card card-hover-effect shadow-sm border-start border-3 border-purple">
                     <div class="card-body">
                         <div class="d-flex align-items-center justify-content-between mb-2">
                             <div class="text-secondary small fw-semibold text-uppercase">Aplicações Feitas</div>
@@ -303,8 +297,8 @@
 
             {{-- Coluna 1: Próximas Tarefas --}}
             <div class="col-12 col-xl-7">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-header bg-transparent py-3 d-flex align-items-center justify-content-between">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header py-3 d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center gap-2">
                             <span class="avatar avatar-sm bg-primary-lt rounded">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
@@ -314,7 +308,7 @@
                                 </svg>
                             </span>
                             <div>
-                                <h3 class="card-title text-dark mb-0">Próximas Tarefas</h3>
+                                <h3 class="card-title mb-0">Próximas Tarefas</h3>
                                 <div class="text-secondary small">Fila operacional de pendências e execuções</div>
                             </div>
                         </div>
@@ -353,7 +347,6 @@
                                             'cancelada' => 'Cancelada',
                                             default => 'Pendente',
                                         };
-                                        $hoje = today();
                                         $previsao = $tarefa->data_prevista;
                                         $atrasada = $previsao && $previsao->isPast() && !$previsao->isToday();
                                     @endphp
@@ -362,11 +355,11 @@
                                             <div class="d-flex align-items-center">
                                                 <span class="status-dot status-{{ $corStatus }} me-2"></span>
                                                 <div>
-                                                    <a class="fw-bold text-dark text-decoration-none" href="{{ route('admin.tarefas.show', $tarefa) }}">
+                                                    <a class="fw-bold text-reset text-decoration-none" href="{{ route('admin.tarefas.show', $tarefa) }}">
                                                         {{ $tarefa->titulo }}
                                                     </a>
                                                     @if ($tarefa->tipo)
-                                                        <div class="text-muted small">
+                                                        <div class="mt-1">
                                                             <span class="badge bg-secondary-lt text-capitalize py-0 px-1">{{ $tarefa->tipo }}</span>
                                                         </div>
                                                     @endif
@@ -374,7 +367,7 @@
                                             </div>
                                         </td>
                                         <td>
-                                            <div class="fw-semibold text-dark">{{ $tarefa->propriedade->nome }}</div>
+                                            <div class="fw-semibold">{{ $tarefa->propriedade->nome }}</div>
                                             <div class="text-secondary small">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1"><path d="M12 18.5l-3 -1.5l-6 3v-13l6 -3l6 3l6 -3v7.5"/><path d="M9 4v13"/></svg>
                                                 {{ $tarefa->talhao?->nome ?? 'Área geral' }}
@@ -399,7 +392,7 @@
                                                     @endif
                                                 </span>
                                             @else
-                                                <span class="text-muted small">—</span>
+                                                <span class="text-secondary small">—</span>
                                             @endif
                                         </td>
                                         <td>
@@ -438,8 +431,8 @@
 
             {{-- Coluna 2: Aplicações Recentes --}}
             <div class="col-12 col-xl-5">
-                <div class="card border-0 shadow-sm h-100">
-                    <div class="card-header bg-transparent py-3 d-flex align-items-center justify-content-between">
+                <div class="card shadow-sm h-100">
+                    <div class="card-header py-3 d-flex align-items-center justify-content-between">
                         <div class="d-flex align-items-center gap-2">
                             <span class="avatar avatar-sm bg-purple-lt rounded">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
@@ -447,7 +440,7 @@
                                 </svg>
                             </span>
                             <div>
-                                <h3 class="card-title text-dark mb-0">Aplicações Recentes</h3>
+                                <h3 class="card-title mb-0">Aplicações Recentes</h3>
                                 <div class="text-secondary small">Manejo químico e biológico no campo</div>
                             </div>
                         </div>
@@ -470,7 +463,7 @@
                                     </div>
                                     <div class="col">
                                         <div class="d-flex justify-content-between align-items-center mb-1">
-                                            <span class="fw-bold text-dark">{{ $aplicacao->produto?->nome ?? 'Produto não identificado' }}</span>
+                                            <span class="fw-bold text-reset">{{ $aplicacao->produto?->nome ?? 'Produto não identificado' }}</span>
                                             <span class="text-secondary small">
                                                 {{ $aplicacao->data_aplicacao?->format('d/m/Y') }}
                                             </span>
@@ -481,7 +474,7 @@
                                             @if ($aplicacao->dose)
                                                 <span class="badge bg-purple-lt">{{ $aplicacao->dose }} {{ $aplicacao->produto?->unidade_medida ?? 'dose' }}</span>
                                             @endif
-                                            <span class="text-muted ms-auto">
+                                            <span class="text-secondary ms-auto">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"/><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/></svg>
                                                 {{ $aplicacao->usuario?->name ?? 'Operador' }}
                                             </span>
@@ -507,8 +500,8 @@
         </div>
 
         {{-- Resumo por Propriedade --}}
-        <div class="card border-0 shadow-sm mb-4">
-            <div class="card-header bg-transparent py-3 d-flex align-items-center justify-content-between">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header py-3 d-flex align-items-center justify-content-between">
                 <div class="d-flex align-items-center gap-2">
                     <span class="avatar avatar-sm bg-green-lt rounded">
                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
@@ -518,7 +511,7 @@
                         </svg>
                     </span>
                     <div>
-                        <h2 class="card-title text-dark mb-0">Resumo por propriedade</h2>
+                        <h2 class="card-title mb-0">Resumo por propriedade</h2>
                         <div class="text-secondary small">Visão consolidada de tarefas, execução e aplicações por unidade agrícola</div>
                     </div>
                 </div>
@@ -558,7 +551,7 @@
                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M3 21l18 0"/><path d="M5 21v-14l8 -4l6 3v15"/><path d="M9 21v-8h4v8"/></svg>
                                         </span>
                                         <div>
-                                            <a href="{{ route('admin.propriedades.show', $propriedade) }}" class="fw-bold text-dark text-decoration-none">
+                                            <a href="{{ route('admin.propriedades.show', $propriedade) }}" class="fw-bold text-reset text-decoration-none">
                                                 {{ $propriedade->nome }}
                                             </a>
                                             <div class="text-secondary small">
@@ -579,7 +572,7 @@
                                     </div>
                                 </td>
                                 <td class="text-center">
-                                    <span class="fw-bold text-dark">{{ $propriedade->resumo['tarefas'] }}</span>
+                                    <span class="fw-bold">{{ $propriedade->resumo['tarefas'] }}</span>
                                 </td>
                                 <td class="text-center">
                                     <span class="badge bg-yellow-lt">{{ $propriedade->resumo['pendentes'] }}</span>

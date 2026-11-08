@@ -255,6 +255,8 @@
                                             <div class="dropdown-divider"></div>
                                             <a class="dropdown-item" href="{{ route('admin.culturas.index') }}"> Culturas </a>
                                         </div>
+                                    </div>
+                                </div>
                             </li>
                             <li class="nav-item dropdown {{ request()->routeIs(['admin.estoque.*', 'admin.produtos.*']) ? 'active' : '' }}">
                                 <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown"
