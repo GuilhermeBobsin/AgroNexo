@@ -36,12 +36,22 @@ Route::middleware(['auth', 'usuario.ativo'])->group(function () {
     Route::get('/dashboard', function () {
         abort_unless(in_array(auth()->user()->perfil, ['admin', 'agronomo', 'operador'], true), 403, 'O perfil da conta não é válido.');
 
+        if (auth()->user()->perfil === 'admin') {
+            return redirect()->route('admin.dashboard');
+        }
+
+        if (auth()->user()->perfil === 'agronomo') {
+            return redirect()->route('agronomo.dashboard');
+        }
+
         return redirect()->route(
             'dashboard.' . auth()->user()->perfil
         );
     })->name('dashboard');
 
-    Route::middleware('perfil:admin')->get('/dashboard/admin', [AdminDashboardController::class, 'index'])->name('dashboard.admin');
+    Route::middleware('perfil:admin')->get('/dashboard/admin', function () {
+        return redirect()->route('admin.dashboard');
+    })->name('dashboard.admin');
     Route::middleware('perfil:agronomo')->get('/dashboard/agronomo', [AgronomoDashboardController::class, 'index'])->name('dashboard.agronomo');
     Route::middleware('perfil:operador')->get('/dashboard/operador', [OperadorDashboardController::class, 'index'])->name('dashboard.operador');
 

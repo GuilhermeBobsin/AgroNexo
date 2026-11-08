@@ -55,7 +55,7 @@ class DashboardController extends Controller
             ->limit(8)
             ->get();
 
-        $resumoPropriedades = Propriedade::orderBy('nome')->get()->map(function (Propriedade $propriedade) {
+        $resumoPropriedades = Propriedade::withCount('talhoes')->orderBy('nome')->get()->map(function (Propriedade $propriedade) {
             $base = Tarefa::where('propriedade_id', $propriedade->id);
 
             $propriedade->resumo = [
