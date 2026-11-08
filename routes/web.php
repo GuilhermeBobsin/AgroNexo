@@ -40,6 +40,10 @@ Route::middleware(['auth', 'usuario.ativo'])->group(function () {
             return redirect()->route('admin.dashboard');
         }
 
+        if (auth()->user()->perfil === 'agronomo') {
+            return redirect()->route('agronomo.dashboard');
+        }
+
         return redirect()->route(
             'dashboard.' . auth()->user()->perfil
         );

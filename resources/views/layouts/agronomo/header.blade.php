@@ -5,45 +5,40 @@
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
-            <a href="." aria-label="Tabler"><svg xmlns="http://www.w3.org/2000/svg" width="110" height="32"
-                    viewBox="0 0 232 68" class="navbar-brand-image">
-                    <path
-                        d="M64.6 16.2C63 9.9 58.1 5 51.8 3.4 40 1.5 28 1.5 16.2 3.4 9.9 5 5 9.9 3.4 16.2 1.5 28 1.5 40 3.4 51.8 5 58.1 9.9 63 16.2 64.6c11.8 1.9 23.8 1.9 35.6 0C58.1 63 63 58.1 64.6 51.8c1.9-11.8 1.9-23.8 0-35.6zM33.3 36.3c-2.8 4.4-6.6 8.2-11.1 11-1.5.9-3.3.9-4.8.1s-2.4-2.3-2.5-4c0-1.7.9-3.3 2.4-4.1 2.3-1.4 4.4-3.2 6.1-5.3-1.8-2.1-3.8-3.8-6.1-5.3-2.3-1.3-3-4.2-1.7-6.4s4.3-2.9 6.5-1.6c4.5 2.8 8.2 6.5 11.1 10.9 1 1.4 1 3.3.1 4.7zM49.2 46H37.8c-2.1 0-3.8-1-3.8-3s1.7-3 3.8-3h11.4c2.1 0 3.8 1 3.8 3s-1.7 3-3.8 3z"
-                        fill="#066fd1" style="fill: var(--tblr-primary, #066fd1)"></path>
-                    <path
-                        d="M105.8 46.1c.4 0 .9.2 1.2.6s.6 1 .6 1.7c0 .9-.5 1.6-1.4 2.2s-2 .9-3.2.9c-2 0-3.7-.4-5-1.3s-2-2.6-2-5.4V31.6h-2.2c-.8 0-1.4-.3-1.9-.8s-.9-1.1-.9-1.9c0-.7.3-1.4.8-1.8s1.2-.7 1.9-.7h2.2v-3.1c0-.8.3-1.5.8-2.1s1.3-.8 2.1-.8 1.5.3 2 .8.8 1.3.8 2.1v3.1h3.4c.8 0 1.4.3 1.9.8s.8 1.2.8 1.9-.3 1.4-.8 1.8-1.2.7-1.9.7h-3.4v13c0 .7.2 1.2.5 1.5s.8.5 1.4.5c.3 0 .6-.1 1.1-.2.5-.2.8-.3 1.2-.3zm28-20.7c.8 0 1.5.3 2.1.8.5.5.8 1.2.8 2.1v20.3c0 .8-.3 1.5-.8 2.1-.5.6-1.2.8-2.1.8s-1.5-.3-2-.8-.8-1.2-.8-2.1c-.8.9-1.9 1.7-3.2 2.4-1.3.7-2.8 1-4.3 1-2.2 0-4.2-.6-6-1.7-1.8-1.1-3.2-2.7-4.2-4.7s-1.6-4.3-1.6-6.9c0-2.6.5-4.9 1.5-6.9s2.4-3.6 4.2-4.8c1.8-1.1 3.7-1.7 5.9-1.7 1.5 0 3 .3 4.3.8 1.3.6 2.5 1.3 3.4 2.1 0-.8.3-1.5.8-2.1.5-.5 1.2-.7 2-.7zm-9.7 21.3c2.1 0 3.8-.8 5.1-2.3s2-3.4 2-5.7-.7-4.2-2-5.8c-1.3-1.5-3-2.3-5.1-2.3-2 0-3.7.8-5 2.3-1.3 1.5-2 3.5-2 5.8s.6 4.2 1.9 5.7 3 2.3 5.1 2.3zm32.1-21.3c2.2 0 4.2.6 6 1.7 1.8 1.1 3.2 2.7 4.2 4.7s1.6 4.3 1.6 6.9-.5 4.9-1.5 6.9-2.4 3.6-4.2 4.8c-1.8 1.1-3.7 1.7-5.9 1.7-1.5 0-3-.3-4.3-.9s-2.5-1.4-3.4-2.3v.3c0 .8-.3 1.5-.8 2.1-.5.6-1.2.8-2.1.8s-1.5-.3-2.1-.8c-.5-.5-.8-1.2-.8-2.1V18.9c0-.8.3-1.5.8-2.1.5-.6 1.2-.8 2.1-.8s1.5.3 2.1.8c.5.6.8 1.3.8 2.1v10c.8-1 1.8-1.8 3.2-2.5 1.3-.7 2.8-1 4.3-1zm-.7 21.3c2 0 3.7-.8 5-2.3s2-3.5 2-5.8-.6-4.2-1.9-5.7-3-2.3-5.1-2.3-3.8.8-5.1 2.3-2 3.4-2 5.7.7 4.2 2 5.8c1.3 1.6 3 2.3 5.1 2.3zm23.6 1.9c0 .8-.3 1.5-.8 2.1s-1.3.8-2.1.8-1.5-.3-2-.8-.8-1.3-.8-2.1V18.9c0-.8.3-1.5.8-2.1s1.3-.8 2.1-.8 1.5.3 2 .8.8 1.3.8 2.1v29.7zm29.3-10.5c0 .8-.3 1.4-.9 1.9-.6.5-1.2.7-2 .7h-15.8c.4 1.9 1.3 3.4 2.6 4.4 1.4 1.1 2.9 1.6 4.7 1.6 1.3 0 2.3-.1 3.1-.4.7-.2 1.3-.5 1.8-.8.4-.3.7-.5.9-.6.6-.3 1.1-.4 1.6-.4.7 0 1.2.2 1.7.7s.7 1 .7 1.7c0 .9-.4 1.6-1.3 2.4-.9.7-2.1 1.4-3.6 1.9s-3 .8-4.6.8c-2.7 0-5-.6-7-1.7s-3.5-2.7-4.6-4.6-1.6-4.2-1.6-6.6c0-2.8.6-5.2 1.7-7.2s2.7-3.7 4.6-4.8 3.9-1.7 6-1.7 4.1.6 6 1.7 3.4 2.7 4.5 4.7c.9 1.9 1.5 4.1 1.5 6.3zm-12.2-7.5c-3.7 0-5.9 1.7-6.6 5.2h12.6v-.3c-.1-1.3-.8-2.5-2-3.5s-2.5-1.4-4-1.4zm30.3-5.2c1 0 1.8.3 2.4.8.7.5 1 1.2 1 1.9 0 1-.3 1.7-.8 2.2-.5.5-1.1.8-1.8.7-.5 0-1-.1-1.6-.3-.2-.1-.4-.1-.6-.2-.4-.1-.7-.1-1.1-.1-.8 0-1.6.3-2.4.8s-1.4 1.3-1.9 2.3-.7 2.3-.7 3.7v11.4c0 .8-.3 1.5-.8 2.1-.5.6-1.2.8-2.1.8s-1.5-.3-2.1-.8c-.5-.6-.8-1.3-.8-2.1V28.8c0-.8.3-1.5.8-2.1.5-.6 1.2-.8 2.1-.8s1.5.3 2.1.8c.5.6.8 1.3.8 2.1v.6c.7-1.3 1.8-2.3 3.2-3 1.3-.7 2.8-1 4.3-1z"
-                        fill-rule="evenodd" clip-rule="evenodd" fill="#4a4a4a"></path>
-                </svg></a>
+            <a href="{{ route('agronomo.dashboard') }}"
+                class="d-flex align-items-center text-decoration-none"
+                aria-label="AgroNexo">
+
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    style="height: 45px; width: 45px;"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="icon icon-tabler icons-tabler-outline icon-tabler-tractor text-primary me-2">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M3 15a4 4 0 1 0 8 0a4 4 0 1 0 -8 0" />
+                    <path d="M7 15l0 .01" />
+                    <path d="M17 17a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+                    <path d="M10.5 17l6.5 0" />
+                    <path d="M20 15.2v-4.2a1 1 0 0 0 -1 -1h-6l-2 -5h-6v6.5" />
+                    <path d="M18 5h-1a1 1 0 0 0 -1 1v4" />
+                </svg>
+
+                <span class="fw-bold fs-2">
+                    AgroNexo
+                </span>
+            </a>
         </div>
-        <div class="navbar-nav flex-row order-md-last">
-            <div class="nav-item d-none d-md-flex me-3">
-                <div class="btn-list">
-                    <a href="https://github.com/tabler/tabler" class="btn btn-5" target="_blank" rel="noreferrer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="icon icon-2">
-                            <path
-                                d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5">
-                            </path>
-                        </svg>
-                        Source code
-                    </a>
-                    <a href="https://github.com/sponsors/codecalm" class="btn btn-6" target="_blank" rel="noreferrer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="icon text-pink icon-2">
-                            <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572">
-                            </path>
-                        </svg>
-                        Sponsor
-                    </a>
-                </div>
-            </div>
-            <div class="d-none d-md-flex">
+        <div class="navbar-nav flex-row order-md-last align-items-center">
+            {{-- Alternador de Tema (Claro / Escuro) --}}
+            <div class="d-none d-md-flex me-2">
                 <div class="nav-item">
                     <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" data-bs-toggle="tooltip"
-                        data-bs-placement="bottom" aria-label="Enable dark mode"
-                        data-bs-original-title="Enable dark mode">
+                        data-bs-placement="bottom" aria-label="Ativar modo escuro"
+                        data-bs-original-title="Ativar modo escuro">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-1">
@@ -52,8 +47,8 @@
                         </svg>
                     </a>
                     <a href="?theme=light" class="nav-link px-0 hide-theme-light" data-bs-toggle="tooltip"
-                        data-bs-placement="bottom" aria-label="Enable light mode"
-                        data-bs-original-title="Enable light mode">
+                        data-bs-placement="bottom" aria-label="Ativar modo claro"
+                        data-bs-original-title="Ativar modo claro">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
                             class="icon icon-1">
@@ -64,241 +59,137 @@
                         </svg>
                     </a>
                 </div>
-                @include('layouts.partials.notificacoes-header')
-            <div class="nav-item dropdown d-none d-md-flex me-3">
-                    <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show app menu"
-                        data-bs-auto-close="outside" aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="icon icon-1">
-                            <path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z">
-                            </path>
-                            <path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z">
-                            </path>
-                            <path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z">
-                            </path>
-                            <path d="M14 7l6 0"></path>
-                            <path d="M17 4l0 6"></path>
-                        </svg>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">My Apps</div>
-                                <div class="card-actions btn-actions">
-                                    <a href="#" class="btn-action">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                            <path
-                                                d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
-                                            </path>
-                                            <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="card-body scroll-y p-2" style="max-height: 50vh">
-                                <div class="row g-0">
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/amazon.svg" class="w-6 h-6 mx-auto mb-2"
-                                                width="24" height="24" alt="">
-                                            <span class="h5">Amazon</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/android.svg" class="w-6 h-6 mx-auto mb-2"
-                                                width="24" height="24" alt="">
-                                            <span class="h5">Android</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/app-store.svg" class="w-6 h-6 mx-auto mb-2"
-                                                width="24" height="24" alt="">
-                                            <span class="h5">Apple App Store</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/apple-podcast.svg" class="w-6 h-6 mx-auto mb-2"
-                                                width="24" height="24" alt="">
-                                            <span class="h5">Apple Podcast</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/apple.svg" class="w-6 h-6 mx-auto mb-2" width="24"
-                                                height="24" alt="">
-                                            <span class="h5">Apple</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/behance.svg" class="w-6 h-6 mx-auto mb-2"
-                                                width="24" height="24" alt="">
-                                            <span class="h5">Behance</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/discord.svg" class="w-6 h-6 mx-auto mb-2"
-                                                width="24" height="24" alt="">
-                                            <span class="h5">Discord</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/dribbble.svg" class="w-6 h-6 mx-auto mb-2"
-                                                width="24" height="24" alt="">
-                                            <span class="h5">Dribbble</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/dropbox.svg" class="w-6 h-6 mx-auto mb-2"
-                                                width="24" height="24" alt="">
-                                            <span class="h5">Dropbox</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/ever-green.svg" class="w-6 h-6 mx-auto mb-2"
-                                                width="24" height="24" alt="">
-                                            <span class="h5">Ever Green</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-            <div class="nav-item dropdown">
-                    <a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Abrir menu do usuário">
+
+            {{-- Notificações --}}
+            @include('layouts.partials.notificacoes-header')
+
+            {{-- Menu do Usuário --}}
+            <div class="nav-item dropdown ms-2">
+                <a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Abrir menu do usuário">
                     @if (Auth::user()->profile_photo_path)
                         <span class="avatar avatar-sm" style="background-image: url('{{ \Illuminate\Support\Facades\Storage::disk('public')->url(Auth::user()->profile_photo_path) }}')" role="img" aria-label="Foto de {{ Auth::user()->name }}"></span>
                     @else
-                        <span class="avatar avatar-sm bg-purple-lt text-purple" aria-hidden="true">{{ mb_strtoupper(mb_substr(Auth::user()->name, 0, 1)) }}</span>
+                        <span class="avatar avatar-sm bg-purple-lt text-purple fw-bold" aria-hidden="true">{{ mb_strtoupper(mb_substr(Auth::user()->name, 0, 1)) }}</span>
                     @endif
-                    <div class="d-none d-xl-block ps-2">
-                        <div>{{ Auth::user()->name }}</div>
+                    <div class="d-none d-xl-block ps-2 text-start">
+                        <div class="fw-semibold">{{ Auth::user()->name }}</div>
                         <div class="mt-1 small text-secondary">Agrônomo</div>
                     </div>
                 </a>
                 <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
-                    <a href="{{ route('profile.edit') }}" class="dropdown-item">Meu perfil</a>
+                    <a href="{{ route('profile.edit') }}" class="dropdown-item">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-2"><path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0"/><path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"/></svg>
+                        Meu perfil
+                    </a>
                     <div class="dropdown-divider"></div>
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="dropdown-item">Sair</button>
+                        <button type="submit" class="dropdown-item text-danger">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-2"><path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"/><path d="M9 12h12l-3 -3"/><path d="M18 15l3 -3"/></svg>
+                            Sair
+                        </button>
                     </form>
                 </div>
             </div>
         </div>
     </div>
-@include('layouts.partials.tema-header-script')
+    @include('layouts.partials.tema-header-script')
 </header>
+
 <header class="navbar-expand-md">
-    <div class="collapse navbar-collapse" id="navbar-menu" style="visibility: visible !important;" >
+    <div class="collapse navbar-collapse" id="navbar-menu" style="visibility: visible !important;">
         <div class="navbar">
             <div class="container-xl">
                 <div class="row flex-column flex-md-row flex-fill align-items-center">
                     <div class="col">
                         <ul class="navbar-nav">
-    <li class="nav-item {{ request()->routeIs('agronomo.dashboard') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('agronomo.dashboard') }}">
-            <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M5 12l-2 0l9 -9l9 9l-2 0"></path><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path></svg></span>
-            <span class="nav-link-title">Dashboard</span>
-        </a>
-    </li>
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('agronomo.dashboard') }}#propriedades-title">
-            <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M12 21s-7-5.5-7-11a7 7 0 1 1 14 0c0 5.5-7 11-7 11z"></path><circle cx="12" cy="10" r="2.5"></circle></svg></span>
-            <span class="nav-link-title">Propriedades</span>
-        </a>
-    </li>
-    <li class="nav-item {{ request()->routeIs('agronomo.tarefas.*') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('agronomo.tarefas.index') }}">
-            <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M9 11l3 3l8 -8"></path><path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path></svg></span>
-            <span class="nav-link-title">Tarefas</span>
-        </a>
-    </li>
-    <li class="nav-item {{ request()->routeIs('agronomo.recomendacoes.*') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('agronomo.recomendacoes.index') }}">
-            <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M12 3v18M3 12h18"/><circle cx="12" cy="12" r="9"/></svg></span>
-            <span class="nav-link-title">Recomendações</span>
-        </a>
-    </li>
-    <li class="nav-item {{ request()->routeIs('agronomo.aplicacoes.*') ? 'active' : '' }}">
-        <a class="nav-link" href="{{ route('agronomo.aplicacoes.index') }}">
-            <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"></path><path d="M9 3h6v4h-6z"></path><path d="M9 14l2 2l4 -4"></path></svg></span>
-            <span class="nav-link-title">Aplicações</span>
-        </a>
-    </li>
-    <li class="nav-item dropdown {{ request()->routeIs('agronomo.tarefas.*') && request('status') === 'concluida' ? 'active' : '' }}">
-        <a class="nav-link dropdown-toggle" href="#navbar-historico" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-            <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"></path><path d="M3 3v5h5"></path><path d="M12 7v5l3 2"></path></svg></span>
-            <span class="nav-link-title">Histórico</span>
-        </a>
-        <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('agronomo.tarefas.index', ['status' => 'concluida']) }}">Tarefas concluídas</a><a class="dropdown-item" href="{{ route('agronomo.aplicacoes.index') }}">Aplicações registradas</a></div>
-    </li>
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#navbar-agenda" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-            <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></span>
-            <span class="nav-link-title">Agenda</span>
-        </a>
-        <div class="dropdown-menu"><span class="dropdown-item text-secondary">Calendário · integração futura</span><a class="dropdown-item" href="{{ route('agronomo.tarefas.index') }}">Tarefas</a><a class="dropdown-item" href="{{ route('agronomo.tarefas.index', ['status' => 'pendente']) }}">Pendências</a></div>
-    </li>
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#navbar-clima" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-            <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M20 16.2a4.5 4.5 0 0 0 -2.5 -8.5a6 6 0 0 0 -11.5 1.8a3.5 3.5 0 0 0 .5 6.7h13.5"></path><path d="M8 19l-1 2M13 19l-1 2M18 19l-1 2"></path></svg></span>
-            <span class="nav-link-title">Clima</span>
-        </a>
-        <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('agronomo.inteligencia.index') }}">Previsão e avisos climáticos</a></div>
-    </li>
-    <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" href="#navbar-inteligencia" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-            <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1"><path d="M12 3l1.9 5.8L20 11l-6.1 2.2L12 19l-1.9-5.8L4 11l6.1-2.2L12 3z"></path><path d="M19 14l1.2 2.8L23 18l-2.8 1.2L19 22l-1.2-2.8L15 18l2.8-1.2L19 14z"></path></svg></span>
-            <span class="nav-link-title">Inteligência</span>
-        </a>
-        <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('agronomo.inteligencia.index') }}">Tarefas com avisos climáticos</a></div>
-    </li>
-</ul>
-                    </div>
-                    <!-- <div class="col col-md-auto">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-bs-toggle="offcanvas"
-                                    data-bs-target="#offcanvasSettings">
-                                    <span class="badge badge-sm bg-red text-red-fg">New</span>
+                            {{-- Dashboard --}}
+                            <li class="nav-item {{ request()->routeIs(['agronomo.dashboard', 'dashboard.agronomo']) ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('agronomo.dashboard') }}">
                                     <span class="nav-link-icon d-md-none d-lg-inline-block">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                            <path
-                                                d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
-                                            </path>
-                                            <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                            <path d="M5 12l-2 0l9 -9l9 9l-2 0"></path>
+                                            <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7"></path>
+                                            <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6"></path>
                                         </svg>
                                     </span>
-                                    <span class="nav-link-title"> Theme Settings </span>
+                                    <span class="nav-link-title">Dashboard</span>
+                                </a>
+                            </li>
+
+                            {{-- Recomendações Técnicas --}}
+                            <li class="nav-item dropdown {{ request()->routeIs('agronomo.recomendacoes.*') ? 'active' : '' }}">
+                                <a class="nav-link dropdown-toggle" href="#navbar-recomendacoes" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                            <path d="M9 5h-2a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-12a2 2 0 0 0 -2 -2h-2"></path>
+                                            <path d="M9 3m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v0a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"></path>
+                                            <path d="M9 14l2 2l4 -4"></path>
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">Recomendações</span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="{{ route('agronomo.recomendacoes.index') }}">
+                                        Todas as recomendações
+                                    </a>
+                                    <a class="dropdown-item" href="{{ route('agronomo.recomendacoes.create') }}">
+                                        Nova recomendação técnica
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{ route('agronomo.recomendacoes.index', ['status' => 'pendente']) }}">
+                                        Aguardando análise do produtor
+                                    </a>
+                                </div>
+                            </li>
+
+                            {{-- Tarefas de Campo --}}
+                            <li class="nav-item dropdown {{ request()->routeIs('agronomo.tarefas.*') ? 'active' : '' }}">
+                                <a class="nav-link dropdown-toggle" href="#navbar-tarefas" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                            <path d="M9 11l3 3l8 -8"></path>
+                                            <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">Tarefas de Campo</span>
+                                </a>
+                                <div class="dropdown-menu">
+                                    <a class="dropdown-item" href="{{ route('agronomo.tarefas.index') }}">Todas as tarefas</a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="{{ route('agronomo.tarefas.index', ['status' => 'pendente']) }}">Pendentes</a>
+                                    <a class="dropdown-item" href="{{ route('agronomo.tarefas.index', ['status' => 'em_andamento']) }}">Em andamento</a>
+                                    <a class="dropdown-item" href="{{ route('agronomo.tarefas.index', ['status' => 'concluida']) }}">Concluídas</a>
+                                </div>
+                            </li>
+
+                            {{-- Registro de Aplicações --}}
+                            <li class="nav-item {{ request()->routeIs('agronomo.aplicacoes.*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('agronomo.aplicacoes.index') }}">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                            <path d="M7.502 19.423c2.602 2.105 6.395 2.105 8.996 0c2.602 -2.105 3.262 -5.708 1.566 -8.546l-4.89 -7.26c-.42 -.625 -1.287 -.803 -1.936 -.397a1.376 1.376 0 0 0 -.41 .397l-4.893 7.26c-1.695 2.838 -1.035 6.441 1.567 8.546" />
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">Aplicações</span>
+                                </a>
+                            </li>
+
+                            {{-- Inteligência & Clima --}}
+                            <li class="nav-item {{ request()->routeIs('agronomo.inteligencia.*') ? 'active' : '' }}">
+                                <a class="nav-link" href="{{ route('agronomo.inteligencia.index') }}">
+                                    <span class="nav-link-icon d-md-none d-lg-inline-block">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
+                                            <path d="M20 16.2a4.5 4.5 0 0 0 -2.5 -8.5a6 6 0 0 0 -11.5 1.8a3.5 3.5 0 0 0 .5 6.7h13.5"></path>
+                                            <path d="M8 19l-1 2M13 19l-1 2M18 19l-1 2"></path>
+                                        </svg>
+                                    </span>
+                                    <span class="nav-link-title">Inteligência Climática</span>
                                 </a>
                             </li>
                         </ul>
-                    </div> -->
+                    </div>
                 </div>
             </div>
         </div>
