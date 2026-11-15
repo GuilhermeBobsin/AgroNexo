@@ -29,16 +29,20 @@
 </head>
 
 <body>
+    <div class="page">
+        @if (Auth::user()->perfil === 'admin')
+            @include('layouts.admin.header')
+        @elseif (Auth::user()->perfil === 'agronomo')
+            @include('layouts.agronomo.header')
+        @else
+            @include('layouts.operador.header')
+        @endif
 
-    @if (Auth::user()->perfil === 'admin')
-    @include('layouts.admin.header')
-    @elseif (Auth::user()->perfil === 'agronomo')
-    @include('layouts.agronomo.header')
-    @else
-    @include('layouts.operador.header')
-    @endif
-
-    @yield('content')
+        <div class="page-wrapper">
+            @yield('content')
+            @include('layouts.admin.footer')
+        </div>
+    </div>
     <!-- <div class="settings">
         <a href="#" class="btn btn-floating btn-icon btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings" aria-controls="offcanvasSettings" aria-label="Theme Settings">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
@@ -264,7 +268,6 @@
             </div>
         </form>
     </div> -->
-    @include('layouts.admin.footer')
 
     <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/js/tabler.min.js"></script>
     <script src="{{ asset('js/tabler-theme.js') }}"></script>

@@ -18,12 +18,12 @@ class TenantIsolationTest extends TestCase
         $this->post('/register', [
             'email' => 'sessao@example.test',
             'password' => 'SenhaSegura123!',
-        ])->assertRedirect(route('dashboard.admin'));
+        ])->assertRedirect(route('admin.dashboard'));
 
         // Simulate the next HTTP request, where the guard must rehydrate its user from session.
         app('auth')->forgetGuards();
 
-        $this->get(route('dashboard.admin'))->assertOk();
+        $this->get(route('admin.dashboard'))->assertOk();
     }
 
     public function test_each_producer_admin_only_sees_and_manages_their_own_farm_data(): void
@@ -31,7 +31,7 @@ class TenantIsolationTest extends TestCase
         $this->post('/register', [
             'email' => 'a@example.test',
             'password' => 'SenhaSegura123!',
-        ])->assertRedirect(route('dashboard.admin'));
+        ])->assertRedirect(route('admin.dashboard'));
         $adminA = User::where('email', 'a@example.test')->firstOrFail();
         $this->post(route('admin.propriedades.store'), [
             'nome' => 'Fazenda A', 'localizacao' => 'PR', 'latitude' => -25.4, 'longitude' => -49.2,
@@ -47,7 +47,7 @@ class TenantIsolationTest extends TestCase
         $this->post('/register', [
             'email' => 'b@example.test',
             'password' => 'SenhaSegura123!',
-        ])->assertRedirect(route('dashboard.admin'));
+        ])->assertRedirect(route('admin.dashboard'));
         $adminB = User::where('email', 'b@example.test')->firstOrFail();
         $this->post(route('admin.propriedades.store'), [
             'nome' => 'Fazenda B', 'localizacao' => 'SC', 'latitude' => -27.5, 'longitude' => -48.5,

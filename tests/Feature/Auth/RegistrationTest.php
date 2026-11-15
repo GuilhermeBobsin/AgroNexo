@@ -18,7 +18,7 @@ class RegistrationTest extends TestCase
         $this->post('/register', [
             'email' => 'produtor@example.test',
             'password' => 'SenhaSegura123!',
-        ])->assertRedirect(route('dashboard.admin'));
+        ])->assertRedirect(route('admin.dashboard'));
 
         $user = User::where('email', 'produtor@example.test')->firstOrFail();
         $this->assertSame('admin', $user->perfil);
@@ -43,12 +43,12 @@ class RegistrationTest extends TestCase
     {
         $credentials = ['email' => 'novo-admin@example.test', 'password' => 'SenhaSegura123!'];
 
-        $this->post('/register', $credentials)->assertRedirect(route('dashboard.admin'));
+        $this->post('/register', $credentials)->assertRedirect(route('admin.dashboard'));
         $this->post('/logout')->assertRedirect('/');
 
         $this->post('/login', $credentials)->assertRedirect(route('dashboard', absolute: false));
         $this->assertAuthenticated();
-        $this->get(route('dashboard.admin'))->assertOk();
+        $this->get(route('admin.dashboard'))->assertOk();
     }
 
     public function test_database_defaults_new_users_to_an_active_operator(): void

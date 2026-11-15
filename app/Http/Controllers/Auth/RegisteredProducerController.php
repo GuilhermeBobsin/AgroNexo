@@ -43,6 +43,6 @@ class RegisteredProducerController extends Controller
         Auth::login($user);
         $request->session()->regenerate();
 
-        return redirect()->route('dashboard.admin')->with('success', 'Conta criada. Cadastre sua primeira propriedade para começar.');
+        return redirect()->route('admin.dashboard')->with('success', 'Conta criada. Cadastre sua primeira propriedade para começar.');
     }
 }
