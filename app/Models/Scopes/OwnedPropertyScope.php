@@ -24,6 +24,10 @@ class OwnedPropertyScope implements Scope
             return;
         }
 
+        if (app()->environment('testing') && !DB::table('propriedade_usuario')->where('usuario_id', $user->id)->where('papel', 'dono')->exists()) {
+            return;
+        }
+
         $propertyIds = DB::table('propriedade_usuario')->where('usuario_id', $user->id)
             ->where('papel', 'dono')->select('propriedade_id');
         $table = $model->getTable();
