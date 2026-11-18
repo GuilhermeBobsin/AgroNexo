@@ -32,13 +32,7 @@ class UserController extends Controller
     {
         $ownedPropertyIds = auth()->user()->propriedades()->wherePivot('papel', 'dono')->pluck('propriedades.id')->all();
 
-        if (empty($ownedPropertyIds)) {
-            throw ValidationException::withMessages([
-                'propriedade_ids' => 'Você precisa cadastrar ao menos uma propriedade antes de cadastrar usuários vinculados.',
-            ]);
-        }
-
-        $validated = $request->validate([
+        $rules = [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'password' => 'required|string|min:8',
@@ -46,7 +40,26 @@ class UserController extends Controller
             'perfil' => 'required|in:operador,agronomo',
             'propriedade_ids' => 'required|array|min:1',
             'propriedade_ids.*' => ['integer', Rule::in($ownedPropertyIds)],
-        ]);
+        ];
+
+        $messages = [
+            'propriedade_ids.required' => empty($ownedPropertyIds)
+                ? 'Você precisa cadastrar ao menos uma propriedade antes de cadastrar usuários vinculados.'
+                : 'Selecione ao menos uma propriedade.',
+        ];
+
+        if (empty($ownedPropertyIds)) {
+            // Se não possui propriedades, garante que propriedade_ids falha na validação padrão
+            $rules['propriedade_ids.*'] = ['prohibited'];
+        }
+
+        $validated = $request->validate($rules, $messages);
+
+        if (empty($ownedPropertyIds)) {
+            throw ValidationException::withMessages([
+                'propriedade_ids' => 'Você precisa cadastrar ao menos uma propriedade antes de cadastrar usuários vinculados.',
+            ]);
+        }
 
         $propriedadeIds = $validated['propriedade_ids'] ?? [];
         unset($validated['propriedade_ids']);
