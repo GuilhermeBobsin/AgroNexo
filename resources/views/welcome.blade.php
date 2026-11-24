@@ -78,6 +78,10 @@
         .footer-inner { max-width:1184px; margin:auto; display:flex; justify-content:space-between; align-items:center; gap:20px; color:#718078; font-size:12px; }
         .footer-brand { display:flex; align-items:center; gap:9px; color:#294438; font-weight:800; font-size:14px; }
         .footer-brand .brand-mark { width:29px; height:29px; border-color:#dce8d8; color:#176b50; background:#eff6e8; }
+        .has-reveal .reveal { opacity:0; transform:translateY(18px); transition:opacity .65s ease,transform .65s cubic-bezier(.2,.7,.2,1); }
+        .has-reveal .reveal.is-visible { opacity:1; transform:translateY(0); }
+        .feature-card.reveal:nth-child(3n + 2), .workflow-item.reveal:nth-child(2) { transition-delay:.08s; }
+        .feature-card.reveal:nth-child(3n), .workflow-item.reveal:nth-child(3) { transition-delay:.15s; }
         @media(max-width:850px) { .nav-inner{padding:0 20px}.nav-links{display:none}.hero{min-height:650px}.hero-content{padding:135px 22px 100px}.hero h1{letter-spacing:-2px}.trust-inner{align-items:flex-start;flex-direction:column}.section{padding:72px 20px}.feature-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.workflow{padding:0 20px 72px}.workflow-panel{padding:32px;grid-template-columns:1fr;gap:28px}.closing{padding:0 20px 72px}.closing-inner{align-items:flex-start;flex-direction:column;padding:30px}.site-footer{padding:23px 20px} }
         @media(max-width:560px) { .nav-inner{min-height:72px}.brand{font-size:18px}.brand-mark{width:34px;height:34px}.nav-actions{gap:7px}.nav-actions .btn{padding:.45rem .65rem;font-size:12px}.hero{min-height:670px}.hero::before{background-position:center,center,62% center;background-image:linear-gradient(90deg,rgba(9,32,25,.88),rgba(12,39,30,.54)),linear-gradient(0deg,rgba(9,32,25,.5),transparent 45%),url('https://images.unsplash.com/photo-1719679642793-26bf780693ea?auto=format&fit=crop&w=1600&q=80')}.hero-content{padding:130px 20px 96px}.hero h1{font-size:46px}.hero-copy{font-size:16px;line-height:1.65}.trust-inner{padding:21px 20px}.trust-items{gap:13px 18px;font-size:12px}.feature-grid{grid-template-columns:1fr}.feature-card{min-height:auto}.workflow-panel{padding:26px 21px}.closing h2{font-size:24px}.footer-inner{align-items:flex-start;flex-direction:column} }
         @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition:none!important}}
@@ -147,21 +151,21 @@
 
         <section class="section" id="recursos" aria-labelledby="features-title">
             <div class="section-inner">
-                <div class="section-heading">
+                <div class="section-heading reveal">
                     <div class="section-kicker">Uma visão integrada da fazenda</div>
                     <h2 id="features-title">Informação organizada para a rotina acontecer.</h2>
                     <p>O AgroNexo reúne cadastros e acompanhamento operacional em áreas conectadas, com acesso conforme o papel de cada pessoa na propriedade.</p>
                 </div>
                 <div class="feature-grid">
-                    <article class="feature-card"><div class="feature-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 10h.01M15 10h.01M9 14h.01M15 14h.01M10 21v-4h4v4"/></svg></div><h3>Propriedades e talhões</h3><p>Cadastre propriedades, organize talhões e culturas e mantenha os dados da produção agrupados por área.</p></article>
-                    <article class="feature-card"><div class="feature-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20v-1a6 6 0 0 1 12 0v1m3-9a3 3 0 1 0-2-5.2M18 14a5 5 0 0 1 3 4.6V20"/></svg></div><h3>Equipe e responsabilidades</h3><p>Administre os acessos de administradores, agrônomos e operadores vinculados às propriedades.</p></article>
-                    <article class="feature-card"><div class="feature-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M4 12h16M4 19h16M8 3v4m8 3v4m-8 3v4"/></svg></div><h3>Tarefas do campo</h3><p>Crie e atribua atividades, acompanhe o andamento e registre conclusão ou cancelamento com seu motivo.</p></article>
-                    <article class="feature-card"><div class="feature-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16v14H4zM8 7V4h8v3m-8 5h8m-8 4h5"/></svg></div><h3>Produtos e estoque</h3><p>Controle produtos e saldos por propriedade; aplicações concluídas registram a saída correspondente do estoque.</p></article>
-                    <article class="feature-card"><div class="feature-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16M5 16l4-5 3 2 6-8M15 5h3v3"/></svg></div><h3>Aplicações e recursos</h3><p>Registre aplicações realizadas, condições observadas e uso de recursos associados às tarefas.</p></article>
-                    <article class="feature-card"><div class="feature-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v2m0 14v2M4.2 7l1.7 1m12.2 8 1.7 1M3 12h2m14 0h2M4.2 17l1.7-1m12.2-8 1.7-1M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z"/></svg></div><h3>Clima e inteligência</h3><p>Consulte previsões da Open-Meteo e orientações para pulverização, aração e calagem, com indicação da atualização dos dados.</p></article>
-                    <article class="feature-card"><div class="feature-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4zM8 9h8M8 13h5m-9 6 4-4"/></svg></div><h3>Recomendações técnicas</h3><p>O agrônomo encaminha recomendações ao administrador, que pode transformá-las em tarefas ou registrar um parecer.</p></article>
-                    <article class="feature-card"><div class="feature-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9m-8 13h4"/></svg></div><h3>Painéis e notificações</h3><p>Visualize indicadores e atividades conforme o perfil e receba atualizações sobre tarefas e recomendações.</p></article>
-                    <article class="feature-card"><div class="feature-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4zM8 8h8M8 12h8m-8 4h5"/></svg></div><h3>Histórico operacional</h3><p>Acompanhe tarefas e aplicações registradas para apoiar a consulta e a organização das atividades realizadas.</p></article>
+                    <article class="feature-card reveal"><div class="feature-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 10h.01M15 10h.01M9 14h.01M15 14h.01M10 21v-4h4v4"/></svg></div><h3>Propriedades e talhões</h3><p>Cadastre propriedades, organize talhões e culturas e mantenha os dados da produção agrupados por área.</p></article>
+                    <article class="feature-card reveal"><div class="feature-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><path d="M3 20v-1a6 6 0 0 1 12 0v1m3-9a3 3 0 1 0-2-5.2M18 14a5 5 0 0 1 3 4.6V20"/></svg></div><h3>Equipe e responsabilidades</h3><p>Administre os acessos de administradores, agrônomos e operadores vinculados às propriedades.</p></article>
+                    <article class="feature-card reveal"><div class="feature-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16M4 12h16M4 19h16M8 3v4m8 3v4m-8 3v4"/></svg></div><h3>Tarefas do campo</h3><p>Crie e atribua atividades, acompanhe o andamento e registre conclusão ou cancelamento com seu motivo.</p></article>
+                    <article class="feature-card reveal"><div class="feature-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7h16v14H4zM8 7V4h8v3m-8 5h8m-8 4h5"/></svg></div><h3>Produtos e estoque</h3><p>Controle produtos e saldos por propriedade; aplicações concluídas registram a saída correspondente do estoque.</p></article>
+                    <article class="feature-card reveal"><div class="feature-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19h16M5 16l4-5 3 2 6-8M15 5h3v3"/></svg></div><h3>Aplicações e recursos</h3><p>Registre aplicações realizadas, condições observadas e uso de recursos associados às tarefas.</p></article>
+                    <article class="feature-card reveal"><div class="feature-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v2m0 14v2M4.2 7l1.7 1m12.2 8 1.7 1M3 12h2m14 0h2M4.2 17l1.7-1m12.2-8 1.7-1M12 7a5 5 0 1 0 0 10 5 5 0 0 0 0-10Z"/></svg></div><h3>Clima e inteligência</h3><p>Consulte previsões da Open-Meteo e orientações para pulverização, aração e calagem, com indicação da atualização dos dados.</p></article>
+                    <article class="feature-card reveal"><div class="feature-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5h16v14H4zM8 9h8M8 13h5m-9 6 4-4"/></svg></div><h3>Recomendações técnicas</h3><p>O agrônomo encaminha recomendações ao administrador, que pode transformá-las em tarefas ou registrar um parecer.</p></article>
+                    <article class="feature-card reveal"><div class="feature-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9m-8 13h4"/></svg></div><h3>Painéis e notificações</h3><p>Visualize indicadores e atividades conforme o perfil e receba atualizações sobre tarefas e recomendações.</p></article>
+                    <article class="feature-card reveal"><div class="feature-icon"><svg width="23" height="23" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4zM8 8h8M8 12h8m-8 4h5"/></svg></div><h3>Histórico operacional</h3><p>Acompanhe tarefas e aplicações registradas para apoiar a consulta e a organização das atividades realizadas.</p></article>
                 </div>
             </div>
         </section>
@@ -170,10 +174,10 @@
             <div class="workflow-panel">
                 <div><div class="section-kicker" style="color:#d7ef87">Do planejamento à execução</div><h2 id="workflow-title">Cada pessoa acompanha o que precisa fazer.</h2><p>O sistema conecta as decisões de gestão e orientação técnica ao trabalho atribuído em campo, mantendo registros da operação.</p></div>
                 <div class="workflow-list">
-                    <div class="workflow-item"><div class="workflow-number">1</div><div><strong>Organize a estrutura</strong><span>Cadastre propriedades, talhões, culturas, equipe, recursos e produtos.</span></div></div>
-                    <div class="workflow-item"><div class="workflow-number">2</div><div><strong>Planeje e oriente</strong><span>Crie tarefas e encaminhe recomendações técnicas para análise.</span></div></div>
-                    <div class="workflow-item"><div class="workflow-number">3</div><div><strong>Execute e registre</strong><span>Acompanhe o status, aplicações realizadas, estoque e condições da atividade.</span></div></div>
-                    <div class="workflow-item"><div class="workflow-number">4</div><div><strong>Consulte as condições climáticas</strong><span>Veja dados meteorológicos e as orientações calculadas pelo módulo de inteligência.</span></div></div>
+                    <div class="workflow-item reveal"><div class="workflow-number">1</div><div><strong>Organize a estrutura</strong><span>Cadastre propriedades, talhões, culturas, equipe, recursos e produtos.</span></div></div>
+                    <div class="workflow-item reveal"><div class="workflow-number">2</div><div><strong>Planeje e oriente</strong><span>Crie tarefas e encaminhe recomendações técnicas para análise.</span></div></div>
+                    <div class="workflow-item reveal"><div class="workflow-number">3</div><div><strong>Execute e registre</strong><span>Acompanhe o status, aplicações realizadas, estoque e condições da atividade.</span></div></div>
+                    <div class="workflow-item reveal"><div class="workflow-number">4</div><div><strong>Consulte as condições climáticas</strong><span>Veja dados meteorológicos e as orientações calculadas pelo módulo de inteligência.</span></div></div>
                 </div>
             </div>
         </section>
@@ -195,5 +199,25 @@
     <footer class="site-footer">
         <div class="footer-inner"><a class="footer-brand" href="{{ url('/') }}"><span class="brand-mark" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 4c-8 0-13 3.5-13 10a6 6 0 0 0 6 6c6.5 0 7-8 7-16Z"/><path d="M4 21c2-5 6-8 12-11"/></svg></span>AgroNexo</a><span>Gestão agrícola conectada.</span><span>© {{ date('Y') }} AgroNexo</span></div>
     </footer>
+    <script>
+        (() => {
+            const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            if (reducedMotion || !('IntersectionObserver' in window)) return;
+
+            const elements = document.querySelectorAll('.reveal');
+            if (!elements.length) return;
+
+            document.documentElement.classList.add('has-reveal');
+            const observer = new IntersectionObserver((entries, currentObserver) => {
+                entries.forEach((entry) => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('is-visible');
+                    currentObserver.unobserve(entry.target);
+                });
+            }, { threshold: 0.12, rootMargin: '0px 0px -36px 0px' });
+
+            elements.forEach((element) => observer.observe(element));
+        })();
+    </script>
 </body>
 </html>
