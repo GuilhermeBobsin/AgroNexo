@@ -29,7 +29,7 @@
                         <span class="text-secondary small d-none d-sm-inline">·</span>
                         <span class="text-secondary small d-none d-sm-inline">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>
-                            {{ now()->translatedFormat('l, d \d\e F \d\e Y') }}
+                            {{ now()->locale('pt_BR')->translatedFormat('l, d \d\e F \d\e Y') }}
                         </span>
                     </div>
                     <h1 class="page-title fs-2 mb-1">
