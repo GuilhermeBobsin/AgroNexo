@@ -211,9 +211,9 @@
                                             <path d="M8 15h.01" />
                                             <path d="M12 15h.01" />
                                         </svg></span>
-                                    <span class="nav-link-title">Agenda</span>
+                                    <span class="nav-link-title">Agenda de tarefas</span>
                                 </a>
-                                <div class="dropdown-menu"><span class="dropdown-item text-secondary">Calendário · integração futura</span><a class="dropdown-item" href="{{ route('admin.tarefas.index') }}">Tarefas</a><a class="dropdown-item" href="{{ route('admin.tarefas.index', ['status' => 'pendente']) }}">Pendências</a><a class="dropdown-item" href="{{ route('admin.tarefas.create') }}">Nova tarefa</a></div>
+                                <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('admin.tarefas.index') }}">Tarefas</a><a class="dropdown-item" href="{{ route('admin.tarefas.index', ['status' => 'pendente']) }}">Pendências</a><a class="dropdown-item" href="{{ route('admin.tarefas.create') }}">Nova tarefa</a></div>
                             </li>
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#navbar-inteligencia" data-bs-toggle="dropdown" role="button" aria-expanded="false">
@@ -224,16 +224,6 @@
                                     <span class="nav-link-title">Inteligência</span>
                                 </a>
                                 <div class="dropdown-menu"><a class="dropdown-item" href="{{ route('admin.inteligencia.index') }}">Recomendações por dia</a></div>
-                            </li>
-                            <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#navbar-custos" data-bs-toggle="dropdown" role="button" aria-expanded="false">
-                                    <span class="nav-link-icon d-md-none d-lg-inline-block"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon">
-                                            <path d="M12 2v20" />
-                                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7H14a3.5 3.5 0 0 1 0 7H6" />
-                                        </svg></span>
-                                    <span class="nav-link-title">Custos</span>
-                                </a>
-                                <div class="dropdown-menu"><span class="dropdown-item text-secondary">Visão geral · planejamento</span><span class="dropdown-item text-secondary">Custos das aplicações · planejamento</span><span class="dropdown-item text-secondary">Por talhão · planejamento</span><span class="dropdown-item text-secondary">Por período · planejamento</span></div>
                             </li>
                         </ul>
                     </div>
