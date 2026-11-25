@@ -6,6 +6,13 @@
 
     <div class="container-xl">
 
+        @if (session('success'))
+            <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
+                {{ session('success') }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+            </div>
+        @endif
+
         <div class="page-header d-print-none mb-4">
             <div class="row align-items-center">
                 <div class="col">
