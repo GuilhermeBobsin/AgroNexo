@@ -5,25 +5,88 @@
     <div class="container-xl">
 
         @if (collect($passosIniciais)->contains(fn ($passo) => !$passo['concluido']))
-            @php $progressoInicial = collect($passosIniciais)->where('concluido', true)->count(); @endphp
-            <section class="card border-0 shadow-sm mb-4" style="background:linear-gradient(120deg,#f0f8ed,#ffffff)" aria-labelledby="primeiros-passos-titulo">
-                <div class="card-body p-4">
-                    <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
-                        <div><span class="badge bg-green-lt mb-2">COMECE POR AQUI</span><h2 id="primeiros-passos-titulo" class="h3 mb-1">Prepare seu espaço no AgroNexo</h2><p class="text-secondary mb-0">Siga estes passos para começar a organizar sua operação.</p></div>
-                        <span class="badge bg-white text-secondary border">{{ $progressoInicial }}/{{ count($passosIniciais) }} concluídos</span>
+    @php
+        $totalPassos = count($passosIniciais);
+        $progressoInicial = collect($passosIniciais)->where('concluido', true)->count();
+        $percentualInicial = $totalPassos > 0 ? round(($progressoInicial / $totalPassos) * 100) : 0;
+        $indiceProximo = collect($passosIniciais)->values()->search(fn ($passo) => !$passo['concluido']);
+    @endphp
+    <style>
+        .onb { position:relative; overflow:hidden; color:var(--tblr-body-color); background:var(--tblr-bg-surface); border:1px solid var(--tblr-border-color); border-radius:16px; box-shadow:0 1px 2px rgba(0,0,0,.04); }
+        .onb::before { content:""; position:absolute; inset:0 0 auto 0; height:3px; background:linear-gradient(90deg,var(--tblr-primary),var(--tblr-green,#2fb344),var(--tblr-azure,#4299e1)); }
+        .onb-ring { --p:0; flex:0 0 auto; width:56px; height:56px; border-radius:50%; display:grid; place-items:center; background:conic-gradient(var(--tblr-primary) calc(var(--p) * 1%), var(--tblr-border-color) 0); }
+        .onb-ring > span { display:grid; place-items:center; width:44px; height:44px; border-radius:50%; background:var(--tblr-bg-surface); font-size:.8rem; font-weight:700; }
+        .onb-bar { height:6px; overflow:hidden; border-radius:99px; background:var(--tblr-border-color); }
+        .onb-bar > span { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,var(--tblr-primary),var(--tblr-green,#2fb344)); transition:width .4s ease; }
+        .onb-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:12px; }
+        .onb-step { position:relative; display:flex; flex-direction:column; gap:10px; min-width:0; padding:14px; color:var(--tblr-body-color); text-decoration:none; background:var(--tblr-bg-forms); border:1px solid var(--tblr-border-color); border-radius:12px; transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+        .onb-step:hover { color:var(--tblr-body-color); transform:translateY(-2px); border-color:var(--tblr-primary); box-shadow:0 8px 20px rgba(0,0,0,.08); }
+        .onb-step:focus-visible { outline:2px solid var(--tblr-primary); outline-offset:2px; }
+        .onb-num { display:grid; place-items:center; width:32px; height:32px; border-radius:10px; font-size:.8rem; font-weight:700; color:var(--tblr-secondary); background:var(--tblr-bg-surface); border:1px solid var(--tblr-border-color); }
+        .onb-step.is-next { background:var(--tblr-bg-surface); border-color:var(--tblr-primary); box-shadow:0 0 0 3px color-mix(in srgb, var(--tblr-primary) 18%, transparent); }
+        .onb-step.is-next .onb-num { color:#fff; background:var(--tblr-primary); border-color:var(--tblr-primary); }
+        .onb-step.is-done { opacity:.72; }
+        .onb-step.is-done .onb-num { color:#fff; background:var(--tblr-green,#2fb344); border-color:var(--tblr-green,#2fb344); }
+        .onb-step.is-done strong { text-decoration:line-through; text-decoration-color:var(--tblr-border-color); }
+        .onb-cta { margin-top:auto; font-size:.78rem; font-weight:600; color:var(--tblr-primary); display:inline-flex; align-items:center; gap:4px; }
+        .onb-step:hover .onb-cta svg { transform:translateX(3px); }
+        .onb-cta svg { transition:transform .18s ease; }
+        @media(prefers-reduced-motion:reduce) { .onb-step, .onb-bar > span, .onb-cta svg { transition:none; } .onb-step:hover { transform:none; } }
+    </style>
+
+    <section class="onb p-3 p-lg-4 mb-4" aria-labelledby="primeiros-passos-titulo">
+        <div class="d-flex align-items-center gap-3 flex-wrap mb-3">
+            <div class="onb-ring" style="--p:{{ $percentualInicial }}" aria-hidden="true">
+                <span>{{ $percentualInicial }}%</span>
+            </div>
+            <div class="flex-fill">
+                <div class="text-secondary small text-uppercase fw-semibold" style="letter-spacing:.05em">Configuração inicial</div>
+                <h2 id="primeiros-passos-titulo" class="h3 mb-0">Comece sua operação</h2>
+                <div class="text-secondary small">Siga os passos abaixo para deixar o AgroNexo pronto para uso.</div>
+            </div>
+            <span class="badge bg-primary-lt fs-6 fw-semibold">{{ $progressoInicial }} de {{ $totalPassos }} concluídos</span>
+        </div>
+
+        <div class="onb-bar mb-3" role="progressbar" aria-label="Progresso da configuração inicial" aria-valuenow="{{ $progressoInicial }}" aria-valuemin="0" aria-valuemax="{{ $totalPassos }}">
+            <span style="width:{{ $percentualInicial }}%"></span>
+        </div>
+
+        <div class="onb-grid">
+            @foreach ($passosIniciais as $passo)
+                @php
+                    $ehProximo = $loop->index === $indiceProximo;
+                    $classePasso = $passo['concluido'] ? 'is-done' : ($ehProximo ? 'is-next' : '');
+                @endphp
+                <a href="{{ $passo['url'] }}" class="onb-step {{ $classePasso }}" @if ($ehProximo) aria-current="step" @endif>
+                    <div class="d-flex align-items-center justify-content-between">
+                        <span class="onb-num">
+                            @if ($passo['concluido'])
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5l10 -10"/></svg>
+                            @else
+                                {{ str_pad($loop->iteration, 2, '0', STR_PAD_LEFT) }}
+                            @endif
+                        </span>
+                        @if ($passo['concluido'])
+                            <span class="badge bg-green-lt">Concluído</span>
+                        @elseif ($ehProximo)
+                            <span class="badge bg-primary-lt">Próximo passo</span>
+                        @endif
                     </div>
-                    <div class="row g-2">
-                        @foreach ($passosIniciais as $passo)
-                            <div class="col-md-6"><a href="{{ $passo['url'] }}" class="d-flex align-items-center gap-3 h-100 p-3 rounded-3 border bg-white text-reset text-decoration-none">
-                                <span class="avatar avatar-sm {{ $passo['concluido'] ? 'bg-green text-white' : 'bg-green-lt text-green' }}">{{ $passo['concluido'] ? '✓' : $loop->iteration }}</span>
-                                <span class="flex-fill"><strong class="d-block">{{ $passo['titulo'] }}</strong><small class="text-secondary">{{ $passo['descricao'] }}</small></span>
-                                <span class="text-secondary" aria-hidden="true">{{ $passo['concluido'] ? '✓' : '→' }}</span>
-                            </a></div>
-                        @endforeach
+                    <div>
+                        <strong class="d-block mb-1">{{ $passo['titulo'] }}</strong>
+                        <small class="text-secondary">{{ $passo['descricao'] }}</small>
                     </div>
-                </div>
-            </section>
-        @endif
+                    @unless ($passo['concluido'])
+                        <span class="onb-cta">
+                            {{ $ehProximo ? 'Começar agora' : 'Abrir' }}
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l14 0"/><path d="M13 18l6 -6"/><path d="M13 6l6 6"/></svg>
+                        </span>
+                    @endunless
+                </a>
+            @endforeach
+        </div>
+    </section>
+@endif
 
         {{-- Alertas de Sessão / Erros --}}
         @if (session('success'))
