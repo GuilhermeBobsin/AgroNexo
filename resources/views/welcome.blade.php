@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="AgroNexo reúne gestão de propriedades, equipes, tarefas, estoque e inteligência climática em uma plataforma para o dia a dia agrícola.">
     <meta name="theme-color" content="#123b2e">
+    @include('layouts.partials.favicon')
     <title>AgroNexo — Gestão agrícola conectada</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
