@@ -36,29 +36,6 @@
             </a>
         </div>
         <div class="navbar-nav flex-row order-md-last">
-            <div class="nav-item d-none d-md-flex me-3">
-                <div class="btn-list">
-                    <a href="https://github.com/tabler/tabler" class="btn btn-5" target="_blank" rel="noreferrer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="icon icon-2">
-                            <path
-                                d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5">
-                            </path>
-                        </svg>
-                        Source code
-                    </a>
-                    <a href="https://github.com/sponsors/codecalm" class="btn btn-6" target="_blank" rel="noreferrer">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="icon text-pink icon-2">
-                            <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572">
-                            </path>
-                        </svg>
-                        Sponsor
-                    </a>
-                </div>
-            </div>
             <div class="d-none d-md-flex">
                 <div class="nav-item">
                     <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" data-bs-toggle="tooltip"
@@ -85,80 +62,7 @@
                     </a>
                 </div>
                 @include('layouts.partials.notificacoes-header')
-                <div class="nav-item dropdown d-none d-md-flex me-3">
-                    <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show app menu"
-                        data-bs-auto-close="outside" aria-expanded="false">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="icon icon-1">
-                            <path d="M4 4m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z">
-                            </path>
-                            <path d="M4 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z">
-                            </path>
-                            <path d="M14 14m0 1a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v4a1 1 0 0 1 -1 1h-4a1 1 0 0 1 -1 -1z">
-                            </path>
-                            <path d="M14 7l6 0"></path>
-                            <path d="M17 4l0 6"></path>
-                        </svg>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">My Apps</div>
-                                <div class="card-actions btn-actions">
-                                    <a href="#" class="btn-action">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
-                                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                                            stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-                                            <path
-                                                d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z">
-                                            </path>
-                                            <path d="M9 12a3 3 0 1 0 6 0a3 3 0 0 0 -6 0"></path>
-                                        </svg>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="card-body scroll-y p-2" style="max-height: 50vh">
-                                <div class="row g-0">
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/amazon.svg" class="w-6 h-6 mx-auto mb-2"
-                                                width="24" height="24" alt="">
-                                            <span class="h5">Amazon</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/android.svg" class="w-6 h-6 mx-auto mb-2"
-                                                width="24" height="24" alt="">
-                                            <span class="h5">Android</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/dropbox.svg" class="w-6 h-6 mx-auto mb-2"
-                                                width="24" height="24" alt="">
-                                            <span class="h5">Dropbox</span>
-                                        </a>
-                                    </div>
-                                    <div class="col-4">
-                                        <a href="#"
-                                            class="d-flex flex-column flex-center text-center text-secondary py-2 px-2 link-hoverable">
-                                            <img src="./static/brands/ever-green.svg" class="w-6 h-6 mx-auto mb-2"
-                                                width="24" height="24" alt="">
-                                            <span class="h5">Ever Green</span>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="nav-item dropdown">
+                <div class="nav-item dropdown">
                 <a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Abrir menu do usuário">
                     @if (Auth::user()->profile_photo_path)
                     <img
