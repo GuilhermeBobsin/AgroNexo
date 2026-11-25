@@ -8,6 +8,7 @@ use App\Models\Aplicacao;
 use App\Models\Propriedade;
 use App\Models\Tarefa;
 use App\Models\User;
+use App\Models\Cultura;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -70,10 +71,16 @@ class DashboardController extends Controller
         });
 
         $recomendacoesPendentes = Alerta::where('status', 'ativo')->count();
+        $passosIniciais = [
+            ['titulo' => 'Complete seu perfil', 'descricao' => 'Adicione uma foto e confira seus dados.', 'concluido' => (bool) auth()->user()->profile_photo_path, 'url' => route('profile.edit')],
+            ['titulo' => 'Cadastre sua primeira propriedade', 'descricao' => 'Informe localização e coordenadas da fazenda.', 'concluido' => Propriedade::exists(), 'url' => route('admin.propriedades.create')],
+            ['titulo' => 'Cadastre uma cultura', 'descricao' => 'Prepare as opções para vincular aos talhões.', 'concluido' => Cultura::exists(), 'url' => route('admin.culturas.index')],
+            ['titulo' => 'Adicione sua equipe', 'descricao' => 'Crie acessos para agrônomos e operadores.', 'concluido' => User::whereIn('perfil', ['agronomo', 'operador'])->exists(), 'url' => route('admin.usuarios.create')],
+        ];
 
         return view('admin.dashboard', compact(
             'propriedades', 'operadores', 'indicadores', 'tarefas',
-            'aplicacoes', 'resumoPropriedades', 'recomendacoesPendentes'
+            'aplicacoes', 'resumoPropriedades', 'recomendacoesPendentes', 'passosIniciais'
         ));
     }
 }
