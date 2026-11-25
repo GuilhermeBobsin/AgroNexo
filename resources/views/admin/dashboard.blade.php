@@ -4,6 +4,27 @@
 <main id="content" class="page-body">
     <div class="container-xl">
 
+        @if (collect($passosIniciais)->contains(fn ($passo) => !$passo['concluido']))
+            @php $progressoInicial = collect($passosIniciais)->where('concluido', true)->count(); @endphp
+            <section class="card border-0 shadow-sm mb-4" style="background:linear-gradient(120deg,#f0f8ed,#ffffff)" aria-labelledby="primeiros-passos-titulo">
+                <div class="card-body p-4">
+                    <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap mb-3">
+                        <div><span class="badge bg-green-lt mb-2">COMECE POR AQUI</span><h2 id="primeiros-passos-titulo" class="h3 mb-1">Prepare seu espaço no AgroNexo</h2><p class="text-secondary mb-0">Siga estes passos para começar a organizar sua operação.</p></div>
+                        <span class="badge bg-white text-secondary border">{{ $progressoInicial }}/{{ count($passosIniciais) }} concluídos</span>
+                    </div>
+                    <div class="row g-2">
+                        @foreach ($passosIniciais as $passo)
+                            <div class="col-md-6"><a href="{{ $passo['url'] }}" class="d-flex align-items-center gap-3 h-100 p-3 rounded-3 border bg-white text-reset text-decoration-none">
+                                <span class="avatar avatar-sm {{ $passo['concluido'] ? 'bg-green text-white' : 'bg-green-lt text-green' }}">{{ $passo['concluido'] ? '✓' : $loop->iteration }}</span>
+                                <span class="flex-fill"><strong class="d-block">{{ $passo['titulo'] }}</strong><small class="text-secondary">{{ $passo['descricao'] }}</small></span>
+                                <span class="text-secondary" aria-hidden="true">{{ $passo['concluido'] ? '✓' : '→' }}</span>
+                            </a></div>
+                        @endforeach
+                    </div>
+                </div>
+            </section>
+        @endif
+
         {{-- Alertas de Sessão / Erros --}}
         @if (session('success'))
             <div class="alert alert-success alert-dismissible fade show shadow-sm mb-4" role="alert">
@@ -68,7 +89,7 @@
                         <span class="text-secondary small d-none d-sm-inline">·</span>
                         <span class="text-secondary small d-none d-sm-inline">
                             <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon me-1"><path d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"/><path d="M16 3v4"/><path d="M8 3v4"/><path d="M4 11h16"/></svg>
-                            {{ now()->translatedFormat('l, d \d\e F \d\e Y') }}
+                            {{ now()->locale('pt_BR')->translatedFormat('l, d \d\e F \d\e Y') }}
                         </span>
                     </div>
                     <h1 class="page-title fs-2 mb-1">
