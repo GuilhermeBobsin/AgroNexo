@@ -122,8 +122,8 @@
                                     </span>
                                 </td>
                                 <td>
-                                    <div class="btn-list flex-nowrap">
-                                        <button type="button" class="btn btn-icon btn-sm btn-editar-cultura"
+                                    <div class="d-flex flex-wrap justify-content-end gap-2">
+                                        <button type="button" class="btn btn-outline-primary btn-sm d-inline-flex align-items-center gap-1 btn-editar-cultura"
                                             data-bs-toggle="modal" data-bs-target="#modal-editar-cultura"
                                             data-url="{{ route('admin.culturas.update', $cultura) }}"
                                             data-nome="{{ $cultura->nome }}"
@@ -132,10 +132,10 @@
                                                 <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" />
                                                 <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" />
                                                 <path d="M16 5l3 3" />
-                                            </svg>
+                                            </svg><span>Editar</span>
                                         </button>
 
-                                        <button type="button" class="btn btn-icon btn-sm text-danger btn-excluir-cultura"
+                                        <button type="button" class="btn btn-outline-danger btn-sm d-inline-flex align-items-center gap-1 btn-excluir-cultura"
                                             data-url="{{ route('admin.culturas.destroy', $cultura) }}"
                                             data-nome="{{ $cultura->nome }}"
                                             data-talhoes="{{ $cultura->talhoes_count }}"
@@ -146,7 +146,7 @@
                                                 <path d="M14 11l0 6" />
                                                 <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
                                                 <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-                                            </svg>
+                                            </svg><span>Excluir</span>
                                         </button>
                                     </div>
                                 </td>
