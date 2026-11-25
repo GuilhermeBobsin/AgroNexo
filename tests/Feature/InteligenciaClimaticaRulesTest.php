@@ -14,7 +14,7 @@ class InteligenciaClimaticaRulesTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_rain_blocks_spraying_even_when_wind_is_inside_the_allowed_band(): void
+    public function test_rain_warns_about_spraying_without_hiding_other_safe_windows(): void
     {
         $this->travelTo(today()->setTime(5, 0));
         $talhao = $this->talhao();
@@ -23,11 +23,11 @@ class InteligenciaClimaticaRulesTest extends TestCase
 
         $resultado = app(InteligenciaClimatica::class)->avaliarTipoDia('pulverizacao', $talhao, today()->toDateString());
 
-        $this->assertSame('nao_indicado', $resultado['status']);
-        $this->assertStringContainsString('precipitação prevista', $resultado['mensagem']);
+        $this->assertSame('indicado', $resultado['status']);
+        $this->assertStringContainsString('chuva prevista', implode(' ', $resultado['alertas']));
     }
 
-    public function test_spraying_is_not_indicated_below_the_minimum_wind_speed(): void
+    public function test_spraying_has_attention_status_below_the_minimum_wind_speed(): void
     {
         $this->travelTo(today()->setTime(5, 0));
         $talhao = $this->talhao();
@@ -35,8 +35,8 @@ class InteligenciaClimaticaRulesTest extends TestCase
 
         $resultado = app(InteligenciaClimatica::class)->avaliarTipoDia('pulverizacao', $talhao, today()->toDateString());
 
-        $this->assertSame('nao_indicado', $resultado['status']);
-        $this->assertStringContainsString('inversão térmica', $resultado['mensagem']);
+        $this->assertSame('atencao', $resultado['status']);
+        $this->assertStringContainsString('inversão térmica', implode(' ', $resultado['alertas']));
     }
 
     public function test_spraying_is_not_indicated_above_the_maximum_wind_speed(): void
@@ -48,20 +48,21 @@ class InteligenciaClimaticaRulesTest extends TestCase
         $resultado = app(InteligenciaClimatica::class)->avaliarTipoDia('pulverizacao', $talhao, today()->toDateString());
 
         $this->assertSame('nao_indicado', $resultado['status']);
-        $this->assertStringContainsString('deriva', $resultado['mensagem']);
+        $this->assertStringContainsString('deriva', implode(' ', $resultado['alertas']));
     }
 
-    public function test_plowing_is_not_indicated_the_day_after_relevant_rain(): void
+    public function test_plowing_warns_after_relevant_rain(): void
     {
         $this->travelTo(today()->setTime(5, 0));
         $talhao = $this->talhao();
         $this->preverDiaCompleto(today(), 5, 0);
         PrevisaoClimatica::where('previsto_para', today()->setTime(14, 0))->update(['precipitacao' => 2.0, 'duracao_sol' => 0]);
+        $this->preverDia(today()->addDay(), 5, 0);
 
         $resultado = app(InteligenciaClimatica::class)->avaliarTipoDia('aracao', $talhao, today()->addDay()->toDateString());
 
-        $this->assertSame('nao_indicado', $resultado['status']);
-        $this->assertStringContainsString('chuva relevante ontem', $resultado['mensagem']);
+        $this->assertSame('atencao', $resultado['status']);
+        $this->assertStringContainsString('Houve chuva relevante', implode(' ', $resultado['alertas']));
     }
 
     public function test_plowing_is_unavailable_when_the_previous_day_history_is_missing(): void
@@ -94,7 +95,7 @@ class InteligenciaClimaticaRulesTest extends TestCase
 
         $seco = app(InteligenciaClimatica::class)->avaliarTipoDia('calagem', $talhao, today()->toDateString());
         $this->assertSame('atencao', $seco['status']);
-        $this->assertStringContainsString('solo seco', $seco['mensagem']);
+        $this->assertStringContainsString('Solo estimado como seco', implode(' ', $seco['alertas']));
 
         PrevisaoClimatica::query()->delete();
         $this->preverDia(today(), 5, 0, null);

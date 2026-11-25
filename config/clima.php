@@ -25,12 +25,16 @@ return [
         // A friabilidade real varia com textura, estrutura e matéria orgânica; confirmar com teste de campo.
         'umidade_solo_friavel_minima' => 0.12,
         'umidade_solo_friavel_maxima' => 0.30,
+        'chuva_relevante_mm' => 1.0,
+        'dias_apos_chuva_alerta' => 3,
         'chuva_probabilidade_alerta' => 50,
     ],
     'calagem' => [
         'vento_maximo_favoravel_kmh' => 10,
         'vento_maximo_atencao_kmh' => 15,
         'vento_maximo_desfavoravel_kmh' => 30,
+        'umidade_solo_moderada_minima' => 0.12,
+        'umidade_solo_moderada_maxima' => 0.30,
         'chuva_probabilidade_alerta' => 50,
     ],
 ];

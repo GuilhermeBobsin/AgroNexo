@@ -28,7 +28,7 @@ class InteligenciaClimatica
                 'aracao' => $this->aracao($data, $porDia),
                 'calagem' => $this->calagem($data, $horasDia, null, $periodoDiurnoEncerrado),
             ];
-            if (!$dadosRecentes) {
+            if (! $dadosRecentes) {
                 foreach ($avaliacoes as $operacao => $resultado) {
                     $avaliacoes[$operacao] = $this->resultado('indisponivel', 'Dados climáticos desatualizados; aguarde sincronização bem-sucedida antes de usar esta orientação.');
                 }
@@ -51,10 +51,10 @@ class InteligenciaClimatica
             'calagem' => 'calagem',
             default => null,
         };
-        if (!$operacao) {
+        if (! $operacao) {
             return null;
         }
-        if (!$tarefa->talhao_id) {
+        if (! $tarefa->talhao_id) {
             return $this->resultado('indisponivel', 'Associe um talhão à tarefa para avaliar as condições locais.');
         }
 
@@ -79,14 +79,14 @@ class InteligenciaClimatica
             'calagem' => 'calagem',
             default => null,
         };
-        if (!$operacao) {
+        if (! $operacao) {
             return null;
         }
 
         $data = Carbon::parse($data, config('app.timezone'));
         $inicio = $data->copy()->subDays(config('clima.dias_historico', 7));
         $porDia = $this->previsoes($talhao, $inicio, $data->copy()->addDay());
-        if (!$this->dadosRecentes($porDia)) {
+        if (! $this->dadosRecentes($porDia)) {
             return $this->resultado('indisponivel', 'Dados climáticos ausentes ou desatualizados; aguarde sincronização bem-sucedida.');
         }
 
@@ -122,12 +122,13 @@ class InteligenciaClimatica
         $regra = config('clima.pulverizacao');
         $horasCampo = $horas->filter(function (PrevisaoClimatica $p) use ($regra, $horaPrevista, $incluirHorasPassadas) {
             $hora = (int) $p->previsto_para->format('G');
-            if (!$incluirHorasPassadas && $p->previsto_para->isPast()) {
+            if (! $incluirHorasPassadas && $p->previsto_para->isPast()) {
                 return false;
             }
             if ($horaPrevista !== null) {
                 return $p->previsto_para->format('H:i') === substr($horaPrevista, 0, 5);
             }
+
             return $hora >= $regra['hora_inicio'] && $hora < $regra['hora_fim'];
         });
 
@@ -208,10 +209,8 @@ class InteligenciaClimatica
 
         $inicioChuva = $hora->previsto_para;
         $fimChuva = $inicioChuva->copy()->addHours($regra['chuva_apos_aplicacao_horas']);
-        $horasChuva = $horasDia->filter(fn (PrevisaoClimatica $p) =>
-            $p->previsto_para->gte($inicioChuva) && $p->previsto_para->lte($fimChuva));
-        $choveNaJanela = $horasChuva->contains(fn (PrevisaoClimatica $p) =>
-            (float) ($p->precipitacao ?? 0) > 0
+        $horasChuva = $horasDia->filter(fn (PrevisaoClimatica $p) => $p->previsto_para->gte($inicioChuva) && $p->previsto_para->lte($fimChuva));
+        $choveNaJanela = $horasChuva->contains(fn (PrevisaoClimatica $p) => (float) ($p->precipitacao ?? 0) > 0
             || (float) ($p->chance_chuva ?? 0) >= $regra['chuva_probabilidade_alerta']);
         $chuvaSemDados = $horasChuva->contains(fn (PrevisaoClimatica $p) => $p->precipitacao === null);
         if ($choveNaJanela) {
@@ -235,7 +234,7 @@ class InteligenciaClimatica
     {
         $regra = config('clima.aracao');
         $horasDia = ($porDia->get($data->toDateString(), collect()))
-            ->filter(fn (PrevisaoClimatica $p) => !$p->previsto_para->isPast());
+            ->filter(fn (PrevisaoClimatica $p) => ! $p->previsto_para->isPast());
         $umidades = $horasDia->pluck('umidade_solo')->filter(fn ($v) => $v !== null)->map(fn ($v) => (float) $v);
         if ($umidades->isEmpty()) {
             return $this->resultado('indisponivel', 'A Open-Meteo não forneceu umidade estimada para o dia. Verifique o solo diretamente no talhão.');
@@ -259,6 +258,14 @@ class InteligenciaClimatica
             $alertas[] = 'Há poucas amostras horárias de umidade para representar o dia.';
         }
 
+        $chuvaRecente = collect(range(1, $regra['dias_apos_chuva_alerta']))
+            ->map(fn (int $dias) => $porDia->get($data->copy()->subDays($dias)->toDateString(), collect()))
+            ->contains(fn (Collection $horas) => $horas->sum(fn (PrevisaoClimatica $p) => (float) ($p->precipitacao ?? 0)) >= $regra['chuva_relevante_mm']);
+        if ($chuvaRecente) {
+            $status = $this->combinarStatus([$status, 'atencao']);
+            $alertas[] = 'Houve chuva relevante nos últimos dias; confirme a friabilidade e a trafegabilidade no talhão antes de aração.';
+        }
+
         $chuvaHoje = $horasDia->sum(fn (PrevisaoClimatica $p) => (float) ($p->precipitacao ?? 0));
         $chanceChuva = $horasDia->max('chance_chuva');
         if ($chuvaHoje > 0 || (float) ($chanceChuva ?? 0) >= $regra['chuva_probabilidade_alerta']) {
@@ -273,8 +280,7 @@ class InteligenciaClimatica
     private function calagem(Carbon $data, Collection $horas, ?string $horaPrevista = null, bool $incluirHorasPassadas = false): array
     {
         $regra = config('clima.calagem');
-        $horasDia = $horas->filter(fn (PrevisaoClimatica $p) =>
-            ($incluirHorasPassadas || !$p->previsto_para->isPast())
+        $horasDia = $horas->filter(fn (PrevisaoClimatica $p) => ($incluirHorasPassadas || ! $p->previsto_para->isPast())
             && (int) $p->previsto_para->format('G') >= 6
             && (int) $p->previsto_para->format('G') < 18
             && ($horaPrevista === null || $p->previsto_para->format('H:i') === substr($horaPrevista, 0, 5)));
@@ -284,6 +290,11 @@ class InteligenciaClimatica
         $comVento = $horasDia->filter(fn (PrevisaoClimatica $p) => $p->velocidade_vento !== null);
         if ($comVento->isEmpty()) {
             return $this->resultado('indisponivel', 'Sem dados de vento para avaliar a distribuição do calcário.');
+        }
+
+        $umidadesSolo = $horasDia->pluck('umidade_solo')->filter(fn ($valor) => $valor !== null)->map(fn ($valor) => (float) $valor);
+        if ($umidadesSolo->isEmpty()) {
+            return $this->resultado('indisponivel', 'Sem estimativa de umidade do solo para avaliar a calagem; confirme as condições diretamente no talhão.');
         }
 
         $classificacoes = $comVento->map(function (PrevisaoClimatica $p) use ($regra) {
@@ -299,6 +310,14 @@ class InteligenciaClimatica
         });
         $favoraveis = $classificacoes->where('status', 'indicado');
         $alertas = [];
+        $umidadeMedia = $umidadesSolo->avg();
+        if ($umidadeMedia < $regra['umidade_solo_moderada_minima']) {
+            $alertas[] = 'Solo estimado como seco; a reação do calcário pode começar apenas após voltar a chover.';
+        } elseif ($umidadeMedia > $regra['umidade_solo_moderada_maxima']) {
+            $alertas[] = 'Solo estimado como muito úmido; confira as condições locais antes de distribuir o calcário.';
+        } else {
+            $alertas[] = 'Umidade estimada do solo dentro da faixa moderada de referência para calagem.';
+        }
         $dadosFaltantes = $classificacoes->count() < $horasDia->count();
         if ($dadosFaltantes) {
             $alertas[] = 'Parte da previsão não contém velocidade do vento.';
@@ -309,14 +328,14 @@ class InteligenciaClimatica
             }
         }
 
-        $chuva = $horasDia->filter(fn (PrevisaoClimatica $p) =>
-            (float) ($p->precipitacao ?? 0) > 0
+        $chuva = $horasDia->filter(fn (PrevisaoClimatica $p) => (float) ($p->precipitacao ?? 0) > 0
             || (float) ($p->chance_chuva ?? 0) >= $regra['chuva_probabilidade_alerta']
             || in_array((int) $p->codigo_tempo, [95, 96, 99], true));
         if ($chuva->isNotEmpty()) {
             $alertas[] = 'Há precipitação, chance elevada de chuva ou trovoada na previsão; avalie o risco de perda e a forma de aplicação.';
         }
 
+        $alertaUmidadeSolo = $umidadeMedia < $regra['umidade_solo_moderada_minima'] || $umidadeMedia > $regra['umidade_solo_moderada_maxima'];
         if ($horaPrevista !== null) {
             $avaliacao = $classificacoes->first();
             $alertas[] = $this->mensagemVentoCalagem($avaliacao['vento'], $regra);
@@ -324,12 +343,12 @@ class InteligenciaClimatica
                 return $this->resultado($this->combinarStatus([$avaliacao['status'], 'atencao']), sprintf('Às %s, vento previsto de %.1f km/h.', $avaliacao['hora']->previsto_para->format('H:i'), $avaliacao['vento']), $alertas);
             }
 
-            return $this->resultado($avaliacao['status'], sprintf('Às %s, vento previsto de %.1f km/h.', $avaliacao['hora']->previsto_para->format('H:i'), $avaliacao['vento']), $alertas);
+            return $this->resultado($this->combinarStatus([$avaliacao['status'], $alertaUmidadeSolo ? 'atencao' : 'indicado']), sprintf('Às %s, vento previsto de %.1f km/h e umidade do solo estimada em %.3f m³/m³.', $avaliacao['hora']->previsto_para->format('H:i'), $avaliacao['vento'], $umidadeMedia), $alertas);
         }
 
         if ($favoraveis->isNotEmpty()) {
             $janelas = $this->janelasSeguras($favoraveis->pluck('hora'));
-            $misto = $favoraveis->count() < $classificacoes->count() || $chuva->isNotEmpty() || $dadosFaltantes;
+            $misto = $favoraveis->count() < $classificacoes->count() || $chuva->isNotEmpty() || $dadosFaltantes || $alertaUmidadeSolo;
             if ($misto) {
                 $alertas[] = 'As condições variam durante o dia; priorize as janelas destacadas e confirme o vento no local.';
             }
@@ -339,7 +358,7 @@ class InteligenciaClimatica
                 $mensagem = 'Resumo retrospectivo de hoje. '.$mensagem.' Essas janelas já passaram; confirme as condições atuais antes de programar uma operação.';
             }
 
-            return $this->resultado('indicado', $mensagem, $alertas);
+            return $this->resultado($alertaUmidadeSolo || $chuva->isNotEmpty() ? 'atencao' : 'indicado', $mensagem, $alertas);
         }
 
         $ventoMax = (float) $classificacoes->max('vento');
@@ -363,9 +382,15 @@ class InteligenciaClimatica
 
     private function combinarStatus(array $statuses): string
     {
-        if (in_array('nao_indicado', $statuses, true)) return 'nao_indicado';
-        if (in_array('atencao', $statuses, true)) return 'atencao';
-        if (in_array('indisponivel', $statuses, true)) return 'indisponivel';
+        if (in_array('nao_indicado', $statuses, true)) {
+            return 'nao_indicado';
+        }
+        if (in_array('atencao', $statuses, true)) {
+            return 'atencao';
+        }
+        if (in_array('indisponivel', $statuses, true)) {
+            return 'indisponivel';
+        }
 
         return 'indicado';
     }
