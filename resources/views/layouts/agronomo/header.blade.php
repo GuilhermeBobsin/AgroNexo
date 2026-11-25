@@ -34,7 +34,7 @@
         </div>
         <div class="navbar-nav flex-row order-md-last align-items-center">
             {{-- Alternador de Tema (Claro / Escuro) --}}
-            <div class="d-none d-md-flex me-2">
+            <div class="d-flex me-2">
                 <div class="nav-item">
                     <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" data-bs-toggle="tooltip"
                         data-bs-placement="bottom" aria-label="Ativar modo escuro"

@@ -36,7 +36,7 @@
             </a>
         </div>
         <div class="navbar-nav flex-row order-md-last">
-            <div class="d-none d-md-flex">
+            <div class="d-flex">
                 <div class="nav-item">
                     <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" data-bs-toggle="tooltip"
                         data-bs-placement="bottom" aria-label="Enable dark mode"
