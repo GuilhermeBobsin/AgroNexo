@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\Agronomo;
 
 use App\Http\Controllers\Controller;
-use App\Models\Produto;
-use App\Models\Propriedade;
 use App\Models\Recomendacao;
 use App\Models\User;
 use App\Notifications\AtualizacaoOperacional;
@@ -23,7 +21,7 @@ class RecomendacaoController extends Controller
             ->where('agronomo_id', auth()->id())
             ->whereIn('propriedade_id', $propriedadeIds)
             ->latest();
-        if (!empty($validated['status'])) {
+        if (! empty($validated['status'])) {
             $query->where('status', $validated['status']);
         }
 
@@ -35,6 +33,7 @@ class RecomendacaoController extends Controller
     public function create()
     {
         $propriedades = auth()->user()->propriedades()->with(['talhoes', 'produtos'])->orderBy('nome')->get();
+
         return view('agronomo.recomendacoes.create', compact('propriedades'));
     }
 
@@ -59,7 +58,7 @@ class RecomendacaoController extends Controller
                 'produto_id' => ['required', 'integer', Rule::exists('produto_propriedade', 'produto_id')->where('propriedade_id', $validated['propriedade_id'])],
                 'dose' => ['required', 'numeric', 'min:0.001', 'max:9999999.999'],
             ]);
-        } elseif (!empty($validated['produto_id'])) {
+        } elseif (! empty($validated['produto_id'])) {
             $request->validate([
                 'produto_id' => ['integer', Rule::exists('produto_propriedade', 'produto_id')->where('propriedade_id', $validated['propriedade_id'])],
             ]);
@@ -76,7 +75,7 @@ class RecomendacaoController extends Controller
         User::where('perfil', 'admin')->where('status', 'ativo')->each(function (User $admin) use ($recomendacao) {
             $admin->notify(new AtualizacaoOperacional(
                 'Nova recomendação técnica',
-                auth()->user()->name . ' enviou: ' . $recomendacao->titulo,
+                auth()->user()->name.' enviou: '.$recomendacao->titulo,
                 route('admin.recomendacoes.show', $recomendacao),
                 'clipboard-check'
             ));

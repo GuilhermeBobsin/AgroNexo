@@ -23,9 +23,7 @@ class SincronizarPrevisaoPropriedade implements ShouldBeUnique, ShouldQueue
 
     public int $uniqueFor = 3600;
 
-    public function __construct(public int $propriedadeId)
-    {
-    }
+    public function __construct(public int $propriedadeId) {}
 
     public function uniqueId(): string
     {

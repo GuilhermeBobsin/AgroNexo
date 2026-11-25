@@ -2,11 +2,11 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\OwnedPropertyScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\Scopes\OwnedPropertyScope;
 
 class Propriedade extends Model
 {
@@ -14,7 +14,7 @@ class Propriedade extends Model
 
     protected static function booted(): void
     {
-        static::addGlobalScope(new OwnedPropertyScope());
+        static::addGlobalScope(new OwnedPropertyScope);
     }
 
     protected $fillable = [

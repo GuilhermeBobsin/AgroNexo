@@ -2,9 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Propriedade;
-use App\Models\Produto;
 use App\Models\Cultura;
+use App\Models\Produto;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;

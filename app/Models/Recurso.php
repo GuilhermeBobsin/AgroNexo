@@ -2,12 +2,16 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Scopes\OwnedPropertyScope;
+use Illuminate\Database\Eloquent\Model;
 
 class Recurso extends Model
 {
-    protected static function booted(): void { static::addGlobalScope(new OwnedPropertyScope()); }
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new OwnedPropertyScope);
+    }
+
     protected $table = 'recursos';
 
     protected $fillable = [

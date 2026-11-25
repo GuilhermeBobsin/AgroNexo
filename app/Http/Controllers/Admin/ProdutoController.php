@@ -54,6 +54,7 @@ class ProdutoController extends Controller
             foreach ($propriedades as $propriedadeId) {
                 $produto->propriedades()->attach($propriedadeId, ['estoque_atual' => 0, 'estoque_minimo' => 0]);
             }
+
             return $produto;
         });
 
@@ -102,6 +103,7 @@ class ProdutoController extends Controller
                 return 'Este produto não pode ser removido porque possui estoque ou está vinculado a aplicações/tarefas. Remova primeiro os registros de estoque sem histórico.';
             }
             $produtoAtual->delete();
+
             return null;
         });
 

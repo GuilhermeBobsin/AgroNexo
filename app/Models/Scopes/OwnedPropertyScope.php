@@ -20,11 +20,11 @@ class OwnedPropertyScope implements Scope
             ? $guard->getUser()
             : null;
 
-        if (!$user || $user->perfil !== 'admin') {
+        if (! $user || $user->perfil !== 'admin') {
             return;
         }
 
-        if (app()->environment('testing') && !DB::table('propriedade_usuario')->where('usuario_id', $user->id)->where('papel', 'dono')->exists()) {
+        if (app()->environment('testing') && ! DB::table('propriedade_usuario')->where('usuario_id', $user->id)->where('papel', 'dono')->exists()) {
             return;
         }
 

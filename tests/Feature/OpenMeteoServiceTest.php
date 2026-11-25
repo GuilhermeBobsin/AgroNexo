@@ -7,8 +7,8 @@ use App\Models\Propriedade;
 use App\Models\User;
 use App\Services\Clima\OpenMeteoService;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Http;
 use RuntimeException;
 use Tests\TestCase;
 

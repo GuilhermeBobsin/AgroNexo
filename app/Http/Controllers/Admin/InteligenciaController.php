@@ -8,8 +8,8 @@ use App\Models\Propriedade;
 use App\Models\Talhao;
 use App\Services\Clima\InteligenciaClimatica;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Artisan;
 
 class InteligenciaController extends Controller
 {
@@ -56,7 +56,7 @@ class InteligenciaController extends Controller
         $saida = trim(Artisan::output());
         $resposta = back()->with($codigo === 0 ? 'success' : 'error', ($codigo === 0
             ? 'Sincronização climática enviada para a fila. Os dados desta tela mudam após o worker processar os jobs. No ambiente local, mantenha `composer run dev` ou `php artisan queue:listen` em execução.'
-            : 'Não foi possível solicitar a sincronização climática.') . ($saida !== '' ? ' ' . $saida : ''));
+            : 'Não foi possível solicitar a sincronização climática.').($saida !== '' ? ' '.$saida : ''));
 
         if ($codigo === 0) {
             $resposta->with('clima_sync_solicitada_em', $solicitadaEm->toIso8601String());

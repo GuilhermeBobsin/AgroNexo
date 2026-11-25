@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Propriedade;
+use App\Models\Scopes\OwnedPropertyScope;
 use App\Models\Talhao;
 use App\Models\User;
-use App\Models\Scopes\OwnedPropertyScope;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
@@ -43,6 +43,7 @@ class PropriedadeController extends Controller
             'longitude' => 'required|numeric|between:-180,180',
         ]);
         $propriedade->update($validated);
+
         return redirect()->route('admin.propriedades.show', $propriedade)->with('success', 'Propriedade atualizada com sucesso.');
     }
 
@@ -53,6 +54,7 @@ class PropriedadeController extends Controller
         }
         $propriedade->usuarios()->detach();
         $propriedade->delete();
+
         return redirect()->route('admin.propriedades.index')->with('success', 'Propriedade excluída com sucesso.');
     }
 

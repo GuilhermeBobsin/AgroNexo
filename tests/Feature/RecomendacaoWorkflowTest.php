@@ -113,7 +113,7 @@ class RecomendacaoWorkflowTest extends TestCase
 
     public function test_agronomo_cannot_recommend_for_an_unassigned_property(): void
     {
-        [$agronomo, , ,] = $this->criarEquipe();
+        [$agronomo] = $this->criarEquipe();
         $externa = Propriedade::create(['nome' => 'Propriedade externa', 'localizacao' => 'SC']);
 
         $this->actingAs($agronomo)->post(route('agronomo.recomendacoes.store'), [

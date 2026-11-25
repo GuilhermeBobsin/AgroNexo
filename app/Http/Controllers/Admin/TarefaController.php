@@ -6,14 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Models\Produto;
 use App\Models\Propriedade;
 use App\Models\Recomendacao;
+use App\Models\Recurso;
 use App\Models\Tarefa;
 use App\Models\User;
 use App\Notifications\AtualizacaoOperacional;
+use App\Services\Clima\InteligenciaClimatica;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
-use App\Models\Recurso;
-use App\Services\Clima\InteligenciaClimatica;
 
 class TarefaController extends Controller
 {
@@ -56,7 +56,7 @@ class TarefaController extends Controller
         $tarefa = Tarefa::create($validated);
         $tarefa->responsavel?->notify(new AtualizacaoOperacional(
             'Nova tarefa atribuída',
-            $tarefa->titulo . ' · ' . $tarefa->propriedade->nome,
+            $tarefa->titulo.' · '.$tarefa->propriedade->nome,
             route('operador.tarefas.show', $tarefa),
             'list-check'
         ));
@@ -82,7 +82,7 @@ class TarefaController extends Controller
             'responsavel_id' => [
                 'required', Rule::exists('users', 'id')->where('perfil', 'operador')->where('status', 'ativo'),
                 function ($attribute, $value, $fail) use ($request) {
-                    if (!User::find($value)?->propriedades()->where('propriedades.id', $request->input('propriedade_id'))->exists()) {
+                    if (! User::find($value)?->propriedades()->where('propriedades.id', $request->input('propriedade_id'))->exists()) {
                         $fail('O operador precisa ter acesso à propriedade selecionada.');
                     }
                 },
@@ -169,6 +169,7 @@ class TarefaController extends Controller
             }
             $tarefa->delete();
         });
+
         return $request->wantsJson()
             ? response()->json(['message' => 'Tarefa excluída com sucesso.'])
             : redirect()->route('admin.tarefas.index')->with('success', 'Tarefa excluída com sucesso.');
@@ -203,7 +204,7 @@ class TarefaController extends Controller
                     ->where('id', '!=', $tarefa->id)
                     ->where('status', 'em_andamento')
                     ->exists();
-                if ($recurso?->status === 'em_uso' && !$outraTarefaAtiva) {
+                if ($recurso?->status === 'em_uso' && ! $outraTarefaAtiva) {
                     $recurso->update(['status' => 'disponivel']);
                 }
             }

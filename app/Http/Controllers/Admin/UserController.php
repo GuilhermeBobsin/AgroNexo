@@ -3,12 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use App\Models\Propriedade;
 use App\Models\Scopes\OwnedPropertyScope;
+use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\ValidationException;
 
@@ -19,12 +19,14 @@ class UserController extends Controller
         $contagem = User::count();
         $usuarios = User::with('propriedades:id,nome')->orderBy('name')->paginate(12);
         $propriedades = Propriedade::orderBy('nome')->get(['id', 'nome']);
+
         return view('admin.usuarios.index', compact('usuarios', 'contagem', 'propriedades'));
     }
 
     public function create()
     {
         $propriedades = Propriedade::orderBy('nome')->get(['id', 'nome']);
+
         return view('admin.usuarios.create', compact('propriedades'));
     }
 
@@ -115,6 +117,7 @@ class UserController extends Controller
     {
         $propriedades = Propriedade::orderBy('nome')->get(['id', 'nome']);
         $propriedadesSelecionadas = $user->propriedades()->pluck('propriedades.id')->all();
+
         return view('admin.usuarios.edit', compact('user', 'propriedades', 'propriedadesSelecionadas'));
     }
 
@@ -135,7 +138,9 @@ class UserController extends Controller
         $propriedadeIds = $validated['propriedade_ids'] ?? [];
         unset($validated['password']);
         unset($validated['propriedade_ids']);
-        if ($password) $validated['password'] = Hash::make($password);
+        if ($password) {
+            $validated['password'] = Hash::make($password);
+        }
         DB::transaction(function () use ($request, $user, $validated, $propriedadeIds): void {
             $administradoresAtivos = User::withoutGlobalScope(OwnedPropertyScope::class)->where('perfil', 'admin')->where('status', 'ativo')->lockForUpdate()->get();
             if ($user->is($request->user()) && ($validated['status'] === 'inativo' || $validated['perfil'] !== 'admin')) {
@@ -177,7 +182,7 @@ class UserController extends Controller
 
         // Desvincula apenas das propriedades deste administrador que não foram selecionadas
         $toDetach = array_diff($ownedPropertyIds, $ids);
-        if (!empty($toDetach)) {
+        if (! empty($toDetach)) {
             $user->propriedades()->detach($toDetach);
         }
 
@@ -212,6 +217,7 @@ class UserController extends Controller
             });
         } catch (ValidationException $exception) {
             $message = collect($exception->errors())->flatten()->first() ?? 'Não foi possível excluir o usuário.';
+
             return $request->wantsJson()
                 ? response()->json(['message' => $message, 'errors' => $exception->errors()], 422)
                 : back()->with('error', $message);
@@ -222,5 +228,4 @@ class UserController extends Controller
 
         return redirect()->route('admin.usuarios.index')->with('success', 'Usuário excluído com sucesso.');
     }
-
 }

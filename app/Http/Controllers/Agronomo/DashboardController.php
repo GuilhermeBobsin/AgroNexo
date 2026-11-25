@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Agronomo;
 
 use App\Http\Controllers\Controller;
 use App\Models\Aplicacao;
+use App\Models\Recomendacao;
 use App\Models\Talhao;
 use App\Models\Tarefa;
-use App\Models\Recomendacao;
 
 class DashboardController extends Controller
 {
@@ -66,8 +66,7 @@ class DashboardController extends Controller
             'propriedades',
             'indicadores',
             'proximasTarefas',
-            'aplicacoesRecentes'
-            , 'recomendacoesPendentes'
+            'aplicacoesRecentes', 'recomendacoesPendentes'
         ));
     }
 }

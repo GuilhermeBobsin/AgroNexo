@@ -5,10 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Alerta;
 use App\Models\Aplicacao;
+use App\Models\Cultura;
 use App\Models\Propriedade;
 use App\Models\Tarefa;
 use App\Models\User;
-use App\Models\Cultura;
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller

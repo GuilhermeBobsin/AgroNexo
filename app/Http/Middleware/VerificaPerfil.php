@@ -31,7 +31,7 @@ class VerificaPerfil
 
         if (! in_array($user->perfil, $perfis, true)) {
             $perfilAtual = $user->perfil;
-            $rotaDashboard = $perfilAtual === 'admin' ? 'admin.dashboard' : 'dashboard.' . $perfilAtual;
+            $rotaDashboard = $perfilAtual === 'admin' ? 'admin.dashboard' : 'dashboard.'.$perfilAtual;
 
             return redirect()
                 ->route($rotaDashboard)

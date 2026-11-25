@@ -29,16 +29,16 @@ class AplicacaoController extends Controller
             ->latest('data_aplicacao')
             ->latest('id');
 
-        if (!empty($validated['propriedade_id'])) {
+        if (! empty($validated['propriedade_id'])) {
             $query->whereHas('talhao', fn ($talhoes) => $talhoes->where('propriedade_id', $validated['propriedade_id']));
         }
-        if (!empty($validated['status'])) {
+        if (! empty($validated['status'])) {
             $query->where('status', $validated['status']);
         }
-        if (!empty($validated['data_inicio'])) {
+        if (! empty($validated['data_inicio'])) {
             $query->whereDate('data_aplicacao', '>=', $validated['data_inicio']);
         }
-        if (!empty($validated['data_fim'])) {
+        if (! empty($validated['data_fim'])) {
             $query->whereDate('data_aplicacao', '<=', $validated['data_fim']);
         }
 

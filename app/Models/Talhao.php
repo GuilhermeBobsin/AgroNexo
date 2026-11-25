@@ -2,25 +2,29 @@
 
 namespace App\Models;
 
+use App\Models\Scopes\OwnedPropertyScope;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
-use App\Models\Scopes\OwnedPropertyScope;
 
 class Talhao extends Model
 {
     use HasFactory;
 
-    protected static function booted(): void { static::addGlobalScope(new OwnedPropertyScope()); }
+    protected static function booted(): void
+    {
+        static::addGlobalScope(new OwnedPropertyScope);
+    }
 
     protected $table = 'talhoes';
+
     protected $fillable = [
         'propriedade_id',
         'cultura_id',
         'nome',
         'area',
-        'limite'
+        'limite',
     ];
 
     protected $casts = [

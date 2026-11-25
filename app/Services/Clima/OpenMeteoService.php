@@ -4,6 +4,7 @@ namespace App\Services\Clima;
 
 use App\Models\PrevisaoClimatica;
 use App\Models\Propriedade;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use RuntimeException;
@@ -43,8 +44,8 @@ class OpenMeteoService
             'precipitation', 'precipitation_probability', 'sunshine_duration',
             'soil_moisture_3_to_9cm', 'et0_fao_evapotranspiration', 'weather_code',
         ];
-        if (!$timestamps || collect($variaveisObrigatorias)->contains(
-            fn (string $variavel) => !isset($horas[$variavel]) || !is_array($horas[$variavel]) || count($horas[$variavel]) !== count($timestamps)
+        if (! $timestamps || collect($variaveisObrigatorias)->contains(
+            fn (string $variavel) => ! isset($horas[$variavel]) || ! is_array($horas[$variavel]) || count($horas[$variavel]) !== count($timestamps)
         )) {
             throw new RuntimeException("A API não retornou previsão horária para {$propriedade->nome}.");
         }
@@ -55,7 +56,7 @@ class OpenMeteoService
         $idsTalhoes = $propriedade->talhoes()->pluck('id');
         foreach ($idsTalhoes as $talhaoId) {
             foreach ($timestamps as $i => $timestamp) {
-                $previstoPara = \Illuminate\Support\Carbon::parse($timestamp, 'America/Sao_Paulo');
+                $previstoPara = Carbon::parse($timestamp, 'America/Sao_Paulo');
                 $linhasPorTalhao[$talhaoId][] = [
                     'talhao_id' => $talhaoId,
                     'previsto_para' => $previstoPara,

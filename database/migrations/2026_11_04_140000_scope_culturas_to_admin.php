@@ -24,13 +24,15 @@ return new class extends Migration
                 ->select('propriedade_usuario.usuario_id')
                 ->distinct()->pluck('usuario_id')->all();
 
-            if (!$owners) {
+            if (! $owners) {
                 $owners = DB::table('propriedade_usuario')->where('papel', 'dono')->distinct()->pluck('usuario_id')->all();
             }
-            if (!$owners) {
+            if (! $owners) {
                 $owners = DB::table('users')->where('perfil', 'admin')->orderBy('id')->limit(1)->pluck('id')->all();
             }
-            if (!$owners) continue;
+            if (! $owners) {
+                continue;
+            }
 
             DB::table('culturas')->where('id', $cultura->id)->update(['admin_id' => $owners[0]]);
             foreach (array_slice($owners, 1) as $ownerId) {

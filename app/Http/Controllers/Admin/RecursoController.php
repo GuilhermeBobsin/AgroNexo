@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Propriedade;
 use App\Models\Recurso;
+use App\Models\Tarefa;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Models\Tarefa;
 use Illuminate\Validation\Rule;
 
 class RecursoController extends Controller
@@ -33,7 +33,7 @@ class RecursoController extends Controller
             'propriedade_id' => ['required', Rule::in(auth()->user()->propriedades()->wherePivot('papel', 'dono')->pluck('propriedades.id')->all())],
             'nome' => 'required|string|max:255',
             'tipo' => 'required|in:trator,implemento,pulverizador,colheitadeira,outro',
-            'status' => 'required|in:disponivel,em_uso,manutencao'
+            'status' => 'required|in:disponivel,em_uso,manutencao',
         ]);
 
         Recurso::create($validated);
@@ -81,10 +81,12 @@ class RecursoController extends Controller
                 return true;
             }
             $recursoAtual->update($validated);
+
             return false;
         });
         if ($conflito) {
             $message = 'Não altere a propriedade ou disponibilidade de um recurso enquanto uma tarefa vinculada está em andamento.';
+
             return $request->wantsJson()
                 ? response()->json(['message' => $message], 409)
                 : back()->withInput()->with('error', $message);
@@ -108,6 +110,7 @@ class RecursoController extends Controller
                 : back()->with('error', 'Este recurso está associado a tarefas e não pode ser excluído.');
         }
         $recurso->delete();
+
         return $request->wantsJson()
             ? response()->json(['message' => 'Recurso excluído com sucesso.'])
             : redirect()->route('admin.recursos.index')->with('success', 'Recurso excluído com sucesso.');

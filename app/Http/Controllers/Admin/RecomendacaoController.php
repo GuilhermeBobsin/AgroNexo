@@ -20,7 +20,7 @@ class RecomendacaoController extends Controller
             'status' => ['nullable', Rule::in(['pendente', 'tarefa_criada', 'recusada'])],
         ]);
         $query = Recomendacao::with(['propriedade', 'talhao', 'agronomo', 'tarefa'])->latest();
-        if (!empty($validated['status'])) {
+        if (! empty($validated['status'])) {
             $query->where('status', $validated['status']);
         }
         $recomendacoes = $query->paginate(15)->withQueryString();
@@ -44,7 +44,7 @@ class RecomendacaoController extends Controller
     public function criarTarefa(Request $request, Recomendacao $recomendacao)
     {
         abort_unless($recomendacao->status === 'pendente', 403, 'Esta recomendação já foi analisada.');
-        if ($recomendacao->tipo === 'aplicacao' && (!$recomendacao->talhao_id || !$recomendacao->produto_id || $recomendacao->dose === null)) {
+        if ($recomendacao->tipo === 'aplicacao' && (! $recomendacao->talhao_id || ! $recomendacao->produto_id || $recomendacao->dose === null)) {
             throw ValidationException::withMessages([
                 'responsavel_id' => 'A recomendação de aplicação perdeu o talhão, produto ou dose necessários. Solicite uma nova recomendação ao agrônomo.',
             ]);
@@ -55,7 +55,7 @@ class RecomendacaoController extends Controller
                 'required',
                 Rule::exists('users', 'id')->where('perfil', 'operador')->where('status', 'ativo'),
                 function ($attribute, $value, $fail) use ($propriedadeId) {
-                    if (!User::find($value)?->propriedades()->where('propriedades.id', $propriedadeId)->exists()) {
+                    if (! User::find($value)?->propriedades()->where('propriedades.id', $propriedadeId)->exists()) {
                         $fail('O operador selecionado não tem acesso a esta propriedade.');
                     }
                 },
@@ -75,7 +75,7 @@ class RecomendacaoController extends Controller
                     ->where('produto_id', $recomendacao->produto_id)
                     ->where('propriedade_id', $recomendacao->propriedade_id)
                     ->lockForUpdate()->first();
-                if (!$estoque || (float) $estoque->estoque_atual < (float) $recomendacao->dose) {
+                if (! $estoque || (float) $estoque->estoque_atual < (float) $recomendacao->dose) {
                     throw ValidationException::withMessages([
                         'responsavel_id' => 'Estoque insuficiente para transformar esta recomendação em tarefa. Reabasteça o produto ou revise a recomendação.',
                     ]);
@@ -110,13 +110,13 @@ class RecomendacaoController extends Controller
 
         $tarefa->responsavel->notify(new AtualizacaoOperacional(
             'Nova tarefa atribuída',
-            $tarefa->titulo . ' · ' . $tarefa->propriedade->nome,
+            $tarefa->titulo.' · '.$tarefa->propriedade->nome,
             route('operador.tarefas.show', $tarefa),
             'list-check'
         ));
         $recomendacao->agronomo->notify(new AtualizacaoOperacional(
             'Recomendação aprovada',
-            'A recomendação “' . $recomendacao->titulo . '” foi encaminhada como tarefa.',
+            'A recomendação “'.$recomendacao->titulo.'” foi encaminhada como tarefa.',
             route('agronomo.recomendacoes.show', $recomendacao),
             'circle-check'
         ));
@@ -145,7 +145,7 @@ class RecomendacaoController extends Controller
 
         $recomendacao->agronomo->notify(new AtualizacaoOperacional(
             'Recomendação precisa de revisão',
-            'O administrador analisou “' . $recomendacao->titulo . '”. Consulte o parecer.',
+            'O administrador analisou “'.$recomendacao->titulo.'”. Consulte o parecer.',
             route('agronomo.recomendacoes.show', $recomendacao),
             'message-circle'
         ));

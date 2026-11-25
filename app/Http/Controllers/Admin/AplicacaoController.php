@@ -23,12 +23,14 @@ class AplicacaoController extends Controller
 
         $aplicacoes = $query->paginate(20)->withQueryString();
         $propriedades = Propriedade::orderBy('nome')->get(['id', 'nome']);
+
         return view('admin.aplicacoes.index', compact('aplicacoes', 'propriedades'));
     }
 
     public function show(Aplicacao $aplicacao)
     {
         $aplicacao->load(['talhao.propriedade', 'talhao.cultura', 'produto', 'usuario', 'tarefa']);
+
         return view('admin.aplicacoes.show', compact('aplicacao'));
     }
 }

@@ -3,17 +3,16 @@
 namespace App\Http\Controllers\Operador;
 
 use App\Http\Controllers\Controller;
-use App\Models\Recurso;
-use App\Models\Tarefa;
 use App\Models\Aplicacao;
-use App\Models\Produto;
 use App\Models\MovimentacaoEstoque;
 use App\Models\Recomendacao;
+use App\Models\Recurso;
+use App\Models\Tarefa;
 use App\Models\User;
 use App\Notifications\AtualizacaoOperacional;
+use App\Services\Clima\InteligenciaClimatica;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
-use App\Services\Clima\InteligenciaClimatica;
 
 class TarefaController extends Controller
 {
@@ -102,7 +101,7 @@ class TarefaController extends Controller
                             ->where('id', '!=', $tarefa->id)
                             ->where('status', 'em_andamento')
                             ->exists();
-                        if ($recurso->status === 'em_uso' && !$outraTarefaEmAndamento) {
+                        if ($recurso->status === 'em_uso' && ! $outraTarefaEmAndamento) {
                             $recurso->status = 'disponivel';
                             $recurso->save();
                         }
@@ -164,8 +163,7 @@ class TarefaController extends Controller
             if ($validated['status'] === 'cancelada') {
                 $mensagem .= ' · '.$validated['motivo_cancelamento'];
             }
-            User::where('perfil', 'admin')->where('status', 'ativo')->each(fn (User $admin) =>
-                $admin->notify(new AtualizacaoOperacional($titulo, $mensagem, route('admin.tarefas.show', $tarefa), 'list-check'))
+            User::where('perfil', 'admin')->where('status', 'ativo')->each(fn (User $admin) => $admin->notify(new AtualizacaoOperacional($titulo, $mensagem, route('admin.tarefas.show', $tarefa), 'list-check'))
             );
             $tarefa->recomendacao?->agronomo?->notify(new AtualizacaoOperacional(
                 $titulo,

@@ -2,8 +2,8 @@
 
 namespace Tests\Feature;
 
-use App\Models\Propriedade;
 use App\Models\Produto;
+use App\Models\Propriedade;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;

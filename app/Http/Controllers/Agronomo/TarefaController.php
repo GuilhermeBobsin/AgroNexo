@@ -4,9 +4,9 @@ namespace App\Http\Controllers\Agronomo;
 
 use App\Http\Controllers\Controller;
 use App\Models\Tarefa;
+use App\Services\Clima\InteligenciaClimatica;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use App\Services\Clima\InteligenciaClimatica;
 
 class TarefaController extends Controller
 {
@@ -32,14 +32,14 @@ class TarefaController extends Controller
             ->orderBy('hora_prevista');
 
         foreach (['status', 'tipo', 'propriedade_id'] as $filtro) {
-            if (!empty($validated[$filtro])) {
+            if (! empty($validated[$filtro])) {
                 $query->where($filtro, $validated[$filtro]);
             }
         }
-        if (!empty($validated['data_inicio'])) {
+        if (! empty($validated['data_inicio'])) {
             $query->whereDate('data_prevista', '>=', $validated['data_inicio']);
         }
-        if (!empty($validated['data_fim'])) {
+        if (! empty($validated['data_fim'])) {
             $query->whereDate('data_prevista', '<=', $validated['data_fim']);
         }
 

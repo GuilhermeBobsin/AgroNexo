@@ -3,11 +3,9 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\MovimentacaoEstoque;
 use App\Models\Produto;
 use App\Models\Propriedade;
-use App\Models\MovimentacaoEstoque;
-use App\Models\Tarefa;
-use App\Models\Aplicacao;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -23,7 +21,7 @@ class EstoqueController extends Controller
             ->join('propriedades', 'propriedades.id', '=', 'estoque.propriedade_id');
 
         $ownedIds = $this->ownedPropertyIds();
-        if (!empty($ownedIds)) {
+        if (! empty($ownedIds)) {
             $query->whereIn('estoque.propriedade_id', $ownedIds);
         }
 
@@ -43,6 +41,7 @@ class EstoqueController extends Controller
         if (empty($ids) && app()->environment('testing')) {
             return Propriedade::withoutGlobalScopes()->pluck('id')->all();
         }
+
         return $ids;
     }
 
@@ -198,7 +197,7 @@ class EstoqueController extends Controller
             $anterior = (float) $registro->estoque_atual;
             $novo = (float) $validated['estoque_atual'];
             $diferenca = round($novo - $anterior, 3);
-            if ($diferenca !== 0.0 && !$request->filled('motivo_ajuste')) {
+            if ($diferenca !== 0.0 && ! $request->filled('motivo_ajuste')) {
                 throw ValidationException::withMessages(['motivo_ajuste' => 'Informe o motivo quando alterar a quantidade atual.']);
             }
             if ($request->filled('motivo_ajuste')) {
@@ -242,6 +241,7 @@ class EstoqueController extends Controller
                 return 'Este estoque está vinculado a tarefas ou aplicações e não pode ser removido.';
             }
             DB::table('produto_propriedade')->where('id', $estoque)->delete();
+
             return null;
         });
         if ($message) {
