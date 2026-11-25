@@ -76,7 +76,7 @@ class PropriedadeController extends Controller
             ], 201);
         }
 
-        return redirect()->route('admin.propriedades.index')->with('success', 'Propriedade criada com sucesso.');
+        return redirect()->route('admin.propriedades.create')->with('success', 'Propriedade criada com sucesso.');
     }
 
     public function show(Propriedade $propriedade)
